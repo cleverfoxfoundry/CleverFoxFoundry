@@ -1,0 +1,7 @@
+# All files require approval from @cleverfoxfoundry
+* @cleverfoxfoundry
+
+# Specific directories require approval
+/templates/ @cleverfoxfoundry
+/styles.css @cleverfoxfoundry
+/index.html @cleverfoxfoundry
