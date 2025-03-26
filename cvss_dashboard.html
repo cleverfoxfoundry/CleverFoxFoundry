@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>CVSS v4.0 + Risk Calculator (Split)</title>
+<title>CVSS v4.0 Contextual Calculator (Split)</title>
 
 <style>
   body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
@@ -23,7 +23,7 @@
 
 </head>
 <body>
-<h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
+<h2>CVSS v4.0 Contextual Calculator</h2>
 <div class="section">
 <!--<label for="cve">Enter CVE IDs (comma-separated, e.g., CVE-2023-12345,CVE-2023-12346):</label>
 <input id="cve" placeholder="CVE-ID" type="text"/>
@@ -34,6 +34,7 @@
 <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Base Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Attack Vector (AV)</label>
 <select id="av">
+<option value="S">No Selection (0.0)</option>
 <option value="N">Network (0.85)</option>
 <option value="A">Adjacent (0.62)</option>
 <option value="L">Local (0.55)</option>
@@ -41,64 +42,71 @@
 </select>
 <label>Attack Complexity (AC)</label>
 <select id="ac">
+<option value="S">No Selection (0.0)</option>
 <option value="L">Low (0.77)</option>
 <option value="H">High (0.44)</option>
 </select>
 <label>Privileges Required (PR)</label>
 <select id="pr">
+<option value="S">No Selection (0.0)</option>
 <option value="N">None (0.85)</option>
 <option value="L">Low (0.62/0.68)</option>
 <option value="H">High (0.27/0.50)</option>
 </select>
 <label>User Interaction (UI)</label>
 <select id="ui">
+<option value="S">No Selection (0.0)</option>
 <option value="N">None (0.85)</option>
 <option value="R">Required (0.62)</option>
 </select>
 <label>Scope</label>
 <select id="scope">
+<option value="S">No Selection (0.0)</option>
 <option value="U">Unchanged</option>
 <option value="C">Changed</option>
 </select>
 <label>Confidentiality</label>
 <select id="c">
+<option value="S">No Selection (0.0)</option>
 <option value="H">High (0.56)</option>
 <option value="L">Low (0.22)</option>
 <option value="N">None (0.00)</option>
 </select>
 <label>Integrity</label>
 <select id="i">
+<option value="S">No Selection (0.0)</option>
 <option value="H">High (0.56)</option>
 <option value="L">Low (0.22)</option>
 <option value="N">None (0.00)</option>
 </select>
 <label>Availability</label>
 <select id="a">
+<option value="S">No Selection (0.0)</option>
 <option value="H">High (0.56)</option>
 <option value="L">Low (0.22)</option>
 <option value="N">None (0.00)</option>
 </select>
 <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Threat Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Exploit Maturity</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Remediation Level</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Report Confidence</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Environmental Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Confidentiality Requirement</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Integrity Requirement</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Availability Requirement</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Supplemental Metrics</h3><div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
 <label>Safety</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Automation</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 <label>Recovery</label>
-<select><option>Not Defined</option></select>
+<option value="S">No Selection (0.0)</option>
 </div>
 <button onclick="calculateBaseScore()">Calculate CVSS</button>
 <div id="calculateBase"></div>
@@ -108,22 +116,28 @@
 <h2>Custom Risk Calculator</h2>
 <div class="section">
 <h3>Risk Impact Factors</h3>
-<label>Internet Facing (Weight: +20)</label>
+<label>Internet Facing (Weight: +50)</label>
 <select id="internet">
-<option value="25">Yes (+25)</option>
+<option value="50">Yes (+50)</option>
 <option value="0">No (+0)</option>
 </select>
-<label>Active Exploitation (Weight: +20)</label>
-<select id="blast">
-<option value="25">Yes (+25)</option>
-<option value="0">No (+0)</option>
-</select>
-<label>Number of Exposed Devices (Weight: up to +20)</label>
+<label>Number of Exposed Devices (Weight: up to +50)</label>
 <select id="devices">
 <option value="0">0 (+0)</option> 
-<option value="5"><50 (+5)</option>
-<option value="10">50-100 (+10)</option>
-<option value="25">100+ (+25)</option>
+<option value="15"><50 (+15)</option>
+<option value="30">50-100 (+30)</option>
+<option value="50">100+ (+50)</option>
+</select>
+<label>Active Exploitation (Weight: +50)</label>
+<select id="blast">
+<option value="50">Yes (+50)</option>
+<option value="0">No (+0)</option>
+</select>
+<label>Criticality (Weight: up to +50)</label>
+<select id="criticality">
+<option value="15">Low (+15)</option>
+<option value="30">Medium (+30)</option>
+<option value="50">High (+50)</option>
 </select>
 <!--<label>Blast Radius (Weight: up to +25)</label>
 <select id="blast">
@@ -132,12 +146,7 @@
 <option value="15">Medium (+15)</option>
 <option value="25">High (+25)</option>
 </select>-->
-<label>Criticality (Weight: up to +25)</label>
-<select id="criticality">
-<option value="7.5">Low (+7.5)</option>
-<option value="15">Medium (+15)</option>
-<option value="25">High (+25)</option>
-</select>
+
 <div class="result" id="riskFormula">Risk Score × Adjusted CVSS will show here.</div></div>
 <button onclick="calculateRisk()">Calculate Risk Score</button>
 <div class="result" id="riskResult"></div>
