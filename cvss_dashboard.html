@@ -4,15 +4,17 @@
 <html>
 <head>
 <title>CVSS v4.0 + Risk Calculator (Split)</title>
+
 <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
-    h2 { color: #2c3e50; }
-    .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    label { font-weight: bold; display: block; margin-top: 10px; }
-    select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
-  </style>
+  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+  h2 { color: #2c3e50; }
+  .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  label { font-weight: bold; display: block; margin-top: 10px; }
+  select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
+  button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #8e44ad; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+</style>
+
 </head>
 <body>
 <h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
@@ -128,86 +130,8 @@
 <button onclick="combineScores()">Calculate Final Action Bucket</button>
 <div class="result" id="combinedResult"></div>
 </div>
+
 <script>
-    function combineScores() {
-      // Use fixed CVSS base value for now until full CVSS calculation is added
-      const cves = document.getElementById("cve").value.split(",").map(c => c.trim()).filter(Boolean);let results = "";let csv = "CVE,CVSS,Custom Risk,Combined,Action Bucket\n";for (let cve of cves) {  const cvss = parseFloat(prompt(`Enter CVSS Base Score for ${cve}:`, "7.5")) || 0;
-
-      const internet = parseFloat(document.getElementById("internet").value);
-      const devices = parseFloat(document.getElementById("devices").value);
-      const blast = parseFloat(document.getElementById("blast").value);
-      const criticality = parseFloat(document.getElementById("criticality").value);
-      const custom = internet + devices + blast + criticality;
-
-      const combined = (cvss + custom) / 2;
-
-      let bucket = "Informational";
-      if (combined >= 60) bucket = "Act";
-      else if (combined >= 40) bucket = "Attend";
-      else if (combined >= 20) bucket = "Track";
-      else bucket = "Informational";
-
-      results += `\n${cve}\nCVSS Base Score: ${cvss.toFixed(1)}\n` +  `Custom Risk Score: ${custom.toFixed(1)}\n` +  `Combined Score: ${combined.toFixed(1)} → ${bucket} Action Bucket\n`;csv += `${cve},${cvss.toFixed(1)},${custom.toFixed(1)},${combined.toFixed(1)},${bucket}\n`;}document.getElementById("combinedResult").innerText = results;
-        `CVSS Base Score: ${cvss.toFixed(1)}
-` +
-        `Custom Risk Score: ${custom.toFixed(1)}
-` +
-        `Combined Score: ${combined.toFixed(1)} → ${bucket} Action Bucket`;
-    }
-  </script>
-<div class="section">
-<h3>Action Bucket Legend</h3>
-<ul>
-<li><strong>Track:</strong> Combined score &lt; 50</li>
-<li><strong>Attend:</strong> Combined score 50–74</li>
-<li><strong>Act:</strong> Combined score 75+</li>
-</ul>
-<button onclick="downloadCSV()">Export CSV</button>
-</div>
-<script>
-    function downloadCSV() {
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "risk_scores.csv";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-  </script>
-<script>
-function calculateBaseScore() {
-  const av = {N: 0.85, A: 0.62, L: 0.55, P: 0.2}[document.getElementById("av").value];
-  const ac = {L: 0.77, H: 0.44}[document.getElementById("ac").value];
-  const pr_val = document.getElementById("pr").value;
-  const scope = document.getElementById("scope").value;
-  let pr = 0;
-  if (pr_val === "N") pr = 0.85;
-  else if (pr_val === "L") pr = scope === "U" ? 0.62 : 0.68;
-  else if (pr_val === "H") pr = scope === "U" ? 0.27 : 0.5;
-
-  const ui = {N: 0.85, R: 0.62}[document.getElementById("ui").value];
-  const c = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("c").value];
-  const i = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("i").value];
-  const a = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("a").value];
-
-  const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
-  const impactSubScore = scope === "U" ? 6.42 * impact : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
-  const exploitability = 8.22 * av * ac * pr * ui;
-
-  let baseScore = 0;
-  if (impact <= 0) {
-    baseScore = 0;
-  } else {
-    baseScore = scope === "U"
-      ? Math.min(impactSubScore + exploitability, 10)
-      : Math.min(1.08 * (impactSubScore + exploitability), 10);
-  }
-
-  document.getElementById("fetch-status").innerText =
-    `CVSS Base Score: ${baseScore.toFixed(1)}`;
-}
-
 async function fetchCVE() {
   const cveId = document.getElementById("cve").value.trim();
   if (!cveId) {
@@ -226,6 +150,7 @@ async function fetchCVE() {
       return;
     }
 
+    // Fill the form fields with the fetched CVSS data
     document.getElementById("av").value = base.attackVector.charAt(0);
     document.getElementById("ac").value = base.attackComplexity.charAt(0);
     document.getElementById("pr").value = base.privilegesRequired.charAt(0);
@@ -242,6 +167,7 @@ async function fetchCVE() {
   }
 }
 </script>
+
 
 
 <script>
