@@ -4,15 +4,24 @@
 <html>
 <head>
 <title>CVSS v4.0 + Risk Calculator (Split)</title>
+
 <style>
   body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
   h2 { color: #2c3e50; }
-  .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  .section { 
+    background: #fff; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border-bottom: 2px solid #8e44ad; /* Add a thin purple line at the bottom of each section */
+  }
   label { font-weight: bold; display: block; margin-top: 10px; }
   select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
   button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #8e44ad; color: white; border: none; border-radius: 5px; cursor: pointer; }
   .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
 </style>
+
 </head>
 <body>
 <h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
@@ -23,7 +32,7 @@
 <div id="fetch-status"></div>
 </div>
 <div class="section" style="margin-top: 30px; margin-top: 30px; margin-top: 30px;">
-<h3>Base Metrics</h3>
+<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Base Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Attack Vector (AV)</label>
 <select id="av">
 <option value="N">Network (0.85)</option>
@@ -70,21 +79,21 @@
 <option value="L">Low (0.22)</option>
 <option value="N">None (0.00)</option>
 </select>
-<h3>Threat Metrics</h3>
+<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Threat Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Exploit Maturity</label>
 <select><option>Not Defined</option></select>
 <label>Remediation Level</label>
 <select><option>Not Defined</option></select>
 <label>Report Confidence</label>
 <select><option>Not Defined</option></select>
-<h3>Environmental Metrics</h3>
+<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Environmental Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Confidentiality Requirement</label>
 <select><option>Not Defined</option></select>
 <label>Integrity Requirement</label>
 <select><option>Not Defined</option></select>
 <label>Availability Requirement</label>
 <select><option>Not Defined</option></select>
-<h3>Supplemental Metrics</h3>
+<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Supplemental Metrics</h3><div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
 <label>Safety</label>
 <select><option>Not Defined</option></select>
 <label>Automation</label>
@@ -125,7 +134,7 @@
 <div class="section" style="margin-top: 80px;">
 <h3>Combined Dashboard</h3>
 <p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a final action bucket.</p>
-<button onclick="combineScores()">Calculate Final Action Bucket</button>
+<button onclick="calculateRisk()">Calculate Action</button>
 <div class="result" id="combinedResult"></div>
 </div>
 <script>
@@ -207,5 +216,15 @@ function calculateRisk() {
 <li><strong>Act:</strong> Combined score 60+</li>
 </ul>
 </div>
+
+<div class="section">
+  <h3>Action Bucket Legend</h3>
+  <ul>
+    <li><strong>Track:</strong> Combined score 2–4</li>
+    <li><strong>Attend:</strong> Combined score 5–7</li>
+    <li><strong>Act:</strong> Combined score 8–10</li>
+  </ul>
+</div>
+
 </body>
 </html>
