@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CVSS v4.0 + Risk Calculator (Split)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h2 { color: #2c3e50; }
+    .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
+
+  <div class="section">
+    <label for="cve">Enter CVE IDs (comma-separated, e.g., CVE-2023-12345,CVE-2023-12346):</label>
+    <input type="text" id="cve" placeholder="CVE-ID">
+    <button onclick="fetchCVE()">Fetch CVSS Data</button>
+    <div id="fetch-status"></div>
+  </div>
+
+  <div class="section">
+    <h3>Base Metrics</h3>
+    <label>Attack Vector (AV)</label>
+    <select id="av">
+      <option value="N">Network (0.85)</option>
+      <option value="A">Adjacent (0.62)</option>
+      <option value="L">Local (0.55)</option>
+      <option value="P">Physical (0.20)</option>
+    </select>
+    <label>Attack Complexity (AC)</label>
+    <select id="ac">
+      <option value="L">Low (0.77)</option>
+      <option value="H">High (0.44)</option>
+    </select>
+    <label>Privileges Required (PR)</label>
+    <select id="pr">
+      <option value="N">None (0.85)</option>
+      <option value="L">Low (0.62/0.68)</option>
+      <option value="H">High (0.27/0.50)</option>
+    </select>
+    <label>User Interaction (UI)</label>
+    <select id="ui">
+      <option value="N">None (0.85)</option>
+      <option value="R">Required (0.62)</option>
+    </select>
+    <label>Scope</label>
+    <select id="scope">
+      <option value="U">Unchanged</option>
+      <option value="C">Changed</option>
+    </select>
+    <label>Confidentiality</label>
+    <select id="c">
+      <option value="H">High (0.56)</option>
+      <option value="L">Low (0.22)</option>
+      <option value="N">None (0.00)</option>
+    </select>
+    <label>Integrity</label>
+    <select id="i">
+      <option value="H">High (0.56)</option>
+      <option value="L">Low (0.22)</option>
+      <option value="N">None (0.00)</option>
+    </select>
+    <label>Availability</label>
+    <select id="a">
+      <option value="H">High (0.56)</option>
+      <option value="L">Low (0.22)</option>
+      <option value="N">None (0.00)</option>
+    </select>
+
+    <h3>Threat Metrics</h3>
+    <label>Exploit Maturity</label>
+    <select><option>Not Defined</option></select>
+    <label>Remediation Level</label>
+    <select><option>Not Defined</option></select>
+    <label>Report Confidence</label>
+    <select><option>Not Defined</option></select>
+
+    <h3>Environmental Metrics</h3>
+    <label>Confidentiality Requirement</label>
+    <select><option>Not Defined</option></select>
+    <label>Integrity Requirement</label>
+    <select><option>Not Defined</option></select>
+    <label>Availability Requirement</label>
+    <select><option>Not Defined</option></select>
+
+    <h3>Supplemental Metrics</h3>
+    <label>Safety</label>
+    <select><option>Not Defined</option></select>
+    <label>Automation</label>
+    <select><option>Not Defined</option></select>
+    <label>Recovery</label>
+    <select><option>Not Defined</option></select>
+  </div>
+
+  <button onclick="alert('Calculation logic goes here')">Calculate CVSS</button>
+
+  <h2>Custom Risk Calculator</h2>
+
+  <div class="section">
+    <h3>Risk Impact Factors</h3>
+    <label>Internet Facing (Weight: +20)</label>
+    <select id="internet">
+      <option value="20">Yes (+20)</option>
+      <option value="0">No (+0)</option>
+    </select>
+    <label>Number of Exposed Devices (Weight: up to +20)</label>
+    <select id="devices">
+      <option value="5">Less than 50 (+5)</option>
+      <option value="10">Less than 100 (+10)</option>
+      <option value="20">100 or more (+20)</option>
+    </select>
+    <label>Blast Radius (Weight: up to +25)</label>
+    <select id="blast">
+      <option value="7.5">Low (+7.5)</option>
+      <option value="15">Medium (+15)</option>
+      <option value="25">High (+25)</option>
+    </select>
+    <label>Criticality (Weight: up to +25)</label>
+    <select id="criticality">
+      <option value="7.5">Low (+7.5)</option>
+      <option value="15">Medium (+15)</option>
+      <option value="25">High (+25)</option>
+    </select>
+  </div>
+
+  <button onclick="calculateRisk()">Calculate Risk Score</button>
+  <div class="result" id="riskResult"></div>
+
+  <script>
+    function calculateRisk() {
+      const internet = parseFloat(document.getElementById("internet").value);
+      const devices = parseFloat(document.getElementById("devices").value);
+      const blast = parseFloat(document.getElementById("blast").value);
+      const criticality = parseFloat(document.getElementById("criticality").value);
+      const score = internet + devices + blast + criticality;
+
+      let bucket = "Informational";
+      if (score >= 85) bucket = "Critical";
+      else if (score >= 60) bucket = "High";
+      else if (score >= 40) bucket = "Medium";
+      else if (score >= 20) bucket = "Low";
+
+      document.getElementById("riskResult").innerText = 
+        `Custom Risk Score: ${score} – ${bucket} Risk`;
+    }
+
+    async function fetchCVE() {
+      const cveId = document.getElementById("cve").value.trim();
+      if (!cveId) {
+        document.getElementById("fetch-status").innerText = "Please enter a CVE ID.";
+        return;
+      }
+      document.getElementById("fetch-status").innerText = "Fetching data...";
+
+      try {
+        const res = await fetch(`https://services.nvd.nist.gov/rest/json/cve/1.0/${cveId}`);
+        const data = await res.json();
+        const base = data.result?.CVE_Items?.[0]?.impact?.baseMetricV3?.cvssV3;
+
+        if (!base) {
+          document.getElementById("fetch-status").innerText = "Base metrics not found.";
+          return;
+        }
+
+        document.getElementById("av").value = base.attackVector.charAt(0);
+        document.getElementById("ac").value = base.attackComplexity.charAt(0);
+        document.getElementById("pr").value = base.privilegesRequired.charAt(0);
+        document.getElementById("ui").value = base.userInteraction.charAt(0);
+        document.getElementById("scope").value = base.scope.charAt(0);
+        document.getElementById("c").value = base.confidentialityImpact.charAt(0);
+        document.getElementById("i").value = base.integrityImpact.charAt(0);
+        document.getElementById("a").value = base.availabilityImpact.charAt(0);
+
+        document.getElementById("fetch-status").innerText = "Base metrics populated.";
+      } catch (err) {
+        document.getElementById("fetch-status").innerText = "Error fetching CVE data.";
+        console.error(err);
+      }
+    }
+  </script>
+
+
+  <div class="section">
+    <h3>Combined Dashboard</h3>
+    <p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a final action bucket.</p>
+    <button onclick="combineScores()">Calculate Final Action Bucket</button>
+    <div class="result" id="combinedResult"></div>
+  </div>
+
+  <script>
+    function combineScores() {
+      // Use fixed CVSS base value for now until full CVSS calculation is added
+      const cves = document.getElementById("cve").value.split(",").map(c => c.trim()).filter(Boolean);let results = "";let csv = "CVE,CVSS,Custom Risk,Combined,Action Bucket\n";for (let cve of cves) {  const cvss = parseFloat(prompt(`Enter CVSS Base Score for ${cve}:`, "7.5")) || 0;
+
+      const internet = parseFloat(document.getElementById("internet").value);
+      const devices = parseFloat(document.getElementById("devices").value);
+      const blast = parseFloat(document.getElementById("blast").value);
+      const criticality = parseFloat(document.getElementById("criticality").value);
+      const custom = internet + devices + blast + criticality;
+
+      const combined = (cvss + custom) / 2;
+
+      let bucket = "Informational";
+      if (combined >= 85) bucket = "Critical";
+      else if (combined >= 60) bucket = "High";
+      else if (combined >= 40) bucket = "Medium";
+      else if (combined >= 20) bucket = "Low";
+
+      results += `\n${cve}\nCVSS Base Score: ${cvss.toFixed(1)}\n` +  `Custom Risk Score: ${custom.toFixed(1)}\n` +  `Combined Score: ${combined.toFixed(1)} → ${bucket} Action Bucket\n`;csv += `${cve},${cvss.toFixed(1)},${custom.toFixed(1)},${combined.toFixed(1)},${bucket}\n`;}document.getElementById("combinedResult").innerText = results;
+        `CVSS Base Score: ${cvss.toFixed(1)}
+` +
+        `Custom Risk Score: ${custom.toFixed(1)}
+` +
+        `Combined Score: ${combined.toFixed(1)} → ${bucket} Action Bucket`;
+    }
+  </script>
+
+  <div class="section">
+    <h3>Action Bucket Legend</h3>
+    <ul>
+      <li><strong>Track:</strong> Combined score &lt; 50</li>
+      <li><strong>Attend:</strong> Combined score 50–74</li>
+      <li><strong>Act:</strong> Combined score 75+</li>
+    </ul>
+    <button onclick="downloadCSV()">Export CSV</button>
+  </div>
+
+  <script>
+    function downloadCSV() {
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "risk_scores.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+
+
+</html>
