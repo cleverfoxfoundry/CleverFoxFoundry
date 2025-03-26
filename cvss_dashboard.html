@@ -4,7 +4,6 @@
 <html>
 <head>
 <title>CVSS v4.0 + Risk Calculator (Split)</title>
-
 <style>
   body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
   h2 { color: #2c3e50; }
@@ -14,7 +13,6 @@
   button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #8e44ad; color: white; border: none; border-radius: 5px; cursor: pointer; }
   .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
 </style>
-
 </head>
 <body>
 <h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
@@ -124,53 +122,45 @@
 <div class="result" id="riskFormula">Risk Score × Adjusted CVSS will show here.</div></div>
 <button onclick="calculateRisk()">Calculate Risk Score</button>
 <div class="result" id="riskResult"></div>
-<div class="section" style="margin-top: 40px;">
+<div class="section" style="margin-top: 80px;">
 <h3>Combined Dashboard</h3>
 <p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a final action bucket.</p>
 <button onclick="combineScores()">Calculate Final Action Bucket</button>
 <div class="result" id="combinedResult"></div>
 </div>
-
 <script>
-async function fetchCVE() {
-  const cveId = document.getElementById("cve").value.trim();
-  if (!cveId) {
-    document.getElementById("fetch-status").innerText = "Please enter a CVE ID.";
-    return;
+function calculateBaseScore() {
+  const av = {N: 0.85, A: 0.62, L: 0.55, P: 0.2}[document.getElementById("av").value];
+  const ac = {L: 0.77, H: 0.44}[document.getElementById("ac").value];
+  const pr_val = document.getElementById("pr").value;
+  const scope = document.getElementById("scope").value;
+  let pr = 0;
+  if (pr_val === "N") pr = 0.85;
+  else if (pr_val === "L") pr = scope === "U" ? 0.62 : 0.68;
+  else if (pr_val === "H") pr = scope === "U" ? 0.27 : 0.5;
+
+  const ui = {N: 0.85, R: 0.62}[document.getElementById("ui").value];
+  const c = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("c").value];
+  const i = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("i").value];
+  const a = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("a").value];
+
+  const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
+  const impactSubScore = scope === "U" ? 6.42 * impact : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+  const exploitability = 8.22 * av * ac * pr * ui;
+
+  let baseScore = 0;
+  if (impact <= 0) {
+    baseScore = 0;
+  } else {
+    baseScore = scope === "U"
+      ? Math.min(impactSubScore + exploitability, 10)
+      : Math.min(1.08 * (impactSubScore + exploitability), 10);
   }
-  document.getElementById("fetch-status").innerText = "Fetching data...";
 
-  try {
-    const res = await fetch(`https://services.nvd.nist.gov/rest/json/cve/1.0/${cveId}`);
-    const data = await res.json();
-    const base = data.result?.CVE_Items?.[0]?.impact?.baseMetricV3?.cvssV3;
-
-    if (!base) {
-      document.getElementById("fetch-status").innerText = "Base metrics not found.";
-      return;
-    }
-
-    // Fill the form fields with the fetched CVSS data
-    document.getElementById("av").value = base.attackVector.charAt(0);
-    document.getElementById("ac").value = base.attackComplexity.charAt(0);
-    document.getElementById("pr").value = base.privilegesRequired.charAt(0);
-    document.getElementById("ui").value = base.userInteraction.charAt(0);
-    document.getElementById("scope").value = base.scope.charAt(0);
-    document.getElementById("c").value = base.confidentialityImpact.charAt(0);
-    document.getElementById("i").value = base.integrityImpact.charAt(0);
-    document.getElementById("a").value = base.availabilityImpact.charAt(0);
-
-    document.getElementById("fetch-status").innerText = "Base metrics populated.";
-  } catch (err) {
-    document.getElementById("fetch-status").innerText = "Error fetching CVE data.";
-    console.error(err);
-  }
+  document.getElementById("fetch-status").innerText =
+    `CVSS Base Score: ${baseScore.toFixed(1)}`;
 }
-</script>
 
-
-
-<script>
 function calculateRisk() {
   const internet = parseFloat(document.getElementById("internet").value);
   const devices = parseFloat(document.getElementById("devices").value);
@@ -186,25 +176,36 @@ function calculateRisk() {
   else if (rawScore >= 20) bucket = "Track";
 
   const riskText = `Custom Risk Score: ${(riskDecimal * 100).toFixed(1)}% – ${bucket} Risk`;
+
   document.getElementById("riskResult").innerText = riskText;
 
+  // Get CVSS base score
   let cvss = 0;
   const fetchStatus = document.getElementById("fetch-status").innerText;
-  const match = fetchStatus.match(/CVSS Base Score: ([\d\.]+)/);
+  const match = fetchStatus.match(/CVSS Base Score: ([0-9.]+)/);
   if (match) {
     cvss = parseFloat(match[1]);
   }
 
-  if (cvss > 0) {
-    const product = (cvss * riskDecimal).toFixed(2);
-    document.getElementById("riskFormula").innerText = 
-      `Risk Multiplier = CVSS (${cvss}) × Risk (${riskDecimal.toFixed(2)}) = ${product}`;
-  } else {
-    document.getElementById("riskFormula").innerText = 
-      `Risk Score × Adjusted CVSS will show here (no CVSS Base Score found yet).`;
-  }
+  // Combine CVSS and Custom Risk Score
+  const combinedScore = (cvss * riskDecimal).toFixed(2);
+
+  let combinedBucket = "Informational";
+  if (combinedScore >= 60) combinedBucket = "Act";
+  else if (combinedScore >= 40) combinedBucket = "Attend";
+  else if (combinedScore >= 20) combinedBucket = "Track";
+
+  document.getElementById("combinedResult").innerText =
+    `Combined Score: ${combinedScore} – ${combinedBucket} Action Bucket`;
 }
 </script>
-
+<div class="section">
+<h3>Action Bucket Legend</h3>
+<ul>
+<li><strong>Track:</strong> Combined score 20–39</li>
+<li><strong>Attend:</strong> Combined score 40–59</li>
+<li><strong>Act:</strong> Combined score 60+</li>
+</ul>
+</div>
 </body>
 </html>
