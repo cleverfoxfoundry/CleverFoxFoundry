@@ -133,6 +133,7 @@
   <div class="result" id="combinedResult"></div>
 </div>
 
+<!-- Calculations-->
 <script>
 function calculateBaseScore() {
   const av = {N: 0.85, A: 0.62, L: 0.55, P: 0.2}[document.getElementById("av").value];
@@ -150,9 +151,7 @@ function calculateBaseScore() {
   const a = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("a").value];
 
   const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
-  const impactSubScore = scope === "U"
-    ? 6.42 * impact
-    : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+  const impactSubScore = scope === "U" ? 6.42 * impact : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
   const exploitability = 8.22 * av * ac * pr * ui;
 
   let baseScore = 0;
@@ -178,32 +177,31 @@ function calculateRisk() {
   const riskDecimal = rawScore / 100;
 
   let bucket = "Informational";
-  if (rawScore >= 75) bucket = "Track";
-  if (rawScore >= 85) bucket = "High – Attend";
-  if (rawScore >= 90) bucket = "Critical – Act Now";
+  if (riskDecimal >= 0.5) bucket = "Critical - Act Now";
+  else if (riskDecimal >= 0.2) bucket = "High - Attend";
+  else if (riskDecimal >= 0.1) bucket = "Track";
 
   const riskText = `Custom Risk Score: ${riskDecimal.toFixed(2)} – ${bucket} Risk`;
+
   document.getElementById("riskResult").innerText = riskText;
 
-  // Get CVSS base score from calculateBase div
+  // Get CVSS base score correctly from displayed base calculation
   const baseText = document.getElementById("calculateBase").innerText;
-  let cvss = 0;
   const match = baseText.match(/CVSS Base Score: ([0-9.]+)/);
-  if (match) {
-    cvss = parseFloat(match[1]);
-  }
+  let cvss = match ? parseFloat(match[1]) : 0;
 
-  const combinedScore = (cvss * riskDecimal).toFixed(2);
+  // Calculate combined average of CVSS and riskDecimal scaled to 10
+  const combinedScore = ((cvss + (riskDecimal * 10)) / 2).toFixed(2);
 
   let combinedBucket = "Informational";
-  if (combinedScore >= 6) combinedBucket = "Track";
-  if (combinedScore >= 7) combinedBucket = "High – Attend";
-  if (combinedScore >= 9) combinedBucket = "Critical – Act Now";
+  if (combinedScore >= 9) combinedBucket = "Critical - Act Now";
+  else if (combinedScore >= 7) combinedBucket = "High - Attend";
+  else if (combinedScore >= 5) combinedBucket = "Track";
 
   document.getElementById("combinedResult").innerText =
     `Combined Score: ${combinedScore} – ${combinedBucket} Action Bucket`;
 }
-</script>
-
+</script>  
+  
 </body>
 </html>
