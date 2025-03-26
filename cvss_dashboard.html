@@ -28,9 +28,9 @@
 <div class="section">
 <label for="cve">Enter CVE IDs (comma-separated, e.g., CVE-2023-12345,CVE-2023-12346):</label>
 <input id="cve" placeholder="CVE-ID" type="text"/>
-<button onclick="fetchCVE()">Fetch CVSS Data</button>
+<!--<button onclick="fetchCVE()">Fetch CVSS Data</button>
 <div id="fetch-status"></div>
-</div>
+</div>-->
 <div class="section" style="margin-top: 30px; margin-top: 30px; margin-top: 30px;">
 <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Base Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
 <label>Attack Vector (AV)</label>
@@ -102,26 +102,37 @@
 <select><option>Not Defined</option></select>
 </div>
 <button onclick="calculateBaseScore()">Calculate CVSS</button>
+<div id="calculateBase"></div>
+</div>
+  
+  
 <h2>Custom Risk Calculator</h2>
 <div class="section">
 <h3>Risk Impact Factors</h3>
 <label>Internet Facing (Weight: +20)</label>
 <select id="internet">
-<option value="20">Yes (+20)</option>
+<option value="25">Yes (+25)</option>
+<option value="0">No (+0)</option>
+</select>
+<label>Active Exploitation (Weight: +20)</label>
+<select id="blast">
+<option value="25">Yes (+25)</option>
 <option value="0">No (+0)</option>
 </select>
 <label>Number of Exposed Devices (Weight: up to +20)</label>
 <select id="devices">
-<option value="5">Less than 50 (+5)</option>
-<option value="10">Less than 100 (+10)</option>
-<option value="20">100 or more (+20)</option>
+<option value="0">0 (+0)</option> 
+<option value="5"><50 (+5)</option>
+<option value="10">50-100 (+10)</option>
+<option value="25">100+ (+25)</option>
 </select>
-<label>Blast Radius (Weight: up to +25)</label>
+<!--<label>Blast Radius (Weight: up to +25)</label>
 <select id="blast">
+<option value="0">None (+0)</option>  
 <option value="7.5">Low (+7.5)</option>
 <option value="15">Medium (+15)</option>
 <option value="25">High (+25)</option>
-</select>
+</select>-->
 <label>Criticality (Weight: up to +25)</label>
 <select id="criticality">
 <option value="7.5">Low (+7.5)</option>
@@ -133,7 +144,7 @@
 <div class="result" id="riskResult"></div>
 <div class="section" style="margin-top: 80px;">
 <h3>Combined Dashboard</h3>
-<p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a final action bucket.</p>
+<p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
 <button onclick="calculateRisk()">Calculate Action</button>
 <div class="result" id="combinedResult"></div>
 </div>
@@ -165,8 +176,8 @@ function calculateBaseScore() {
       ? Math.min(impactSubScore + exploitability, 10)
       : Math.min(1.08 * (impactSubScore + exploitability), 10);
   }
-
-  document.getElementById("fetch-status").innerText =
+  
+  document.getElementById("calculateBase").innerText =
     `CVSS Base Score: ${baseScore.toFixed(1)}`;
 }
 
@@ -180,11 +191,11 @@ function calculateRisk() {
   const riskDecimal = rawScore / 100;
 
   let bucket = "Informational";
-  if (rawScore >= 60) bucket = "Act";
-  else if (rawScore >= 40) bucket = "Attend";
-  else if (rawScore >= 20) bucket = "Track";
+  if (rawScore >= .1) bucket = "Track";
+  else if (rawScore >= .2) bucket = "High- Attend";
+  else if (rawScore >= .5) bucket = "Critical- Act Now";
 
-  const riskText = `Custom Risk Score: ${(riskDecimal * 100).toFixed(1)}% – ${bucket} Risk`;
+  const riskText = `Custom Risk Score: ${(riskDecimal) – ${bucket} Risk`;
 
   document.getElementById("riskResult").innerText = riskText;
 
@@ -200,15 +211,15 @@ function calculateRisk() {
   const combinedScore = (cvss * riskDecimal).toFixed(2);
 
   let combinedBucket = "Informational";
-  if (combinedScore >= 60) combinedBucket = "Act";
-  else if (combinedScore >= 40) combinedBucket = "Attend";
-  else if (combinedScore >= 20) combinedBucket = "Track";
+  if (combinedScore >= 6) combinedBucket = "Track";
+  else if (combinedScore >= 7) combinedBucket = "High- Attend";
+  else if (combinedScore >= 9) combinedBucket = "Critical- Act Now";
 
   document.getElementById("combinedResult").innerText =
     `Combined Score: ${combinedScore} – ${combinedBucket} Action Bucket`;
 }
 </script>
-<div class="section">
+<!--<div class="section">
 <h3>Action Bucket Legend</h3>
 <ul>
 <li><strong>Track:</strong> Combined score 20–39</li>
@@ -235,6 +246,6 @@ function calculateRisk() {
     <li><strong>Act:</strong> Combined score 8–10</li>
   </ul>
 </div>
-
+-->
 </body>
 </html>
