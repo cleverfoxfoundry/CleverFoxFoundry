@@ -1,153 +1,138 @@
-
 <!DOCTYPE html>
-
 <html>
 <head>
-<title>CVSS v4.0 + Risk Calculator (Split)</title>
-
-<style>
-  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
-  h2 { color: #2c3e50; }
-  .section { 
-    background: #fff; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-    border-radius: 10px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    border-bottom: 2px solid #8e44ad; /* Add a thin purple line at the bottom of each section */
-  }
-  label { font-weight: bold; display: block; margin-top: 10px; }
-  select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
-  button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #8e44ad; color: white; border: none; border-radius: 5px; cursor: pointer; }
-  .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
-</style>
-
+  <title>CVSS v4.0 + Risk Calculator (Split)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h2 { color: #2c3e50; }
+    .section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-bottom: 2px solid #8e44ad;
+    }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
 </head>
 <body>
+
 <h2>CVSS v4.0 Calculator (Base + Threat + Environmental + Supplemental)</h2>
 <div class="section">
-<!--<label for="cve">Enter CVE IDs (comma-separated, e.g., CVE-2023-12345,CVE-2023-12346):</label>
-<input id="cve" placeholder="CVE-ID" type="text"/>
-<!--<button onclick="fetchCVE()">Fetch CVSS Data</button>
-<div id="fetch-status"></div>
-</div>-->
-<div class="section" style="margin-top: 30px; margin-top: 30px; margin-top: 30px;">
-<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Base Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
-<label>Attack Vector (AV)</label>
-<select id="av">
-<option value="N">Network (0.85)</option>
-<option value="A">Adjacent (0.62)</option>
-<option value="L">Local (0.55)</option>
-<option value="P">Physical (0.20)</option>
-</select>
-<label>Attack Complexity (AC)</label>
-<select id="ac">
-<option value="L">Low (0.77)</option>
-<option value="H">High (0.44)</option>
-</select>
-<label>Privileges Required (PR)</label>
-<select id="pr">
-<option value="N">None (0.85)</option>
-<option value="L">Low (0.62/0.68)</option>
-<option value="H">High (0.27/0.50)</option>
-</select>
-<label>User Interaction (UI)</label>
-<select id="ui">
-<option value="N">None (0.85)</option>
-<option value="R">Required (0.62)</option>
-</select>
-<label>Scope</label>
-<select id="scope">
-<option value="U">Unchanged</option>
-<option value="C">Changed</option>
-</select>
-<label>Confidentiality</label>
-<select id="c">
-<option value="H">High (0.56)</option>
-<option value="L">Low (0.22)</option>
-<option value="N">None (0.00)</option>
-</select>
-<label>Integrity</label>
-<select id="i">
-<option value="H">High (0.56)</option>
-<option value="L">Low (0.22)</option>
-<option value="N">None (0.00)</option>
-</select>
-<label>Availability</label>
-<select id="a">
-<option value="H">High (0.56)</option>
-<option value="L">Low (0.22)</option>
-<option value="N">None (0.00)</option>
-</select>
-<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Threat Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
-<label>Exploit Maturity</label>
-<select><option>Not Defined</option></select>
-<label>Remediation Level</label>
-<select><option>Not Defined</option></select>
-<label>Report Confidence</label>
-<select><option>Not Defined</option></select>
-<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Environmental Metrics</h3><hr style="border-top: 2px solid #8e44ad;">
-<label>Confidentiality Requirement</label>
-<select><option>Not Defined</option></select>
-<label>Integrity Requirement</label>
-<select><option>Not Defined</option></select>
-<label>Availability Requirement</label>
-<select><option>Not Defined</option></select>
-<div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div><h3>Supplemental Metrics</h3><div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
-<label>Safety</label>
-<select><option>Not Defined</option></select>
-<label>Automation</label>
-<select><option>Not Defined</option></select>
-<label>Recovery</label>
-<select><option>Not Defined</option></select>
+  <h3>Base Metrics</h3>
+  <label>Attack Vector (AV)</label>
+  <select id="av">
+    <option value="N">Network (0.85)</option>
+    <option value="A">Adjacent (0.62)</option>
+    <option value="L">Local (0.55)</option>
+    <option value="P">Physical (0.20)</option>
+  </select>
+
+  <label>Attack Complexity (AC)</label>
+  <select id="ac">
+    <option value="L">Low (0.77)</option>
+    <option value="H">High (0.44)</option>
+  </select>
+
+  <label>Privileges Required (PR)</label>
+  <select id="pr">
+    <option value="N">None (0.85)</option>
+    <option value="L">Low (0.62/0.68)</option>
+    <option value="H">High (0.27/0.50)</option>
+  </select>
+
+  <label>User Interaction (UI)</label>
+  <select id="ui">
+    <option value="N">None (0.85)</option>
+    <option value="R">Required (0.62)</option>
+  </select>
+
+  <label>Scope</label>
+  <select id="scope">
+    <option value="U">Unchanged</option>
+    <option value="C">Changed</option>
+  </select>
+
+  <label>Confidentiality</label>
+  <select id="c">
+    <option value="H">High (0.56)</option>
+    <option value="L">Low (0.22)</option>
+    <option value="N">None (0.00)</option>
+  </select>
+
+  <label>Integrity</label>
+  <select id="i">
+    <option value="H">High (0.56)</option>
+    <option value="L">Low (0.22)</option>
+    <option value="N">None (0.00)</option>
+  </select>
+
+  <label>Availability</label>
+  <select id="a">
+    <option value="H">High (0.56)</option>
+    <option value="L">Low (0.22)</option>
+    <option value="N">None (0.00)</option>
+  </select>
+
+  <button onclick="calculateBaseScore()">Calculate CVSS</button>
+  <div id="calculateBase" class="result"></div>
 </div>
-<button onclick="calculateBaseScore()">Calculate CVSS</button>
-<div id="calculateBase"></div>
-</div>
-  
-  
+
 <h2>Custom Risk Calculator</h2>
 <div class="section">
-<h3>Risk Impact Factors</h3>
-<label>Internet Facing (Weight: +20)</label>
-<select id="internet">
-<option value="25">Yes (+25)</option>
-<option value="0">No (+0)</option>
-</select>
-<label>Active Exploitation (Weight: +20)</label>
-<select id="blast">
-<option value="25">Yes (+25)</option>
-<option value="0">No (+0)</option>
-</select>
-<label>Number of Exposed Devices (Weight: up to +20)</label>
-<select id="devices">
-<option value="0">0 (+0)</option> 
-<option value="5"><50 (+5)</option>
-<option value="10">50-100 (+10)</option>
-<option value="25">100+ (+25)</option>
-</select>
-<!--<label>Blast Radius (Weight: up to +25)</label>
-<select id="blast">
-<option value="0">None (+0)</option>  
-<option value="7.5">Low (+7.5)</option>
-<option value="15">Medium (+15)</option>
-<option value="25">High (+25)</option>
-</select>-->
-<label>Criticality (Weight: up to +25)</label>
-<select id="criticality">
-<option value="7.5">Low (+7.5)</option>
-<option value="15">Medium (+15)</option>
-<option value="25">High (+25)</option>
-</select>
-<div class="result" id="riskFormula">Risk Score × Adjusted CVSS will show here.</div></div>
+  <h3>Risk Impact Factors</h3>
+  <label>Internet Facing (Weight: +25)</label>
+  <select id="internet">
+    <option value="25">Yes (+25)</option>
+    <option value="0">No (+0)</option>
+  </select>
+
+  <label>Active Exploitation (Weight: +25)</label>
+  <select id="blast">
+    <option value="25">Yes (+25)</option>
+    <option value="0">No (+0)</option>
+  </select>
+
+  <label>Number of Exposed Devices (Weight: up to +25)</label>
+  <select id="devices">
+    <option value="0">0 (+0)</option>
+    <option value="5">&lt;50 (+5)</option>
+    <option value="10">50–100 (+10)</option>
+    <option value="25">100+ (+25)</option>
+  </select>
+
+  <label>Criticality (Weight: up to +25)</label>
+  <select id="criticality">
+    <option value="7.5">Low (+7.5)</option>
+    <option value="15">Medium (+15)</option>
+    <option value="25">High (+25)</option>
+  </select>
+
+  <div class="result" id="riskFormula">Risk Score × Adjusted CVSS will show here.</div>
+</div>
 <button onclick="calculateRisk()">Calculate Risk Score</button>
 <div class="result" id="riskResult"></div>
+
 <div class="section" style="margin-top: 80px;">
-<h3>Combined Dashboard</h3>
-<p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
-<button onclick="calculateRisk()">Calculate Action</button>
-<div class="result" id="combinedResult"></div>
+  <h3>Combined Dashboard</h3>
+  <p>This calculates the combined score of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
+  <button onclick="calculateRisk()">Calculate Action</button>
+  <div class="result" id="combinedResult"></div>
 </div>
+
 <script>
 function calculateBaseScore() {
   const av = {N: 0.85, A: 0.62, L: 0.55, P: 0.2}[document.getElementById("av").value];
@@ -165,7 +150,9 @@ function calculateBaseScore() {
   const a = {H: 0.56, L: 0.22, N: 0.0}[document.getElementById("a").value];
 
   const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
-  const impactSubScore = scope === "U" ? 6.42 * impact : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+  const impactSubScore = scope === "U"
+    ? 6.42 * impact
+    : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
   const exploitability = 8.22 * av * ac * pr * ui;
 
   let baseScore = 0;
@@ -176,7 +163,7 @@ function calculateBaseScore() {
       ? Math.min(impactSubScore + exploitability, 10)
       : Math.min(1.08 * (impactSubScore + exploitability), 10);
   }
-  
+
   document.getElementById("calculateBase").innerText =
     `CVSS Base Score: ${baseScore.toFixed(1)}`;
 }
@@ -191,61 +178,32 @@ function calculateRisk() {
   const riskDecimal = rawScore / 100;
 
   let bucket = "Informational";
-  if (rawScore >= .1) bucket = "Track";
-  else if (rawScore >= .2) bucket = "High- Attend";
-  else if (rawScore >= .5) bucket = "Critical- Act Now";
+  if (rawScore >= 75) bucket = "Track";
+  if (rawScore >= 85) bucket = "High – Attend";
+  if (rawScore >= 90) bucket = "Critical – Act Now";
 
-  const riskText = `Custom Risk Score: ${(riskDecimal) – ${bucket} Risk`;
-
+  const riskText = `Custom Risk Score: ${riskDecimal.toFixed(2)} – ${bucket} Risk`;
   document.getElementById("riskResult").innerText = riskText;
 
-  // Get CVSS base score
+  // Get CVSS base score from calculateBase div
+  const baseText = document.getElementById("calculateBase").innerText;
   let cvss = 0;
-  const fetchStatus = document.getElementById("fetch-status").innerText;
-  const match = fetchStatus.match(/CVSS Base Score: ([0-9.]+)/);
+  const match = baseText.match(/CVSS Base Score: ([0-9.]+)/);
   if (match) {
     cvss = parseFloat(match[1]);
   }
 
-  // Combine CVSS and Custom Risk Score
   const combinedScore = (cvss * riskDecimal).toFixed(2);
 
   let combinedBucket = "Informational";
   if (combinedScore >= 6) combinedBucket = "Track";
-  else if (combinedScore >= 7) combinedBucket = "High- Attend";
-  else if (combinedScore >= 9) combinedBucket = "Critical- Act Now";
+  if (combinedScore >= 7) combinedBucket = "High – Attend";
+  if (combinedScore >= 9) combinedBucket = "Critical – Act Now";
 
   document.getElementById("combinedResult").innerText =
     `Combined Score: ${combinedScore} – ${combinedBucket} Action Bucket`;
 }
 </script>
-<!--<div class="section">
-<h3>Action Bucket Legend</h3>
-<ul>
-<li><strong>Track:</strong> Combined score 20–39</li>
-<li><strong>Attend:</strong> Combined score 40–59</li>
-<li><strong>Act:</strong> Combined score 60+</li>
-</ul>
-</div>
 
-<div class="section">
-  <h3>Action Bucket Legend</h3>
-  <ul>
-    <li><strong>Track:</strong> Combined score 2–4</li>
-    <li><strong>Attend:</strong> Combined score 5–7</li>
-    <li><strong>Act:</strong> Combined score 8–10</li>
-  </ul>
-</div>
-
-
-<div class="section">
-  <h3>Action Bucket Legend</h3>
-  <ul>
-    <li><strong>Track:</strong> Combined score 2–4</li>
-    <li><strong>Attend:</strong> Combined score 5–7</li>
-    <li><strong>Act:</strong> Combined score 8–10</li>
-  </ul>
-</div>
--->
 </body>
 </html>
