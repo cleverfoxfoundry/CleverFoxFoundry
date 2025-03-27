@@ -1,253 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CVSS v4.0 Contextual Calculator (Corrected)</title>
+  <meta charset="UTF-8" />
+  <title>CVSS v4.0 Contextual Calculator</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
     h2 { color: #2c3e50; }
     .section {
       background: #fff; padding: 20px; margin-bottom: 20px;
       border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      border-bottom: 2px solid #8e44ad;
+      border-left: 5px solid #8e44ad;
     }
-    label { font-weight: bold; display: block; margin-top: 10px; }
-    select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
+    label { font-weight: bold; display: block; margin-top: 12px; }
+    select, input[type=text] {
+      width: 100%; padding: 6px; margin-top: 5px; font-size: 16px;
+    }
     button {
       margin-top: 20px; padding: 10px 20px;
       font-size: 16px; background: #8e44ad; color: white;
       border: none; border-radius: 5px; cursor: pointer;
     }
-    .result { margin-top: 20px; font-size: 18px; font-weight: bold; white-space: pre-wrap; }
+    .result { margin-top: 20px; font-size: 16px; white-space: pre-wrap; }
     .tooltip {
-      display: inline-block; margin-left: 5px;
-      cursor: help; color: #8e44ad; font-weight: normal;
+      display: inline-block; margin-left: 5px; cursor: help;
+      color: #8e44ad; font-size: 14px;
     }
     .tooltip:hover::after {
-      content: attr(data-tooltip); background: #333; color: #fff;
-      padding: 6px 10px; position: absolute; z-index: 100;
-      font-size: 13px; border-radius: 4px;
-      max-width: 250px; white-space: pre-wrap;
+      content: attr(data-tooltip);
+      position: absolute; background: #333; color: #fff;
+      padding: 6px 10px; border-radius: 5px; font-size: 13px;
+      white-space: pre-wrap; z-index: 1000;
     }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <h2>CVSS v4.0 Contextual Calculator</h2>
-  <p>This version uses official weights and formulas from CVSS v4.0 by FIRST.org, SVCC, and CISA.</p>
+<h2>CVSS v4.0 Full Contextual Calculator</h2>
 
-  <div class="section">
-    <h3>Base Metrics</h3>
+<div class="section">
+  <label>Enter CVE(s)</label>
+  <input id="cveInput" type="text" placeholder="e.g. CVE-2023-12345,CVE-2023-23456" />
+  <button onclick="fetchCVEs()">Fetch CVE Data</button>
+  <div id="cveError" class="result" style="color:red;"></div>
+</div>
 
-    <label>Attack Vector (AV)</label>
-    <select id="av">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.85">Network (0.85)</option>
-      <option value="0.62">Adjacent (0.62)</option>
-      <option value="0.55">Local (0.55)</option>
-      <option value="0.2">Physical (0.20)</option>
-    </select>
-
-    <label>Attack Complexity (AC)</label>
-    <select id="ac">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.77">Low (0.77)</option>
-      <option value="0.44">High (0.44)</option>
-    </select>
-
-    <label>Privileges Required (PR)</label>
-    <select id="pr">
-      <option value="">No Selection (0.0)</option>
-      <option value="N">None (0.85)</option>
-      <option value="L">Low (0.62/0.68)</option>
-      <option value="H">High (0.27/0.50)</option>
-    </select>
-
-    <label>Scope</label>
-    <select id="scope">
-      <option value="">No Selection</option>
-      <option value="U">Unchanged</option>
-      <option value="C">Changed</option>
-    </select>
-
-    <label>User Interaction (UI)</label>
-    <select id="ui">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.85">None (0.85)</option>
-      <option value="0.62">Required (0.62)</option>
-    </select>
-
-    <label>Confidentiality (C)</label>
-    <select id="c">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.56">High (0.56)</option>
-      <option value="0.22">Low (0.22)</option>
-      <option value="0.0">None (0.00)</option>
-    </select>
-
-    <label>Integrity (I)</label>
-    <select id="i">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.56">High (0.56)</option>
-      <option value="0.22">Low (0.22)</option>
-      <option value="0.0">None (0.00)</option>
-    </select>
-
-    <label>Availability (A)</label>
-    <select id="a">
-      <option value="">No Selection (0.0)</option>
-      <option value="0.56">High (0.56)</option>
-      <option value="0.22">Low (0.22)</option>
-      <option value="0.0">None (0.00)</option>
-    </select>
-  </div>
-
-  <div class="section">
-    <h3>Threat Metrics</h3>
-
-    <label>Exploit Maturity (E)</label>
-    <select id="e">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="1.0">Attacked (1.0)</option>
-      <option value="0.95">Proof-of-Concept (0.95)</option>
-      <option value="0.9">Unreported (0.90)</option>
-      <option value="0.85">Unconfirmed (0.85)</option>
-    </select>
-
-    <label>Remediation Level (RL)</label>
-    <select id="rl">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="0.95">Official Fix (0.95)</option>
-      <option value="0.9">Temporary Fix (0.90)</option>
-      <option value="0.87">Workaround (0.87)</option>
-      <option value="0.85">Unavailable (0.85)</option>
-    </select>
-
-    <label>Report Confidence (RC)</label>
-    <select id="rc">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="1.0">Confirmed (1.0)</option>
-      <option value="0.96">Reasonable (0.96)</option>
-      <option value="0.92">Unknown (0.92)</option>
-    </select>
-  </div>
-
-  <div class="section">
-    <h3>Environmental Metrics</h3>
-
-    <label>Confidentiality Requirement (CR)</label>
-    <select id="cr">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="0.5">Low (0.5)</option>
-      <option value="1.0">Medium (1.0)</option>
-      <option value="1.5">High (1.5)</option>
-    </select>
-
-    <label>Integrity Requirement (IR)</label>
-    <select id="ir">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="0.5">Low (0.5)</option>
-      <option value="1.0">Medium (1.0)</option>
-      <option value="1.5">High (1.5)</option>
-    </select>
-
-    <label>Availability Requirement (AR)</label>
-    <select id="ar">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="0.5">Low (0.5)</option>
-      <option value="1.0">Medium (1.0)</option>
-      <option value="1.5">High (1.5)</option>
-    </select>
-  </div>
-
-  <div class="section">
-    <h3>Supplemental Metrics</h3>
-
-    <label>Safety (S)</label>
-    <select id="safety">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="1.0">None (1.0)</option>
-      <option value="1.25">Moderate (1.25)</option>
-      <option value="1.5">Critical (1.5)</option>
-    </select>
-
-    <label>Automation (AU)</label>
-    <select id="automation">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="1.0">Manual (1.0)</option>
-      <option value="1.25">Partially Automated (1.25)</option>
-      <option value="1.5">Fully Automated (1.5)</option>
-    </select>
-
-    <label>Recovery (R)</label>
-    <select id="recovery">
-      <option value="1.0">No Selection (1.0)</option>
-      <option value="1.0">Easily Recoverable (1.0)</option>
-      <option value="1.25">Recoverable with Effort (1.25)</option>
-      <option value="1.5">Not Recoverable (1.5)</option>
-    </select>
-  </div>
-
-  <button onclick="calculateCVSS()">Calculate Score</button>
-  <div class="result" id="cvssResult"></div>
-
-<script>
-function getNum(id) {
-  const val = document.getElementById(id).value;
-  return val === "" ? null : parseFloat(val);
-}
-
-function calculateCVSS() {
-  const av = getNum("av");
-  const ac = getNum("ac");
-  const ui = getNum("ui");
-  const scope = document.getElementById("scope").value;
-  const prStr = document.getElementById("pr").value;
-  const pr = scope === "C"
-    ? prStr === "L" ? 0.68 : prStr === "H" ? 0.50 : 0.85
-    : prStr === "L" ? 0.62 : prStr === "H" ? 0.27 : 0.85;
-
-  const c = getNum("c") ?? 0.0;
-  const i = getNum("i") ?? 0.0;
-  const a = getNum("a") ?? 0.0;
-
-  const cr = getNum("cr") ?? 1.0;
-  const ir = getNum("ir") ?? 1.0;
-  const ar = getNum("ar") ?? 1.0;
-
-  const em = getNum("e") ?? 1.0;
-  const rl = getNum("rl") ?? 1.0;
-  const rc = getNum("rc") ?? 1.0;
-
-  const safety = getNum("safety") ?? 1.0;
-  const auto = getNum("automation") ?? 1.0;
-  const rec = getNum("recovery") ?? 1.0;
-
-  if (!av || !ac || !ui || !prStr || !scope || !prStr) {
-    document.getElementById("cvssResult").innerText =
-      "Please select all required base metrics.";
-    return;
-  }
-
-  const iss = 1 - ((1 - c * cr) * (1 - i * ir) * (1 - a * ar));
-  const impact = scope === "C"
-    ? 7.52 * (iss - 0.029) - 3.25 * Math.pow((iss - 0.02), 15)
-    : 6.42 * iss;
-
-  const exploitability = 8.22 * av * ac * pr * ui;
-  let baseScore = impact <= 0 ? 0
-    : (scope === "C"
-        ? Math.min(1.08 * (impact + exploitability), 10)
-        : Math.min(impact + exploitability, 10));
-
-  const modified = baseScore * em * rl * rc * safety * auto * rec;
-  const finalScore = Math.min(modified, 10).toFixed(1);
-
-  document.getElementById("cvssResult").innerText =
-    `Base Score: ${baseScore.toFixed(2)}
-Modifiers: E×RL×RC×S×AU×R = ${em}×${rl}×${rc}×${safety}×${auto}×${rec}
-Adjusted CVSS Score: ${finalScore}`;
-}
-</script>
-</body>
-</html>
-
+<div id="cveResults"></div>
+<div id="calculatorSections" class="hidden"></div>
