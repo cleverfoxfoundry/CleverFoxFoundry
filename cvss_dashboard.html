@@ -1,1 +1,205 @@
-<!-- Final HTML with integrated contextual modifiers will be inserted in the next assistant message. -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CVSS v4.0 Contextual Calculator</title>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h2 { color: #2c3e50; }
+    .section {
+      background: #fff; padding: 20px; margin-bottom: 20px;
+      border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-bottom: 2px solid #8e44ad;
+    }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    select, input[type=text] { width: 100%; padding: 6px; margin-top: 5px; }
+    button {
+      margin-top: 20px; padding: 10px 20px;
+      font-size: 16px; background: #8e44ad; color: white;
+      border: none; border-radius: 5px; cursor: pointer;
+    }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    .tooltip {
+      display: inline-block; margin-left: 5px;
+      cursor: help; color: #8e44ad; font-weight: normal;
+    }
+    .tooltip:hover::after {
+      content: attr(data-tooltip); background: #333; color: #fff;
+      padding: 6px 10px; position: absolute; z-index: 100;
+      font-size: 13px; border-radius: 4px;
+      max-width: 250px; white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h2>CVSS v4.0 Contextual Calculator</h2>
+
+  <div class="section">
+    <h3>Base Metrics</h3>
+    <label>Attack Vector (AV)</label>
+    <select id="av">
+      <option value="0.85">Network</option>
+      <option value="0.62">Adjacent</option>
+      <option value="0.55">Local</option>
+      <option value="0.2">Physical</option>
+    </select>
+
+    <label>Attack Complexity (AC)</label>
+    <select id="ac">
+      <option value="0.77">Low</option>
+      <option value="0.44">High</option>
+    </select>
+
+    <label>Privileges Required (PR)</label>
+    <select id="pr">
+      <option value="N">None</option>
+      <option value="L">Low</option>
+      <option value="H">High</option>
+    </select>
+
+    <label>Scope</label>
+    <select id="scope">
+      <option value="U">Unchanged</option>
+      <option value="C">Changed</option>
+    </select>
+
+    <label>User Interaction (UI)</label>
+    <select id="ui">
+      <option value="0.85">None</option>
+      <option value="0.62">Required</option>
+    </select>
+
+    <label>Confidentiality (C)</label>
+    <select id="c">
+      <option value="0.56">High</option>
+      <option value="0.22">Low</option>
+      <option value="0.0">None</option>
+    </select>
+
+    <label>Integrity (I)</label>
+    <select id="i">
+      <option value="0.56">High</option>
+      <option value="0.22">Low</option>
+      <option value="0.0">None</option>
+    </select>
+
+    <label>Availability (A)</label>
+    <select id="a">
+      <option value="0.56">High</option>
+      <option value="0.22">Low</option>
+      <option value="0.0">None</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <h3>Threat Metrics</h3>
+    <label>Exploit Maturity</label>
+    <select id="threat">
+      <option value="1.0">Not Defined</option>
+      <option value="0.85">Unconfirmed</option>
+      <option value="0.9">Unreported</option>
+      <option value="0.95">Proof-of-Concept</option>
+      <option value="1.0">Attacked</option>
+    </select>
+
+    <label>Remediation Level</label>
+    <select id="remediation">
+      <option value="1.0">Not Defined</option>
+      <option value="0.85">Unavailable</option>
+      <option value="0.87">Workaround</option>
+      <option value="0.9">Temporary Fix</option>
+      <option value="0.95">Official Fix</option>
+    </select>
+
+    <label>Report Confidence</label>
+    <select id="confidence">
+      <option value="1.0">Not Defined</option>
+      <option value="0.92">Unknown</option>
+      <option value="0.96">Reasonable</option>
+      <option value="1.0">Confirmed</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <h3>Environmental Metrics</h3>
+    <label>Confidentiality Requirement</label>
+    <select id="cr">
+      <option value="1.0">Not Defined</option>
+      <option value="0.5">Low</option>
+      <option value="1.0">Medium</option>
+      <option value="1.5">High</option>
+    </select>
+
+    <label>Integrity Requirement</label>
+    <select id="ir">
+      <option value="1.0">Not Defined</option>
+      <option value="0.5">Low</option>
+      <option value="1.0">Medium</option>
+      <option value="1.5">High</option>
+    </select>
+
+    <label>Availability Requirement</label>
+    <select id="ar">
+      <option value="1.0">Not Defined</option>
+      <option value="0.5">Low</option>
+      <option value="1.0">Medium</option>
+      <option value="1.5">High</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <h3>Supplemental Metrics</h3>
+    <label>Safety</label>
+    <select id="safety">
+      <option value="1.0">Not Defined</option>
+      <option value="1.0">None</option>
+      <option value="1.25">Moderate</option>
+      <option value="1.5">Critical</option>
+    </select>
+
+    <label>Automation</label>
+    <select id="automation">
+      <option value="1.0">Not Defined</option>
+      <option value="1.0">Manual</option>
+      <option value="1.25">Partial</option>
+      <option value="1.5">Fully</option>
+    </select>
+
+    <label>Recovery</label>
+    <select id="recovery">
+      <option value="1.0">Not Defined</option>
+      <option value="1.0">Easy</option>
+      <option value="1.25">Moderate</option>
+      <option value="1.5">Not Recoverable</option>
+    </select>
+  </div>
+
+  <button onclick="calculate()">Calculate CVSS Score</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculate() {
+      const getVal = id => parseFloat(document.getElementById(id).value);
+      const scope = document.getElementById("scope").value;
+      const pr = document.getElementById("pr").value;
+      const prVal = scope === "U" ? (pr === "L" ? 0.62 : pr === "H" ? 0.27 : 0.85)
+                                  : (pr === "L" ? 0.68 : pr === "H" ? 0.5 : 0.85);
+
+      const impact = 1 - ((1 - getVal("c") * getVal("cr")) * (1 - getVal("i") * getVal("ir")) * (1 - getVal("a") * getVal("ar")));
+      const iss = scope === "U"
+        ? 6.42 * impact
+        : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+      const exploitability = 8.22 * getVal("av") * getVal("ac") * prVal * getVal("ui");
+
+      let baseScore = impact <= 0 ? 0 : (scope === "U" ? Math.min(iss + exploitability, 10) : Math.min(1.08 * (iss + exploitability), 10));
+
+      // Apply contextual weights
+      const threatMods = getVal("threat") * getVal("remediation") * getVal("confidence");
+      const suppMods = getVal("safety") * getVal("automation") * getVal("recovery");
+
+      const finalScore = Math.min((baseScore * threatMods * suppMods), 10).toFixed(1);
+      document.getElementById("result").innerText = `Final Contextual CVSS Score: ${finalScore}`;
+    }
+  </script>
+</body>
+</html>
