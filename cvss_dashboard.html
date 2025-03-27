@@ -117,6 +117,9 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +134,7 @@
     <div id="cve-metadata"></div>
 </div>
 
-<div id="calculator-section" class="section">
+<div id="calculator-section" class="section hidden">
     <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
     <h3>Base Metrics</h3>
     <hr style="border-top: 2px solid #8e44ad;">
@@ -286,11 +289,10 @@
 
     <button onclick="calculateBaseScore()">Calculate CVSS</button>
     <div id="calculateBase" class="result"></div>
-    <div id="calculationDetails" class="calculation-details" style="display: none;"></div>
+    <div id="calculationDetails" class="calculation-details"></div>
 </div>
 
-<h2>Custom Risk Calculator</h2>
-<div class="section">
+<div id="risk-calculator-section" class="section hidden">
     <h3>Risk Impact Factors</h3>
     
     <label>
@@ -340,20 +342,19 @@
         <option value="50">High (+50)</option>
     </select>
 
-    <div class="result" id="riskFormula"></div>
+    <div class="result" id="riskFormula">Risk Score calculation will show here.</div>
     <button onclick="calculateRisk()">Calculate Risk Score</button>
     <div id="riskResult" class="result"></div>
-    <div id="riskCalculationDetails" class="calculation-details" style="display: none;"></div>
 </div>
 
-<div class="section">
+<div id="combined-section" class="section hidden">
     <h3>Combined Dashboard</h3>
     <p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
     <button onclick="calculateCombined()">Calculate Action</button>
     <div id="combinedResult" class="result"></div>
 </div>
 
-<div class="section">
+<div id="export-section" class="section hidden">
     <h3>Export Results</h3>
     <button onclick="exportToCSV()">Export to CSV</button>
 </div>
@@ -361,7 +362,9 @@
 <script>
 // Global variables to store CVE data and results
 let cveData = [];
-let resultsData = [];
+let baseScore = 0;
+let riskScore = 0;
+let combinedScore = 0;
 
 // Function to fetch CVE data from NVD API
 async function fetchCVE() {
@@ -378,7 +381,6 @@ async function fetchCVE() {
     // Clear previous data
     metadataSection.innerHTML = "";
     cveData = [];
-    resultsData = [];
     document.getElementById("fetch-status").innerText = "Fetching data...";
     
     let fetchSuccessful = false;
@@ -412,13 +414,12 @@ async function fetchCVE() {
                 
                 // Create metadata display
                 const metadataHtml = `
-                    <div class="cve-item" id="cve-${cveItem.id.replace(/[-:]/g, '')}">
+                    <div class="cve-item">
                         <h4>${cveItem.id}</h4>
                         <p><strong>Description:</strong> ${cveItem.description}</p>
                         <p><strong>Published Date:</strong> ${cveItem.published}</p>
                         <p><strong>Source:</strong> NVD</p>
                         ${cveItem.metrics ? `<p><strong>Severity:</strong> ${getCVSSScore(cveItem.metrics)}</p>` : ''}
-                        <div class="cve-results"></div>
                     </div>
                 `;
                 
@@ -451,12 +452,15 @@ async function fetchCVE() {
     
     // Show or hide calculator based on number of CVEs
     const calculatorSection = document.getElementById("calculator-section");
+    const riskCalculatorSection = document.getElementById("risk-calculator-section");
+    const combinedSection = document.getElementById("combined-section");
+    const exportSection = document.getElementById("export-section");
     
-    if (cveIds.length > 1) {
-        calculatorSection.style.display = "none";
-    } else {
-        calculatorSection.style.display = "block";
-    }
+    // Always show these sections after fetch
+    calculatorSection.classList.remove("hidden");
+    riskCalculatorSection.classList.remove("hidden");
+    combinedSection.classList.remove("hidden");
+    exportSection.classList.remove("hidden");
     
     document.getElementById("fetch-status").innerText = fetchSuccessful ? 
         "Data retrieved successfully." : 
@@ -704,7 +708,7 @@ function calculateBaseScore() {
     const supplemental_factor = Math.max(safety_factor, automation_factor, recovery_factor);
     
     // Base Score Calculation
-    let baseScore = 0;
+    baseScore = 0;
     if (impact <= 0) {
         baseScore = 0;
     } else {
@@ -717,8 +721,4 @@ function calculateBaseScore() {
     baseScore = Math.min(baseScore * supplemental_factor, 10);
 
     // Round to 1 decimal place
-    baseScore = Math.round(baseScore * 10) / 10;
-    
-    // Determine severity
-    let severity = "None";
-    if (baseScore >= 9.
+    baseScore = Math.round(baseScore * 10) / 10
