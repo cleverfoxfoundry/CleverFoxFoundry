@@ -99,30 +99,12 @@
             margin-top: 10px;
             color: #e74c3c;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .hidden {
-            display: none;
-        }
         .error {
             color: #e74c3c;
             font-weight: bold;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -130,7 +112,7 @@
 <h2>CVSS v4.0 Contextual Calculator</h2>
 
 <div class="section">
-    <label for="cve">Enter CVE IDs (comma-separated, e.g., CVE-2023-12345,CVE-2023-12346):</label>
+    <label for="cve">Enter CVE IDs (optional):</label>
     <input id="cve" placeholder="CVE-ID or multiple CVEs separated by commas" type="text"/>
     <button onclick="fetchCVE()">Fetch CVSS Data</button>
     <div id="fetch-status"></div>
@@ -346,7 +328,6 @@
         <option value="50">High (+50)</option>
     </select>
 
-    <div class="result" id="riskFormula">Risk Score calculation will show here.</div>
     <button onclick="calculateRisk()">Calculate Risk Score</button>
     <div id="riskResult" class="result"></div>
 </div>
@@ -364,14 +345,12 @@
 </div>
 
 <script>
-// Global variables to store CVE data and results
-let cveData = [];
+// Global variables
 let baseScore = 0;
 let riskScore = 0;
-let combinedScore = 0;
 
-// Function to fetch CVE data from NVD API
-async function fetchCVE() {
+// Attempt to fetch CVE data (with fallback)
+function fetchCVE() {
     const cveInput = document.getElementById("cve").value.trim();
     
     if (!cveInput) {
@@ -379,346 +358,315 @@ async function fetchCVE() {
         return;
     }
     
-    const cveIds = cveInput.split(',').map(id => id.trim());
-    const metadataSection = document.getElementById("cve-metadata");
-    
-    // Clear previous data
-    metadataSection.innerHTML = "";
-    cveData = [];
-    document.getElementById("fetch-status").innerText = "Fetching data...";
-    
-    let fetchSuccessful = false;
-    
-    try {
-        for (const cveId of cveIds) {
-            try {
-                // Build URL for NVD API
-                const apiUrl = `https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${cveId}`;
-                
-                // Set a timeout for the fetch
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-                
-                const response = await fetch(apiUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.vulnerabilities && data.vulnerabilities.length > 0) {
-                    fetchSuccessful = true;
-                    const vuln = data.vulnerabilities[0].cve;
-                    
-                    // Extract CVE data
-                    const cveItem = {
-                        id: vuln.id,
-                        description: vuln.descriptions.find(d => d.lang === 'en')?.value || 'No description available',
-                        published: new Date(vuln.published).toLocaleDateString(),
-                        metrics: vuln.metrics?.cvssMetricV4 || vuln.metrics?.cvssMetricV31 || vuln.metrics?.cvssMetricV30,
-                        baseScore: 0,
-                        riskScore: 0,
-                        combinedScore: 0,
-                        actionBucket: ''
-                    };
-                    
-                    // Add to global data array
-                    cveData.push(cveItem);
-                    
-                    // Create metadata display
-                    const metadataHtml = `
-                        <div class="cve-item">
-                            <h4>${cveItem.id}</h4>
-                            <p><strong>Description:</strong> ${cveItem.description}</p>
-                            <p><strong>Published Date:</strong> ${cveItem.published}</p>
-                            <p><strong>Source:</strong> NVD</p>
-                            ${cveItem.metrics ? `<p><strong>Severity:</strong> ${getCVSSScore(cveItem.metrics)}</p>` : ''}
-                        </div>
-                    `;
-                    
-                    metadataSection.innerHTML += metadataHtml;
-                    
-                    // If there's CVSS data and it's a single CVE, populate the calculator
-                    if (cveIds.length === 1 && cveItem.metrics) {
-                        populateCalculator(cveItem.metrics);
-                    }
-                } else {
-                    metadataSection.innerHTML += `
-                        <div class="cve-item">
-                            <h4>${cveId}</h4>
-                            <p>Unable to retrieve vulnerability data.</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    metadataSection.innerHTML += `
-                        <div class="cve-item">
-                            <h4>${cveId}</h4>
-                            <p class="error">Request timed out. API may be unavailable.</p>
-                        </div>
-                    `;
-                } else {
-                    metadataSection.innerHTML += `
-                        <div class="cve-item">
-                            <h4>${cveId}</h4>
-                            <p class="error">Error fetching data: ${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-        }
-    } catch (error) {
-        document.getElementById("fetch-status").innerHTML = `<span class="error">Error in fetch operation: ${error.message}</span>`;
-    } finally {
-        // Show the metadata section if there's any content
-        if (metadataSection.innerHTML.trim() !== "") {
-            metadataSection.style.display = "block";
-        }
-        
-        document.getElementById("fetch-status").innerHTML = fetchSuccessful ? 
-            "Data retrieved successfully." : 
-            '<span class="error">Could not retrieve data for some or all CVEs. Calculator is still available below.</span>';
-    }
+    document.getElementById("fetch-status").innerHTML = "CVE fetch functionality is currently unavailable. Please use the calculator below.";
+    document.getElementById("cve-metadata").style.display = "none";
 }
 
-// Helper function to extract CVSS score
-function getCVSSScore(metrics) {
-    if (!metrics) return "Not available";
-    
-    // Try to get CVSS v4 score first, then fall back to v3.x
-    if (Array.isArray(metrics)) {
-        const v4Metric = metrics.find(m => m.type === 'Primary' || m.type === 'CVSS V4.0');
-        if (v4Metric && v4Metric.cvssData) {
-            return `${v4Metric.cvssData.baseScore} (${v4Metric.cvssData.baseSeverity})`;
-        }
-        
-        const v3Metric = metrics.find(m => m.type === 'Primary' || m.type.includes('V3'));
-        if (v3Metric && v3Metric.cvssData) {
-            return `${v3Metric.cvssData.baseScore} (${v3Metric.cvssData.baseSeverity})`;
-        }
-    }
-    
-    return "Score not available";
-}
-
-// Function to populate the calculator with values from NVD
-function populateCalculator(metrics) {
-    if (!metrics || !Array.isArray(metrics)) return;
-    
-    try {
-        // Try to find CVSS v4 data
-        const v4Metric = metrics.find(m => m.type === 'Primary' || m.type === 'CVSS V4.0');
-        const v3Metric = metrics.find(m => m.type === 'Primary' || m.type.includes('V3'));
-        const metric = v4Metric || v3Metric;
-        
-        if (metric && metric.cvssData) {
-            const cvssData = metric.cvssData;
-            
-            // Map and set values for each metric
-            // Attack Vector
-            if (cvssData.attackVector) {
-                const avMap = { 'NETWORK': 'N', 'ADJACENT_NETWORK': 'A', 'LOCAL': 'L', 'PHYSICAL': 'P' };
-                document.getElementById("av").value = avMap[cvssData.attackVector] || 'S';
-            }
-            
-            // Attack Complexity
-            if (cvssData.attackComplexity) {
-                const acMap = { 'LOW': 'L', 'HIGH': 'H' };
-                document.getElementById("ac").value = acMap[cvssData.attackComplexity] || 'S';
-            }
-            
-            // Privileges Required
-            if (cvssData.privilegesRequired) {
-                const prMap = { 'NONE': 'N', 'LOW': 'L', 'HIGH': 'H' };
-                document.getElementById("pr").value = prMap[cvssData.privilegesRequired] || 'S';
-            }
-            
-            // User Interaction
-            if (cvssData.userInteraction) {
-                const uiMap = { 'NONE': 'N', 'REQUIRED': 'R' };
-                document.getElementById("ui").value = uiMap[cvssData.userInteraction] || 'S';
-            }
-            
-            // Scope
-            if (cvssData.scope) {
-                const scopeMap = { 'UNCHANGED': 'U', 'CHANGED': 'C' };
-                document.getElementById("scope").value = scopeMap[cvssData.scope] || 'S';
-            }
-            
-            // Impact metrics
-            if (cvssData.confidentialityImpact) {
-                const impactMap = { 'HIGH': 'H', 'LOW': 'L', 'NONE': 'N' };
-                document.getElementById("c").value = impactMap[cvssData.confidentialityImpact] || 'S';
-                document.getElementById("i").value = impactMap[cvssData.integrityImpact] || 'S';
-                document.getElementById("a").value = impactMap[cvssData.availabilityImpact] || 'S';
-            }
-            
-            // Calculate the base score
-            calculateBaseScore();
-        }
-    } catch (error) {
-        console.error("Error populating calculator:", error);
-    }
-}
-
-// Detailed Base Score Calculation Function
+// Calculate the CVSS base score
 function calculateBaseScore() {
-    try {
-        // Get Base Metric Values
-        const av_val = document.getElementById("av").value;
-        const ac_val = document.getElementById("ac").value;
-        const pr_val = document.getElementById("pr").value;
-        const ui_val = document.getElementById("ui").value;
-        const scope_val = document.getElementById("scope").value;
-        const c_val = document.getElementById("c").value;
-        const i_val = document.getElementById("i").value;
-        const a_val = document.getElementById("a").value;
-        
-        // Get modifier values
-        const av = {
-            "S": 0.0,  // No Selection
-            "N": 0.85, // Network
-            "A": 0.62, // Adjacent
-            "L": 0.55, // Local
-            "P": 0.20  // Physical
-        }[av_val] || 0.0;
+    // Get Base Metric Values
+    const av_val = document.getElementById("av").value;
+    const ac_val = document.getElementById("ac").value;
+    const pr_val = document.getElementById("pr").value;
+    const ui_val = document.getElementById("ui").value;
+    const scope_val = document.getElementById("scope").value;
+    const c_val = document.getElementById("c").value;
+    const i_val = document.getElementById("i").value;
+    const a_val = document.getElementById("a").value;
+    
+    // Get modifier values
+    const av = {
+        "S": 0.0,  // No Selection
+        "N": 0.85, // Network
+        "A": 0.62, // Adjacent
+        "L": 0.55, // Local
+        "P": 0.20  // Physical
+    }[av_val] || 0.0;
 
-        const ac = {
-            "S": 0.0,  // No Selection
-            "L": 0.77, // Low
-            "H": 0.44  // High
-        }[ac_val] || 0.0;
+    const ac = {
+        "S": 0.0,  // No Selection
+        "L": 0.77, // Low
+        "H": 0.44  // High
+    }[ac_val] || 0.0;
 
-        // Privileges Required Calculation varies based on Scope
-        let pr = 0;
-        if (pr_val === "N") pr = 0.85;
-        else if (pr_val === "L") pr = scope_val === "U" ? 0.62 : 0.68;
-        else if (pr_val === "H") pr = scope_val === "U" ? 0.27 : 0.50;
+    // Privileges Required Calculation varies based on Scope
+    let pr = 0;
+    if (pr_val === "N") pr = 0.85;
+    else if (pr_val === "L") pr = scope_val === "U" ? 0.62 : 0.68;
+    else if (pr_val === "H") pr = scope_val === "U" ? 0.27 : 0.50;
 
-        const ui = {
-            "S": 0.0,  // No Selection
-            "N": 0.85, // None
-            "R": 0.62  // Required
-        }[ui_val] || 0.0;
+    const ui = {
+        "S": 0.0,  // No Selection
+        "N": 0.85, // None
+        "R": 0.62  // Required
+    }[ui_val] || 0.0;
 
-        const c = {
-            "S": 0.0,   // No Selection
-            "H": 0.56,  // High
-            "L": 0.22,  // Low
-            "N": 0.00   // None
-        }[c_val] || 0.0;
+    const c = {
+        "S": 0.0,   // No Selection
+        "H": 0.56,  // High
+        "L": 0.22,  // Low
+        "N": 0.00   // None
+    }[c_val] || 0.0;
 
-        const i = {
-            "S": 0.0,   // No Selection
-            "H": 0.56,  // High
-            "L": 0.22,  // Low
-            "N": 0.00   // None
-        }[i_val] || 0.0;
+    const i = {
+        "S": 0.0,   // No Selection
+        "H": 0.56,  // High
+        "L": 0.22,  // Low
+        "N": 0.00   // None
+    }[i_val] || 0.0;
 
-        const a = {
-            "S": 0.0,   // No Selection
-            "H": 0.56,  // High
-            "L": 0.22,  // Low
-            "N": 0.00   // None
-        }[a_val] || 0.0;
-        
-        // Get Threat Metric values (if selected)
-        const e_val = document.getElementById("exploit_maturity").value;
-        const rl_val = document.getElementById("remediation_level").value;
-        const rc_val = document.getElementById("report_confidence").value;
-        
-        // Get Environmental Metric values (if selected)
-        const cr_val = document.getElementById("cr").value;
-        const ir_val = document.getElementById("ir").value;
-        const ar_val = document.getElementById("ar").value;
-        
-        // Get Supplemental Metric values (if selected)
-        const safety_val = document.getElementById("safety").value;
-        const automation_val = document.getElementById("automation").value;
-        const recovery_val = document.getElementById("recovery").value;
-        
-        // Define the factors for threat metrics
-        const e_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "U": 1.0,  // Unreported
-            "P": 1.025, // Proof of Concept
-            "F": 1.05, // Functional
-            "H": 1.1   // High
-        }[e_val] || 1.0;
-        
-        const rl_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "O": 1.0,  // Official Fix
-            "T": 1.025, // Temporary Fix
-            "W": 1.05, // Workaround
-            "U": 1.1   // Unavailable
-        }[rl_val] || 1.0;
-        
-        const rc_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "U": 1.0,  // Unknown
-            "R": 1.025, // Reasonable
-            "C": 1.05  // Confirmed
-        }[rc_val] || 1.0;
-        
-        // Define the factors for environmental metrics
-        const cr_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "L": 0.9,  // Low
-            "M": 1.0,  // Medium (no change)
-            "H": 1.1   // High
-        }[cr_val] || 1.0;
-        
-        const ir_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "L": 0.9,  // Low
-            "M": 1.0,  // Medium (no change)
-            "H": 1.1   // High
-        }[ir_val] || 1.0;
-        
-        const ar_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "L": 0.9,  // Low
-            "M": 1.0,  // Medium (no change)
-            "H": 1.1   // High
-        }[ar_val] || 1.0;
-        
-        // Define the factors for supplemental metrics
-        const safety_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "N": 1.0,  // Negligible
-            "M": 1.1,  // Minor
-            "S": 1.2   // Significant
-        }[safety_val] || 1.0;
-        
-        const automation_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "N": 1.0,  // None
-            "P": 1.1,  // Partial
-            "C": 1.2   // Complete
-        }[automation_val] || 1.0;
-        
-        const recovery_factor = {
-            "S": 1.0,  // No Selection (no change)
-            "N": 1.0,  // None
-            "L": 1.1,  // Limited
-            "F": 1.2   // Full
-        }[recovery_val] || 1.0;
+    const a = {
+        "S": 0.0,   // No Selection
+        "H": 0.56,  // High
+        "L": 0.22,  // Low
+        "N": 0.00   // None
+    }[a_val] || 0.0;
+    
+    // Get Threat Metric values (if selected)
+    const e_val = document.getElementById("exploit_maturity").value;
+    const rl_val = document.getElementById("remediation_level").value;
+    const rc_val = document.getElementById("report_confidence").value;
+    
+    // Get Environmental Metric values (if selected)
+    const cr_val = document.getElementById("cr").value;
+    const ir_val = document.getElementById("ir").value;
+    const ar_val = document.getElementById("ar").value;
+    
+    // Get Supplemental Metric values (if selected)
+    const safety_val = document.getElementById("safety").value;
+    const automation_val = document.getElementById("automation").value;
+    const recovery_val = document.getElementById("recovery").value;
+    
+    // Define the factors for threat metrics
+    const e_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "U": 1.0,  // Unreported
+        "P": 1.025, // Proof of Concept
+        "F": 1.05, // Functional
+        "H": 1.1   // High
+    }[e_val] || 1.0;
+    
+    const rl_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "O": 1.0,  // Official Fix
+        "T": 1.025, // Temporary Fix
+        "W": 1.05, // Workaround
+        "U": 1.1   // Unavailable
+    }[rl_val] || 1.0;
+    
+    const rc_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "U": 1.0,  // Unknown
+        "R": 1.025, // Reasonable
+        "C": 1.05  // Confirmed
+    }[rc_val] || 1.0;
+    
+    // Define the factors for environmental metrics
+    const cr_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "L": 0.9,  // Low
+        "M": 1.0,  // Medium (no change)
+        "H": 1.1   // High
+    }[cr_val] || 1.0;
+    
+    const ir_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "L": 0.9,  // Low
+        "M": 1.0,  // Medium (no change)
+        "H": 1.1   // High
+    }[ir_val] || 1.0;
+    
+    const ar_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "L": 0.9,  // Low
+        "M": 1.0,  // Medium (no change)
+        "H": 1.1   // High
+    }[ar_val] || 1.0;
+    
+    // Define the factors for supplemental metrics
+    const safety_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "N": 1.0,  // Negligible
+        "M": 1.1,  // Minor
+        "S": 1.2   // Significant
+    }[safety_val] || 1.0;
+    
+    const automation_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "N": 1.0,  // None
+        "P": 1.1,  // Partial
+        "C": 1.2   // Complete
+    }[automation_val] || 1.0;
+    
+    const recovery_factor = {
+        "S": 1.0,  // No Selection (no change)
+        "N": 1.0,  // None
+        "L": 1.1,  // Limited
+        "F": 1.2   // Full
+    }[recovery_val] || 1.0;
 
-        // Impact Calculation - adjusted for requirement factors
-        const adjusted_c = Math.min(c * cr_factor, 0.56);
-        const adjusted_i = Math.min(i * ir_factor, 0.56);
-        const adjusted_a = Math.min(a * ar_factor, 0.56);
-        
-        const impact = 1 - ((1 - adjusted_c) * (1 - adjusted_i) * (1 - adjusted_a));
-        
-        // Calculate impact subscore based on scope
-        const impactSubScore = scope_val === "U" 
+    // Impact Calculation - adjusted for requirement factors
+    const adjusted_c = Math.min(c * cr_factor, 0.56);
+    const adjusted_i = Math.min(i * ir_factor, 0.56);
+    const adjusted_a = Math.min(a * ar_factor, 0.56);
+    
+    const impact = 1 - ((1 - adjusted_c) * (1 - adjusted_i) * (1 - adjusted_a));
+    
+    // Calculate impact subscore based on scope
+    let impactSubScore = 0;
+    if (impact > 0) {
+        impactSubScore = scope_val === "U" 
             ? 6.42 * impact 
             : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+    }
 
-        // Exploitability Calculation adjusted by threat metrics
-        let exploitability = 8.22 * av * ac * pr *
+    // Exploitability Calculation
+    let exploitability = 8.22 * av * ac * pr * ui;
+    
+    // Apply threat metric modifiers
+    exploitability = exploitability * e_factor * rl_factor * rc_factor;
+    
+    // Apply supplemental metrics
+    const supplemental_factor = Math.max(safety_factor, automation_factor, recovery_factor);
+    
+    // Base Score Calculation
+    baseScore = 0;
+    if (impact <= 0) {
+        baseScore = 0;
+    } else {
+        baseScore = scope_val === "U"
+            ? Math.min(impactSubScore + exploitability, 10)
+            : Math.min(1.08 * (impactSubScore + exploitability), 10);
+    }
+    
+    // Apply supplemental metrics modifier
+    baseScore = Math.min(baseScore * supplemental_factor, 10);
+
+    // Round to 1 decimal place
+    baseScore = Math.round(baseScore * 10) / 10;
+    
+    // Determine severity
+    let severity = "None";
+    if (baseScore >= 9.0) severity = "Critical";
+    else if (baseScore >= 7.0) severity = "High";
+    else if (baseScore >= 4.0) severity = "Medium";
+    else if (baseScore > 0.0) severity = "Low";
+    
+    // Display results
+    document.getElementById("calculateBase").innerHTML = `CVSS Base Score: ${baseScore.toFixed(1)} (${severity})`;
+    
+    // Show calculation details
+    const calculationDetails = `
+        <h4>CVSS Score Calculation Details</h4>
+        <ul>
+            <li><strong>Attack Vector:</strong> ${av}</li>
+            <li><strong>Attack Complexity:</strong> ${ac}</li>
+            <li><strong>Privileges Required:</strong> ${pr}</li>
+            <li><strong>User Interaction:</strong> ${ui}</li>
+            <li><strong>Impact Subscore:</strong> ${impactSubScore.toFixed(2)}</li>
+            <li><strong>Exploitability Subscore:</strong> ${exploitability.toFixed(2)}</li>
+            <li><strong>Final Base Score:</strong> ${baseScore.toFixed(1)}</li>
+        </ul>
+    `;
+    
+    document.getElementById("calculationDetails").innerHTML = calculationDetails;
+    document.getElementById("calculationDetails").style.display = "block";
+}
+
+// Calculate the Risk Score
+function calculateRisk() {
+    const internet = parseFloat(document.getElementById("internet").value);
+    const devices = parseFloat(document.getElementById("devices").value);
+    const exploit = parseFloat(document.getElementById("exploit").value);
+    const criticality = parseFloat(document.getElementById("criticality").value);
+
+    const rawScore = internet + devices + exploit + criticality;
+    riskScore = rawScore / 100;
+
+    let bucket = "Informational";
+    if (riskScore >= 0.9) bucket = "Critical - Act Now";
+    else if (riskScore >= 0.7) bucket = "High - Attend";
+    else if (riskScore >= 0.5) bucket = "Track";
+
+    const riskText = `Custom Risk Score: ${riskScore.toFixed(2)} (${bucket})`;
+    document.getElementById("riskResult").innerHTML = riskText;
+}
+
+// Calculate the Combined Score
+function calculateCombined() {
+    // Calculate base score and risk score if they haven't been calculated yet
+    if (baseScore === 0) {
+        calculateBaseScore();
+    }
+    
+    if (riskScore === 0) {
+        calculateRisk();
+    }
+    
+    // Calculate combined score
+    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(2);
+    
+    // Determine bucket
+    let combinedBucket = "Informational";
+    if (combinedScore >= 9) combinedBucket = "Critical - Act Now";
+    else if (combinedScore >= 7) combinedBucket = "High - Attend";
+    else if (combinedScore >= 5) combinedBucket = "Track";
+    
+    document.getElementById("combinedResult").innerHTML = 
+        `Combined Score: ${combinedScore} (${combinedBucket})`;
+}
+
+// Export to CSV
+function exportToCSV() {
+    // Calculate scores if they haven't been calculated yet
+    if (baseScore === 0) {
+        calculateBaseScore();
+    }
+    
+    if (riskScore === 0) {
+        calculateRisk();
+    }
+    
+    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(2);
+    
+    // Determine buckets
+    let baseBucket = "Informational";
+    if (baseScore >= 9) baseBucket = "Critical";
+    else if (baseScore >= 7) baseBucket = "High";
+    else if (baseScore >= 5) baseBucket = "Medium";
+    else if (baseScore > 0) baseBucket = "Low";
+    
+    let riskBucket = "Informational";
+    if (riskScore >= 0.9) riskBucket = "Critical";
+    else if (riskScore >= 0.7) riskBucket = "High";
+    else if (riskScore >= 0.5) riskBucket = "Medium";
+    
+    let combinedBucket = "Informational";
+    if (combinedScore >= 9) combinedBucket = "Critical - Act Now";
+    else if (combinedScore >= 7) combinedBucket = "High - Attend";
+    else if (combinedScore >= 5) combinedBucket = "Track";
+    
+    // Create CSV content
+    const csv = [
+        ['CVE ID', 'Base Score', 'Base Bucket', 'Risk Score', 'Risk Bucket', 'Combined Score', 'Action'],
+        ['Custom Assessment', baseScore.toFixed(1), baseBucket, riskScore.toFixed(2), riskBucket, combinedScore, combinedBucket]
+    ];
+    
+    // Convert CSV array to string
+    const csvContent = csv.map(row => row.join(',')).join('\n');
+    
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    
+    link.setAttribute("href", url);
+    link.setAttribute("download", "cvss_assessment_" + new Date().toISOString().slice(0, 10) + ".csv");
+    document.body.appendChild(link);
+    
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+</body>
+</html>
