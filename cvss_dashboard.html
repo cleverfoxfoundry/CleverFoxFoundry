@@ -271,7 +271,7 @@
 
 <div id="combined-section" class="section">
     <h3>Combined Dashboard</h3>
-    <p>This calculates the average of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
+    <p>This calculates the sum of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
     <button onclick="calculateCombined()">Calculate Action</button>
     <div id="combinedResult" class="result"></div>
 </div>
@@ -521,7 +521,7 @@ function calculateCombined() {
         calculateRisk();
     }
     
-    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(1);
+    const combinedScore = ((baseScore + (riskScore/100)) / 2).toFixed(1);
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical - Act Now";
@@ -547,7 +547,7 @@ function exportToCSV() {
         calculateRisk();
     }
     
-    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(1);
+    const combinedScore = (baseScore + (riskScore/100)).toFixed(1);
     
     // Create CSV header
     let csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
