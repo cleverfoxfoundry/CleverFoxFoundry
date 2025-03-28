@@ -361,6 +361,7 @@ function calculateBaseScore() {
     }[a_val];
     
     // Calculate Impact subscore
+    // https://www.first.org/cvss/v3-1/specification-document
     const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
     
     let impactSubScore;
@@ -468,7 +469,8 @@ function calculateTemporalScore() {
     else severity = "Critical";
     
     // Display results
-    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: ${temporalScore.toFixed(1)} (${severity})`;
+    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: ${temporalScore.toFixed(1)} (${severity}) (credit: https://www.first.org/cvss/v3-1/specification-document)`;
+
     
     // Update calculation details
     const currentDetails = document.getElementById("calculationDetails").innerHTML;
@@ -499,11 +501,11 @@ function calculateRisk() {
     riskScore = rawScore / 100;
 
     let bucket = "Informational";
-    if (riskScore >= 0.9) bucket = "Critical - Act Now";
-    else if (riskScore >= 0.7) bucket = "High - Attend";
-    else if (riskScore >= 0.5) bucket = "Track";
+    if (riskScore >= 1) bucket = "Critical";
+    else if (riskScore >= 0.5) bucket = "High";
+    else if (riskScore < 0.5) bucket = "Track";
 
-    const riskText = `Custom Risk Score: ${riskScore.toFixed(2)} (${bucket})`;
+    const riskText = `Custom Risk Score: (${bucket})`;
     document.getElementById("riskResult").innerHTML = riskText;
     
     return riskScore;
@@ -521,15 +523,15 @@ function calculateCombined() {
         calculateRisk();
     }
     
-    const combinedScore = ((baseScore + (riskScore/100)) / 2).toFixed(1);
+    const combinedScore = ((baseScore + (riskScore)).toFixed(1);
     
     let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical - Act Now";
-    else if (combinedScore >= 7.0) actionBucket = "High - Attend";
-    else if (combinedScore >= 5.0) actionBucket = "Track";
+    if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
+    else if (combinedScore >= 7.0) actionBucket = "Regularly Scheduled Patching";
+    else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
     
     document.getElementById("combinedResult").innerHTML = 
-        `Combined Score: ${combinedScore} (${actionBucket})`;
+        `Action to Take: (${actionBucket})`;
 }
 
 // Export to CSV
@@ -555,9 +557,9 @@ function exportToCSV() {
     // Add row for current assessment
     const cveId = document.getElementById("cve").value.trim() || "Custom Assessment";
     let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical - Act Now";
-    else if (combinedScore >= 7.0) actionBucket = "High - Attend";
-    else if (combinedScore >= 5.0) actionBucket = "Track";
+    if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
+    else if (combinedScore >= 7.0) actionBucket = "Regularly Scheduled Patching";
+    else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
     
     csvContent += `${cveId},${baseScore.toFixed(1)},${temporalScore.toFixed(1)},${(riskScore * 10).toFixed(1)},${combinedScore},${actionBucket}\n`;
     
