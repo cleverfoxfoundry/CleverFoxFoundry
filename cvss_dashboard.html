@@ -498,14 +498,14 @@ function calculateRisk() {
     const criticality = parseFloat(document.getElementById("criticality").value);
 
     const rawScore = internet + devices + exploit + criticality;
-    riskScore = rawScore / 1000;
+    riskScore = rawScore / 100;
 
     let bucket = "Informational";
-    if (riskScore >= 1) bucket = "Critical";
+    if (riskScore >= 0.9) bucket = "Critical";
     else if (riskScore >= 0.5) bucket = "High";
     else if (riskScore < 0.5) bucket = "Track";
 
-    const riskText = `Custom Risk Score: (${bucket})`;
+    const riskText = `Custom Risk Score: ${riskScore.toFixed(2)} (${bucket})`;
     document.getElementById("riskResult").innerHTML = riskText;
     
     return riskScore;
@@ -523,7 +523,7 @@ function calculateCombined() {
         calculateRisk();
     }
     
-    const combinedScore = ((baseScore + (riskScore)).toFixed(1);
+    const combinedScore = (baseScore + (riskScore * 10)).toFixed(1);
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
@@ -531,7 +531,7 @@ function calculateCombined() {
     else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
     
     document.getElementById("combinedResult").innerHTML = 
-        `Action to Take: (${actionBucket})`;
+        `Combined Score: ${combinedScore} (${actionBucket})`;
 }
 
 // Export to CSV
@@ -549,7 +549,7 @@ function exportToCSV() {
         calculateRisk();
     }
     
-    const combinedScore = (baseScore + (riskScore/100)).toFixed(1);
+    const combinedScore = (baseScore + (riskScore * 10)).toFixed(1);
     
     // Create CSV header
     let csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
