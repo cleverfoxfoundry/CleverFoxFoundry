@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CVSS v3.1 Contextual Calculator</title>
+    <title>CVSS v3.1 Contextual Calculator-  (credit: https://www.first.org/cvss/v3-1/specification-document)</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -397,7 +397,7 @@ function calculateBaseScore() {
     else severity = "Critical";
     
     // Display results
-    document.getElementById("baseScore").innerHTML = `CVSS Base Score: ${baseScore.toFixed(1)} (${severity})`;
+    document.getElementById("baseScore").innerHTML = `CVSS Base Score: (${severity})`;
     
     // Store calculation details
     const calculationDetails = `
@@ -469,7 +469,7 @@ function calculateTemporalScore() {
     else severity = "Critical";
     
     // Display results
-    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: ${temporalScore.toFixed(1)} (${severity}) (credit: https://www.first.org/cvss/v3-1/specification-document)`;
+    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: (${severity})`;
 
     
     // Update calculation details
