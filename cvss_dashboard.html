@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CVSS v4.0 Contextual Calculator</title>
+    <title>CVSS v3.1 Contextual Calculator</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -109,7 +109,7 @@
     </style>
 </head>
 <body>
-<h2>CVSS v4.0 Contextual Calculator</h2>
+<h2>CVSS v3.1 Contextual Calculator</h2>
 
 <div class="section">
     <label for="cve">Enter CVE IDs (optional):</label>
@@ -127,7 +127,6 @@
     
     <label>Attack Vector (AV)</label>
     <select id="av">
-        <option value="S">No Selection (0.0)</option>
         <option value="N">Network (0.85)</option>
         <option value="A">Adjacent (0.62)</option>
         <option value="L">Local (0.55)</option>
@@ -136,14 +135,12 @@
     
     <label>Attack Complexity (AC)</label>
     <select id="ac">
-        <option value="S">No Selection (0.0)</option>
         <option value="L">Low (0.77)</option>
         <option value="H">High (0.44)</option>
     </select>
     
     <label>Privileges Required (PR)</label>
     <select id="pr">
-        <option value="S">No Selection (0.0)</option>
         <option value="N">None (0.85)</option>
         <option value="L">Low (0.62/0.68)</option>
         <option value="H">High (0.27/0.50)</option>
@@ -151,130 +148,70 @@
     
     <label>User Interaction (UI)</label>
     <select id="ui">
-        <option value="S">No Selection (0.0)</option>
         <option value="N">None (0.85)</option>
         <option value="R">Required (0.62)</option>
     </select>
     
-    <label>Scope</label>
+    <label>Scope (S)</label>
     <select id="scope">
-        <option value="S">No Selection (0.0)</option>
         <option value="U">Unchanged</option>
         <option value="C">Changed</option>
     </select>
     
-    <label>Confidentiality</label>
+    <label>Confidentiality Impact (C)</label>
     <select id="c">
-        <option value="S">No Selection (0.0)</option>
         <option value="H">High (0.56)</option>
         <option value="L">Low (0.22)</option>
         <option value="N">None (0.00)</option>
     </select>
     
-    <label>Integrity</label>
+    <label>Integrity Impact (I)</label>
     <select id="i">
-        <option value="S">No Selection (0.0)</option>
         <option value="H">High (0.56)</option>
         <option value="L">Low (0.22)</option>
         <option value="N">None (0.00)</option>
     </select>
     
-    <label>Availability</label>
+    <label>Availability Impact (A)</label>
     <select id="a">
-        <option value="S">No Selection (0.0)</option>
         <option value="H">High (0.56)</option>
         <option value="L">Low (0.22)</option>
         <option value="N">None (0.00)</option>
     </select>
 
     <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
-    <h3>Threat Metrics</h3>
+    <h3>Temporal Metrics</h3>
     <hr style="border-top: 2px solid #8e44ad;">
     
-    <label>Exploit Maturity (E)</label>
+    <label>Exploit Code Maturity (E)</label>
     <select id="exploit_maturity">
-        <option value="S">No Selection (0.0)</option>
-        <option value="U">Unreported (0.0)</option>
-        <option value="P">Proof of Concept (0.3)</option>
-        <option value="F">Functional (0.7)</option>
+        <option value="X">Not Defined (1.0)</option>
+        <option value="U">Unproven (0.91)</option>
+        <option value="P">Proof-of-Concept (0.94)</option>
+        <option value="F">Functional (0.97)</option>
         <option value="H">High (1.0)</option>
     </select>
     
     <label>Remediation Level (RL)</label>
     <select id="remediation_level">
-        <option value="S">No Selection (0.0)</option>
-        <option value="O">Official Fix (0.0)</option>
-        <option value="T">Temporary Fix (0.2)</option>
-        <option value="W">Workaround (0.5)</option>
+        <option value="X">Not Defined (1.0)</option>
+        <option value="O">Official Fix (0.95)</option>
+        <option value="T">Temporary Fix (0.96)</option>
+        <option value="W">Workaround (0.97)</option>
         <option value="U">Unavailable (1.0)</option>
     </select>
     
     <label>Report Confidence (RC)</label>
     <select id="report_confidence">
-        <option value="S">No Selection (0.0)</option>
-        <option value="U">Unknown (0.0)</option>
-        <option value="R">Reasonable (0.5)</option>
+        <option value="X">Not Defined (1.0)</option>
+        <option value="U">Unknown (0.92)</option>
+        <option value="R">Reasonable (0.96)</option>
         <option value="C">Confirmed (1.0)</option>
     </select>
 
-    <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
-    <h3>Environmental Metrics</h3>
-    <hr style="border-top: 2px solid #8e44ad;">
-    
-    <label>Confidentiality Requirement (CR)</label>
-    <select id="cr">
-        <option value="S">No Selection (0.0)</option>
-        <option value="L">Low (0.5)</option>
-        <option value="M">Medium (1.0)</option>
-        <option value="H">High (1.5)</option>
-    </select>
-    
-    <label>Integrity Requirement (IR)</label>
-    <select id="ir">
-        <option value="S">No Selection (0.0)</option>
-        <option value="L">Low (0.5)</option>
-        <option value="M">Medium (1.0)</option>
-        <option value="H">High (1.5)</option>
-    </select>
-    
-    <label>Availability Requirement (AR)</label>
-    <select id="ar">
-        <option value="S">No Selection (0.0)</option>
-        <option value="L">Low (0.5)</option>
-        <option value="M">Medium (1.0)</option>
-        <option value="H">High (1.5)</option>
-    </select>
-
-    <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
-    <h3>Supplemental Metrics</h3>
-    <hr style="border-top: 2px solid #8e44ad;">
-    
-    <label>Safety (S)</label>
-    <select id="safety">
-        <option value="S">No Selection (0.0)</option>
-        <option value="N">Negligible (0.0)</option>
-        <option value="M">Minor (0.5)</option>
-        <option value="S">Significant (1.0)</option>
-    </select>
-    
-    <label>Automation (AU)</label>
-    <select id="automation">
-        <option value="S">No Selection (0.0)</option>
-        <option value="N">None (0.0)</option>
-        <option value="P">Partial (0.5)</option>
-        <option value="C">Complete (1.0)</option>
-    </select>
-    
-    <label>Recovery (R)</label>
-    <select id="recovery">
-        <option value="S">No Selection (0.0)</option>
-        <option value="N">None (0.0)</option>
-        <option value="L">Limited (0.5)</option>
-        <option value="F">Full (1.0)</option>
-    </select>
-
-    <button onclick="calculateBaseScore()">Calculate CVSS</button>
-    <div id="calculateBase" class="result"></div>
+    <button onclick="calculateScores()">Calculate CVSS</button>
+    <div id="baseScore" class="result"></div>
+    <div id="temporalScore" class="result"></div>
     <div id="calculationDetails" class="calculation-details"></div>
 </div>
 
@@ -347,6 +284,7 @@
 <script>
 // Global variables
 let baseScore = 0;
+let temporalScore = 0;
 let riskScore = 0;
 
 // Attempt to fetch CVE data (with fallback)
@@ -360,6 +298,12 @@ function fetchCVE() {
     
     document.getElementById("fetch-status").innerHTML = "CVE fetch functionality is currently unavailable. Please use the calculator below.";
     document.getElementById("cve-metadata").style.display = "none";
+}
+
+// Calculate all CVSS scores
+function calculateScores() {
+    calculateBaseScore();
+    calculateTemporalScore();
 }
 
 // Calculate the CVSS base score
@@ -376,18 +320,16 @@ function calculateBaseScore() {
     
     // Get modifier values
     const av = {
-        "S": 0.0,  // No Selection
         "N": 0.85, // Network
         "A": 0.62, // Adjacent
         "L": 0.55, // Local
         "P": 0.20  // Physical
-    }[av_val] || 0.0;
+    }[av_val];
 
     const ac = {
-        "S": 0.0,  // No Selection
         "L": 0.77, // Low
         "H": 0.44  // High
-    }[ac_val] || 0.0;
+    }[ac_val];
 
     // Privileges Required Calculation varies based on Scope
     let pr = 0;
@@ -396,184 +338,157 @@ function calculateBaseScore() {
     else if (pr_val === "H") pr = scope_val === "U" ? 0.27 : 0.50;
 
     const ui = {
-        "S": 0.0,  // No Selection
         "N": 0.85, // None
         "R": 0.62  // Required
-    }[ui_val] || 0.0;
+    }[ui_val];
 
     const c = {
-        "S": 0.0,   // No Selection
         "H": 0.56,  // High
         "L": 0.22,  // Low
         "N": 0.00   // None
-    }[c_val] || 0.0;
+    }[c_val];
 
     const i = {
-        "S": 0.0,   // No Selection
         "H": 0.56,  // High
         "L": 0.22,  // Low
         "N": 0.00   // None
-    }[i_val] || 0.0;
+    }[i_val];
 
     const a = {
-        "S": 0.0,   // No Selection
         "H": 0.56,  // High
         "L": 0.22,  // Low
         "N": 0.00   // None
-    }[a_val] || 0.0;
+    }[a_val];
     
-    // Get Threat Metric values (if selected)
-    const e_val = document.getElementById("exploit_maturity").value;
-    const rl_val = document.getElementById("remediation_level").value;
-    const rc_val = document.getElementById("report_confidence").value;
+    // Calculate Impact subscore
+    const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
     
-    // Get Environmental Metric values (if selected)
-    const cr_val = document.getElementById("cr").value;
-    const ir_val = document.getElementById("ir").value;
-    const ar_val = document.getElementById("ar").value;
-    
-    // Get Supplemental Metric values (if selected)
-    const safety_val = document.getElementById("safety").value;
-    const automation_val = document.getElementById("automation").value;
-    const recovery_val = document.getElementById("recovery").value;
-    
-    // Define the factors for threat metrics
-    const e_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "U": 1.0,  // Unreported
-        "P": 1.025, // Proof of Concept
-        "F": 1.05, // Functional
-        "H": 1.1   // High
-    }[e_val] || 1.0;
-    
-    const rl_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "O": 1.0,  // Official Fix
-        "T": 1.025, // Temporary Fix
-        "W": 1.05, // Workaround
-        "U": 1.1   // Unavailable
-    }[rl_val] || 1.0;
-    
-    const rc_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "U": 1.0,  // Unknown
-        "R": 1.025, // Reasonable
-        "C": 1.05  // Confirmed
-    }[rc_val] || 1.0;
-    
-    // Define the factors for environmental metrics
-    const cr_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "L": 0.9,  // Low
-        "M": 1.0,  // Medium (no change)
-        "H": 1.1   // High
-    }[cr_val] || 1.0;
-    
-    const ir_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "L": 0.9,  // Low
-        "M": 1.0,  // Medium (no change)
-        "H": 1.1   // High
-    }[ir_val] || 1.0;
-    
-    const ar_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "L": 0.9,  // Low
-        "M": 1.0,  // Medium (no change)
-        "H": 1.1   // High
-    }[ar_val] || 1.0;
-    
-    // Define the factors for supplemental metrics
-    const safety_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "N": 1.0,  // Negligible
-        "M": 1.1,  // Minor
-        "S": 1.2   // Significant
-    }[safety_val] || 1.0;
-    
-    const automation_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "N": 1.0,  // None
-        "P": 1.1,  // Partial
-        "C": 1.2   // Complete
-    }[automation_val] || 1.0;
-    
-    const recovery_factor = {
-        "S": 1.0,  // No Selection (no change)
-        "N": 1.0,  // None
-        "L": 1.1,  // Limited
-        "F": 1.2   // Full
-    }[recovery_val] || 1.0;
-
-    // Impact Calculation - adjusted for requirement factors
-    const adjusted_c = Math.min(c * cr_factor, 0.56);
-    const adjusted_i = Math.min(i * ir_factor, 0.56);
-    const adjusted_a = Math.min(a * ar_factor, 0.56);
-    
-    const impact = 1 - ((1 - adjusted_c) * (1 - adjusted_i) * (1 - adjusted_a));
-    
-    // Calculate impact subscore based on scope
-    let impactSubScore = 0;
-    if (impact > 0) {
-        impactSubScore = scope_val === "U" 
-            ? 6.42 * impact 
-            : 7.52 * (impact - 0.029) - 3.25 * Math.pow((impact - 0.02), 15);
+    let impactSubScore;
+    if (scope_val === "U") {
+        impactSubScore = 6.42 * impact;
+    } else {
+        impactSubScore = 7.52 * (impact - 0.029) - 3.25 * Math.pow(impact - 0.02, 15);
     }
-
-    // Exploitability Calculation
-    let exploitability = 8.22 * av * ac * pr * ui;
     
-    // Apply threat metric modifiers
-    exploitability = exploitability * e_factor * rl_factor * rc_factor;
+    // Calculate Exploitability subscore
+    const exploitability = 8.22 * av * ac * pr * ui;
     
-    // Apply supplemental metrics
-    const supplemental_factor = Math.max(safety_factor, automation_factor, recovery_factor);
-    
-    // Base Score Calculation
-    baseScore = 0;
-    if (impact <= 0) {
+    // Calculate Base Score
+    if (impactSubScore <= 0) {
         baseScore = 0;
     } else {
-        baseScore = scope_val === "U"
-            ? Math.min(impactSubScore + exploitability, 10)
-            : Math.min(1.08 * (impactSubScore + exploitability), 10);
+        if (scope_val === "U") {
+            baseScore = Math.min(impactSubScore + exploitability, 10);
+        } else {
+            baseScore = Math.min(1.08 * (impactSubScore + exploitability), 10);
+        }
     }
     
-    // Apply supplemental metrics modifier
-    baseScore = Math.min(baseScore * supplemental_factor, 10);
-
-    // Round to 1 decimal place
-    baseScore = Math.round(baseScore * 10) / 10;
+    // Round up to 1 decimal place
+    baseScore = Math.ceil(baseScore * 10) / 10;
     
     // Determine severity
-    let severity = "None";
-    if (baseScore >= 9.0) severity = "Critical";
-    else if (baseScore >= 7.0) severity = "High";
-    else if (baseScore >= 4.0) severity = "Medium";
-    else if (baseScore > 0.0) severity = "Low";
+    let severity = "";
+    if (baseScore === 0) severity = "None";
+    else if (baseScore < 4.0) severity = "Low";
+    else if (baseScore < 7.0) severity = "Medium";
+    else if (baseScore < 9.0) severity = "High";
+    else severity = "Critical";
     
     // Display results
-    document.getElementById("calculateBase").innerHTML = `CVSS Base Score: ${baseScore.toFixed(1)} (${severity})`;
+    document.getElementById("baseScore").innerHTML = `CVSS Base Score: ${baseScore.toFixed(1)} (${severity})`;
     
-    // Show calculation details
+    // Store calculation details
     const calculationDetails = `
-        <h4>CVSS Score Calculation Details</h4>
+        <h4>Base Score Calculation</h4>
         <ul>
-            <li><strong>Attack Vector:</strong> ${av}</li>
-            <li><strong>Attack Complexity:</strong> ${ac}</li>
-            <li><strong>Privileges Required:</strong> ${pr}</li>
-            <li><strong>User Interaction:</strong> ${ui}</li>
-            <li><strong>Impact Subscore:</strong> ${impactSubScore.toFixed(2)}</li>
-            <li><strong>Exploitability Subscore:</strong> ${exploitability.toFixed(2)}</li>
-            <li><strong>Final Base Score:</strong> ${baseScore.toFixed(1)}</li>
+            <li>Impact Subscore: ${impactSubScore.toFixed(2)}</li>
+            <li>Exploitability: ${exploitability.toFixed(2)}</li>
+            <li>Scope: ${scope_val === "U" ? "Unchanged" : "Changed"}</li>
+            <li>Base Score Formula: ${scope_val === "U" ? 
+                `min(Impact + Exploitability, 10)` : 
+                `min(1.08 × (Impact + Exploitability), 10)`}</li>
+            <li>Final Base Score (rounded up): ${baseScore.toFixed(1)}</li>
         </ul>
     `;
     
     document.getElementById("calculationDetails").innerHTML = calculationDetails;
     document.getElementById("calculationDetails").style.display = "block";
+    
+    return baseScore;
 }
 
-// Calculate the Risk Score
+// Calculate Temporal Score
+function calculateTemporalScore() {
+    if (baseScore === 0) {
+        baseScore = calculateBaseScore();
+    }
+    
+    // Get temporal metrics
+    const e_val = document.getElementById("exploit_maturity").value;
+    const rl_val = document.getElementById("remediation_level").value;
+    const rc_val = document.getElementById("report_confidence").value;
+    
+    // Get values
+    const e = {
+        "X": 1.0,   // Not Defined
+        "U": 0.91,  // Unproven
+        "P": 0.94,  // Proof-of-Concept
+        "F": 0.97,  // Functional
+        "H": 1.0    // High
+    }[e_val];
+    
+    const rl = {
+        "X": 1.0,   // Not Defined
+        "O": 0.95,  // Official Fix
+        "T": 0.96,  // Temporary Fix
+        "W": 0.97,  // Workaround
+        "U": 1.0    // Unavailable
+    }[rl_val];
+    
+    const rc = {
+        "X": 1.0,   // Not Defined
+        "U": 0.92,  // Unknown
+        "R": 0.96,  // Reasonable
+        "C": 1.0    // Confirmed
+    }[rc_val];
+    
+    // Calculate Temporal Score
+    temporalScore = baseScore * e * rl * rc;
+    
+    // Round up to 1 decimal place
+    temporalScore = Math.ceil(temporalScore * 10) / 10;
+    
+    // Determine severity
+    let severity = "";
+    if (temporalScore === 0) severity = "None";
+    else if (temporalScore < 4.0) severity = "Low";
+    else if (temporalScore < 7.0) severity = "Medium";
+    else if (temporalScore < 9.0) severity = "High";
+    else severity = "Critical";
+    
+    // Display results
+    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: ${temporalScore.toFixed(1)} (${severity})`;
+    
+    // Update calculation details
+    const currentDetails = document.getElementById("calculationDetails").innerHTML;
+    const temporalDetails = `
+        <h4>Temporal Score Calculation</h4>
+        <ul>
+            <li>Exploit Code Maturity: ${e.toFixed(2)}</li>
+            <li>Remediation Level: ${rl.toFixed(2)}</li>
+            <li>Report Confidence: ${rc.toFixed(2)}</li>
+            <li>Temporal Score Formula: Base Score × E × RL × RC</li>
+            <li>Final Temporal Score (rounded up): ${temporalScore.toFixed(1)}</li>
+        </ul>
+    `;
+    
+    document.getElementById("calculationDetails").innerHTML = currentDetails + temporalDetails;
+    
+    return temporalScore;
+}
+
+// Calculate Risk Score
 function calculateRisk() {
     const internet = parseFloat(document.getElementById("internet").value);
     const devices = parseFloat(document.getElementById("devices").value);
@@ -590,78 +505,68 @@ function calculateRisk() {
 
     const riskText = `Custom Risk Score: ${riskScore.toFixed(2)} (${bucket})`;
     document.getElementById("riskResult").innerHTML = riskText;
+    
+    return riskScore;
 }
 
-// Calculate the Combined Score
+// Calculate Combined Score
 function calculateCombined() {
-    // Calculate base score and risk score if they haven't been calculated yet
+    // Calculate base score if not already calculated
     if (baseScore === 0) {
         calculateBaseScore();
     }
     
+    // Calculate risk score if not already calculated
     if (riskScore === 0) {
         calculateRisk();
     }
     
-    // Calculate combined score
-    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(2);
+    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(1);
     
-    // Determine bucket
-    let combinedBucket = "Informational";
-    if (combinedScore >= 9) combinedBucket = "Critical - Act Now";
-    else if (combinedScore >= 7) combinedBucket = "High - Attend";
-    else if (combinedScore >= 5) combinedBucket = "Track";
+    let actionBucket = "Informational";
+    if (combinedScore >= 9.0) actionBucket = "Critical - Act Now";
+    else if (combinedScore >= 7.0) actionBucket = "High - Attend";
+    else if (combinedScore >= 5.0) actionBucket = "Track";
     
     document.getElementById("combinedResult").innerHTML = 
-        `Combined Score: ${combinedScore} (${combinedBucket})`;
+        `Combined Score: ${combinedScore} (${actionBucket})`;
 }
 
 // Export to CSV
 function exportToCSV() {
-    // Calculate scores if they haven't been calculated yet
+    // Calculate scores if not calculated
     if (baseScore === 0) {
         calculateBaseScore();
+    }
+    
+    if (temporalScore === 0) {
+        calculateTemporalScore();
     }
     
     if (riskScore === 0) {
         calculateRisk();
     }
     
-    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(2);
+    const combinedScore = ((baseScore + (riskScore * 10)) / 2).toFixed(1);
     
-    // Determine buckets
-    let baseBucket = "Informational";
-    if (baseScore >= 9) baseBucket = "Critical";
-    else if (baseScore >= 7) baseBucket = "High";
-    else if (baseScore >= 5) baseBucket = "Medium";
-    else if (baseScore > 0) baseBucket = "Low";
+    // Create CSV header
+    let csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
     
-    let riskBucket = "Informational";
-    if (riskScore >= 0.9) riskBucket = "Critical";
-    else if (riskScore >= 0.7) riskBucket = "High";
-    else if (riskScore >= 0.5) riskBucket = "Medium";
+    // Add row for current assessment
+    const cveId = document.getElementById("cve").value.trim() || "Custom Assessment";
+    let actionBucket = "Informational";
+    if (combinedScore >= 9.0) actionBucket = "Critical - Act Now";
+    else if (combinedScore >= 7.0) actionBucket = "High - Attend";
+    else if (combinedScore >= 5.0) actionBucket = "Track";
     
-    let combinedBucket = "Informational";
-    if (combinedScore >= 9) combinedBucket = "Critical - Act Now";
-    else if (combinedScore >= 7) combinedBucket = "High - Attend";
-    else if (combinedScore >= 5) combinedBucket = "Track";
-    
-    // Create CSV content
-    const csv = [
-        ['CVE ID', 'Base Score', 'Base Bucket', 'Risk Score', 'Risk Bucket', 'Combined Score', 'Action'],
-        ['Custom Assessment', baseScore.toFixed(1), baseBucket, riskScore.toFixed(2), riskBucket, combinedScore, combinedBucket]
-    ];
-    
-    // Convert CSV array to string
-    const csvContent = csv.map(row => row.join(',')).join('\n');
+    csvContent += `${cveId},${baseScore.toFixed(1)},${temporalScore.toFixed(1)},${(riskScore * 10).toFixed(1)},${combinedScore},${actionBucket}\n`;
     
     // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    
     link.setAttribute("href", url);
-    link.setAttribute("download", "cvss_assessment_" + new Date().toISOString().slice(0, 10) + ".csv");
+    link.setAttribute("download", "cvss_assessment.csv");
     document.body.appendChild(link);
     
     link.click();
