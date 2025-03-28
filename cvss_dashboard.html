@@ -498,7 +498,7 @@ function calculateRisk() {
     const criticality = parseFloat(document.getElementById("criticality").value);
 
     const rawScore = internet + devices + exploit + criticality;
-    riskScore = rawScore / 100;
+    riskScore = rawScore / 1000;
 
     let bucket = "Informational";
     if (riskScore >= 1) bucket = "Critical";
