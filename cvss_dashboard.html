@@ -109,7 +109,7 @@
     </style>
 </head>
 <body>
-<h2>CVSS v3.1 Contextual Calculator v0.4.2.2</h2>
+<h2>CVSS v3.1 Contextual Calculator v0.4.2.3</h2>
 
 <div class="section">
     <label for="cve">Enter CVE IDs (optional):</label>
@@ -225,8 +225,8 @@
         </span>
     </label>
     <select id="internet">
-        <option value=".50">Yes (+.50)</option>
-        <option value="-.30">No (+0)</option>
+        <option value=".50">Yes (Weight: up to +.50)</option>
+        <option value="-.30">No (-.30)</option>
     </select>
     
     <label>
@@ -236,7 +236,7 @@
         </span>
     </label>
     <select id="devices">
-        <option value="0">0 (+0)</option> 
+        <option value=".30">0 (-.30)</option> 
         <option value=".15"><50 (+.15)</option>
         <option value=".30">50-100 (+.30)</option>
         <option value=".50">100+ (+.50)</option>
