@@ -219,50 +219,50 @@
     <h3>Risk Impact Factors</h3>
     
     <label>
-        Internet Facing (Weight: +50)
+        Internet Facing (Weight: +.50)
         <span class="tooltip">❓
             <span class="tooltiptext">Is the vulnerable system exposed to the public internet?</span>
         </span>
     </label>
     <select id="internet">
-        <option value="50">Yes (+50)</option>
+        <option value="50">Yes (+.50)</option>
         <option value="0">No (+0)</option>
     </select>
     
     <label>
-        Number of Exposed Devices (Weight: up to +50)
+        Number of Exposed Devices (Weight: up to +.50)
         <span class="tooltip">❓
             <span class="tooltiptext">How many devices are exposed?</span>
         </span>
     </label>
     <select id="devices">
         <option value="0">0 (+0)</option> 
-        <option value="15"><50 (+15)</option>
-        <option value="30">50-100 (+30)</option>
-        <option value="50">100+ (+50)</option>
+        <option value=".15"><50 (+.15)</option>
+        <option value=".30">50-100 (+.30)</option>
+        <option value=".50">100+ (+.50)</option>
     </select>
     
     <label>
-        Active Exploitation (Weight: +50)
+        Active Exploitation (Weight: +.50)
         <span class="tooltip">❓
             <span class="tooltiptext">Is the vulnerability being actively exploited (e.g. in KEV)?</span>
         </span>
     </label>
     <select id="exploit">
-        <option value="50">Yes (+50)</option>
+        <option value=".50">Yes (+.50)</option>
         <option value="0">No (+0)</option>
     </select>
     
     <label>
-        Criticality (Weight: up to +50)
+        Criticality (Weight: up to +.50)
         <span class="tooltip">❓
             <span class="tooltiptext">What would be the impact on business operations, data integrity, etc?</span>
         </span>
     </label>
     <select id="criticality">
-        <option value="15">Low (+15)</option>
-        <option value="30">Medium (+30)</option>
-        <option value="50">High (+50)</option>
+        <option value=".15">Low (+.15)</option>
+        <option value=".30">Medium (+.30)</option>
+        <option value=".50">High (+.50)</option>
     </select>
 
     <button onclick="calculateRisk()">Calculate Risk Score</button>
@@ -498,7 +498,7 @@ function calculateRisk() {
     const criticality = parseFloat(document.getElementById("criticality").value);
 
     const rawScore = internet + devices + exploit + criticality;
-    riskScore = rawScore / 100;
+    riskScore = rawScore;
 
     let bucket = "Informational";
     if (riskScore >= 0.9) bucket = "Critical";
@@ -523,7 +523,7 @@ function calculateCombined() {
         calculateRisk();
     }
     
-    const combinedScore = (baseScore + (riskScore * 10)).toFixed(1);
+    const combinedScore = (baseScore + (riskScore)).toFixed(1);
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
@@ -549,7 +549,7 @@ function exportToCSV() {
         calculateRisk();
     }
     
-    const combinedScore = (baseScore + (riskScore * 10)).toFixed(1);
+    const combinedScore = (baseScore + (riskScore)).toFixed(1);
     
     // Create CSV header
     let csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
@@ -561,7 +561,7 @@ function exportToCSV() {
     else if (combinedScore >= 7.0) actionBucket = "Regularly Scheduled Patching";
     else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
     
-    csvContent += `${cveId},${baseScore.toFixed(1)},${temporalScore.toFixed(1)},${(riskScore * 10).toFixed(1)},${combinedScore},${actionBucket}\n`;
+    csvContent += `${cveId},${baseScore.toFixed(1)},${temporalScore.toFixed(1)},${(riskScore).toFixed(1)},${combinedScore},${actionBucket}\n`;
     
     // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
