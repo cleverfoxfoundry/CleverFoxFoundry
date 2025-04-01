@@ -109,13 +109,13 @@
     </style>
 </head>
 <body>
-<h2>CVSS v3.1 Contextual Calculator v0.4.2.3</h2>
+<h2>CVSS v3.1 Contextual Calculator v0.4.2.4</h2>
 
 <div class="section">
-    <label for="cve">Enter CVE IDs (optional):</label>
-    <input id="cve" placeholder="CVE-ID or multiple CVEs separated by commas" type="text"/>
-    <button onclick="fetchCVE()">Fetch CVSS Data</button>
-    <div id="fetch-status"></div>
+    <label for="cve">Enter CVE ID:</label>
+    <input id="cve" placeholder="CVE-ID" type="text"/>
+   <!-- <button onclick="fetchCVE()">Fetch CVSS Data</button>
+    <div id="fetch-status"></div>-->
     
     <div id="cve-metadata"></div>
 </div>
@@ -299,6 +299,7 @@ function fetchCVE() {
     document.getElementById("fetch-status").innerHTML = "Currently unavailable. Please use the calculator below.";
     document.getElementById("cve-metadata").style.display = "none";
 }
+
 
 // Calculate all CVSS scores
 function calculateScores() {
