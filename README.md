@@ -1,1 +1,1 @@
-<img src="assets/meow-cat.gif" width="240" alt="Meow" />
+<img src="IMG_0379.gif" width="240" alt="Meow" />
