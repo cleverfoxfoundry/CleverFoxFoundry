@@ -547,28 +547,33 @@ function calculateRisk() {
     
     return riskScore;
 }
-
 // Calculate Combined Score
 function calculateCombined() {
-    // Calculate base score if not already calculated
-    if (baseScore === 0) {
-        calculateBaseScore();
-    }
-    
-    // Calculate risk score if not already calculated
-    if (riskScore === 0) {
-        calculateRisk();
-    }
-    
-    const combinedScore = (baseScore + (riskScore)).toFixed(1);
-    
+    // Always recompute so values aren't stale
+    calculateBaseScore();
+    calculateRisk();
+
+    // Ensure numeric comparison (toFixed returns a string)
+    const combined = Number((baseScore + riskScore).toFixed(1));
+
     let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
-    else if (combinedScore >= 7.0) actionBucket = "Regularly Scheduled Patching";
-    else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
-    
-    document.getElementById("combinedResult").innerHTML = 
-        `Combined Score: ${combinedScore} (${actionBucket})`;
+    if (combined >= 9.0) actionBucket = "Critical - Patch Now";
+    else if (combined >= 7.0) actionBucket = "Regularly Scheduled Patching";
+    else if (combined >= 5.0) actionBucket = "No Additional Action";
+
+    document.getElementById("combinedResult").textContent =
+        `Combined Score: ${combined.toFixed(1)} (${actionBucket})`;
+
+    // 🔥 Show/hide the dumpster fire
+    const graphic = document.getElementById("criticalGraphic");
+    if (graphic) {
+        if (combined >= 9.0) {
+            graphic.classList.remove("hidden");
+        } else {
+            graphic.classList.add("hidden");
+        }
+    }
+}
 }
 
 // Export to CSV
