@@ -1,1 +1,1 @@
-![Meow Cat](https://media.tenor.com/9tZW1IIZr0kAAAAC/meow-cat.gif)
+<img src="assets/meow-cat.gif" width="240" alt="Meow" />
