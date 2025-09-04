@@ -1,1 +1,1 @@
-<div class="tenor-gif-embed" data-postid="10126159657966761519" data-share-method="host" data-aspect-ratio="1.28351" data-width="100%"><a href="https://tenor.com/view/meow-cat-prowl-mow-mew-gif-10126159657966761519">Meow Cat Sticker</a>from <a href="https://tenor.com/search/meow-stickers">Meow Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+<img src="https://media.tenor.com/9tZW1IIZr0kAAAAC/meow-cat.gif" width="250" alt="Meow" />
