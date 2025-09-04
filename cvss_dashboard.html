@@ -547,9 +547,10 @@ function calculateRisk() {
     
     return riskScore;
 }
+
 // Calculate Combined Score
 function calculateCombined() {
-    // Always recompute so values aren't stale
+    // Recompute to avoid stale values
     calculateBaseScore();
     calculateRisk();
 
@@ -564,7 +565,7 @@ function calculateCombined() {
     document.getElementById("combinedResult").textContent =
         `Combined Score: ${combined.toFixed(1)} (${actionBucket})`;
 
-    // 🔥 Show/hide the dumpster fire
+    // 🔥 Show/hide the dumpster fire graphic
     const graphic = document.getElementById("criticalGraphic");
     if (graphic) {
         if (combined >= 9.0) {
@@ -573,7 +574,6 @@ function calculateCombined() {
             graphic.classList.add("hidden");
         }
     }
-}
 }
 
 // Export to CSV
