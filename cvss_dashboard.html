@@ -627,7 +627,7 @@ function calculateCombined() {
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical- Patch Now!!";
-    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just don't know yet). Discuss with the team.";
+    else if (combinedScore >= 7.0) actionBucket = "Discuss with the team :)";
     else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... - Regularly Scheduled Patching";
     
     document.getElementById("combinedResult").innerHTML = 
