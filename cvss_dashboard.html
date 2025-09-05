@@ -242,7 +242,7 @@
     <h3>Risk Impact Factors</h3>
     
     <label>
-        Internet Facing (Bucketed)
+        Internet Facing
         <span class="tooltip">❓
             <span class="tooltiptext">Estimated number of public endpoints.</span>
         </span>
@@ -255,7 +255,7 @@
     </select>
     
     <label>
-        Number of Exposed Devices (Bucketed)
+        Number of Exposed Devices- That we know of...
         <span class="tooltip">❓
             <span class="tooltiptext">Approximate count of exposed devices.</span>
         </span>
@@ -280,7 +280,7 @@
     </select>
     
     <label>
-        Criticality (Bucketed)
+        Criticality
         <span class="tooltip">❓
             <span class="tooltiptext">Business/system criticality impact.</span>
         </span>
@@ -298,7 +298,7 @@
 
 <div id="combined-section" class="section">
     <h3>Combined Dashboard</h3>
-    <p>This calculates the sum of the CVSS Base Score and Custom Risk Score to assign a recommended action.</p>
+    <p>This modifies the CVSS Base Score with the Custom Risk Score to assign a recommended action.</p>
     <button onclick="calculateCombined()">Calculate Action</button>
     <div id="combinedResult" class="result"></div>
 </div>
@@ -626,12 +626,12 @@ function calculateCombined() {
     const combinedScore = (baseScore + (riskScore)).toFixed(1);
     
     let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now!!";
-    else if (combinedScore >= 7.0) actionBucket = "It'll be OK until it's not- Regularly Scheduled Patching";
+    if (combinedScore >= 9.0) actionBucket = "Critical- Patch Now!!";
+    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just know yet)- Regularly Scheduled Patching";
     else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... No Additional Action";
     
     document.getElementById("combinedResult").innerHTML = 
-        `Combined Score: ${combinedScore} (${actionBucket})`;
+        `Combined Score: ${combinedScore} - <strong>${actionBucket}</strong>`;
 
     // 🔁 Toggle embeds (no other changes)
     const low = document.getElementById("gifLow");
