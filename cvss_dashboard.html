@@ -132,7 +132,7 @@
     </style>
 </head>
 <body>
-<h2>CVSS v3.1 Contextual Calculator version 5.2.0</h2>
+<h2>CVSS v3.1 Contextual Calculator version 5.2.1</h2>
 
 <div class="section">
     <label for="cve">Enter CVE ID:</label>
@@ -627,7 +627,7 @@ function calculateCombined() {
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical- Patch Now!!";
-    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just know yet)- Regularly Scheduled Patching";
+    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just don't know yet)- Regularly Scheduled Patching";
     else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... No Additional Action";
     
     document.getElementById("combinedResult").innerHTML = 
