@@ -132,7 +132,7 @@
     </style>
 </head>
 <body>
-<h2>CVSS v3.1 Contextual Calculator version 5.1.1</h2>
+<h2>CVSS v3.1 Contextual Calculator version 5.2.0</h2>
 
 <div class="section">
     <label for="cve">Enter CVE ID:</label>
@@ -242,27 +242,30 @@
     <h3>Risk Impact Factors</h3>
     
     <label>
-        Internet Facing (Weight: +.50)
+        Internet Facing (Bucketed)
         <span class="tooltip">❓
-            <span class="tooltiptext">Is the vulnerable system exposed to the public internet?</span>
+            <span class="tooltiptext">Estimated number of public endpoints.</span>
         </span>
     </label>
     <select id="internet">
-        <option value=".50">Yes (Weight: up to +.50)</option>
-        <option value="-.30">No (-.30)</option>
+        <option value="-.30">Not internet facing (-.30)</option>
+        <option value=".20">10+ public endpoints (+.20)</option>
+        <option value=".35">20+ public endpoints (+.35)</option>
+        <option value=".50">50+ public endpoints (+.50)</option>
     </select>
     
     <label>
-        Number of Exposed Devices (Weight: up to +.50)
+        Number of Exposed Devices (Bucketed)
         <span class="tooltip">❓
-            <span class="tooltiptext">How many devices are exposed?</span>
+            <span class="tooltiptext">Approximate count of exposed devices.</span>
         </span>
     </label>
     <select id="devices">
-        <option value=".30">0 (-.30)</option> 
-        <option value=".15"><50 (+.15)</option>
-        <option value=".30">50-100 (+.30)</option>
-        <option value=".50">100+ (+.50)</option>
+        <option value="-.30">0 devices (score -0.30)</option>
+        <option value=".10">1–10 devices (+0.10)</option>
+        <option value=".20">11–50 devices (+0.20)</option>
+        <option value=".35">51–100 devices (+0.35)</option>
+        <option value=".50">100+ devices (+0.50)</option>
     </select>
     
     <label>
@@ -277,12 +280,13 @@
     </select>
     
     <label>
-        Criticality (Weight: up to +.50)
+        Criticality (Bucketed)
         <span class="tooltip">❓
-            <span class="tooltiptext">What would be the impact on business operations, data integrity, etc?</span>
+            <span class="tooltiptext">Business/system criticality impact.</span>
         </span>
     </label>
     <select id="criticality">
+        <option value="-.20">None (-.20)</option>
         <option value=".15">Low (+.15)</option>
         <option value=".30">Medium (+.30)</option>
         <option value=".50">High (+.50)</option>
@@ -330,6 +334,63 @@
 let baseScore = 0;
 let temporalScore = 0;
 let riskScore = 0;
+
+// === Environmental Factors (configurable add-on) ==================
+// TUNE HERE: add/remove criteria, adjust weights or value → score map.
+const ENV_CONFIG = {
+  internet: {
+    controlId: "internet",
+    weight: 1,
+    valuesToScore: {
+      "-.30": -0.30,  // Not internet facing
+      ".20":  +0.20,  // 10+ public endpoints
+      ".35":  +0.35,  // 20+ public endpoints
+      ".50":  +0.50   // 50+ public endpoints
+    }
+  },
+  devices: {
+    controlId: "devices",
+    weight: 1,
+    valuesToScore: {
+      "-.30": -0.30,  // 0 devices
+      ".10":  +0.10,  // 1–10
+      ".20":  +0.20,  // 11–50
+      ".35":  +0.35,  // 51–100
+      ".50":  +0.50   // 100+
+    }
+  },
+  exploit: {
+    controlId: "exploit",
+    weight: 1,
+    valuesToScore: {
+      ".50": +0.50,   // Active exploitation
+      "0":   0.00     // Not active
+    }
+  },
+  criticality: {
+    controlId: "criticality",
+    weight: 1,
+    valuesToScore: {
+      "-.20": -0.20,  // None → reduces score
+      ".15":  +0.15,  // Low
+      ".30":  +0.30,  // Medium
+      ".50":  +0.50   // High
+    }
+  }
+};
+
+// Helper to compute riskScore from the config above
+function calculateEnvRisk() {
+  let sum = 0;
+  for (const cfg of Object.values(ENV_CONFIG)) {
+    const el = document.getElementById(cfg.controlId);
+    if (!el) continue;
+    const raw = el.value;
+    const base = (raw in cfg.valuesToScore) ? cfg.valuesToScore[raw] : 0;
+    sum += base * (cfg.weight ?? 1);
+  }
+  return sum;
+}
 
 // Attempt to fetch CVE data (with fallback)
 function fetchCVE() {
@@ -535,15 +596,9 @@ function calculateTemporalScore() {
     return temporalScore;
 }
 
-// Calculate Risk Score
+// Calculate Risk Score (modular add-on; same output & buckets)
 function calculateRisk() {
-    const internet = parseFloat(document.getElementById("internet").value);
-    const devices = parseFloat(document.getElementById("devices").value);
-    const exploit = parseFloat(document.getElementById("exploit").value);
-    const criticality = parseFloat(document.getElementById("criticality").value);
-
-    const rawScore = internet + devices + exploit + criticality;
-    riskScore = rawScore;
+    riskScore = calculateEnvRisk();
 
     let bucket = "Informational";
     if (riskScore >= 0.9) bucket = "Critical";
