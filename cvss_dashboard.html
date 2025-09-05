@@ -269,7 +269,7 @@
     </select>
     
     <label>
-        Active Exploitation(Weight: +.50)
+        Active Exploitation
         <span class="tooltip">❓
             <span class="tooltiptext">Is the vulnerability being actively exploited (e.g. in KEV). This is a separate factor from Exploit Code Maturity</span>
         </span>
@@ -280,7 +280,7 @@
     </select>
     
     <label>
-        Criticality
+        Criticality- Check weights
         <span class="tooltip">❓
             <span class="tooltiptext">Business/system criticality impact. **How granular should we get with this?</span>
         </span>
@@ -627,8 +627,8 @@ function calculateCombined() {
     
     let actionBucket = "Informational";
     if (combinedScore >= 9.0) actionBucket = "Critical- Patch Now!!";
-    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just don't know yet)- Regularly Scheduled Patching";
-    else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... No Additional Action";
+    else if (combinedScore >= 7.0) actionBucket = "It'll be OK (unless it's not and we just don't know yet). Discuss with the team.";
+    else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... - Regularly Scheduled Patching";
     
     document.getElementById("combinedResult").innerHTML = 
         `Combined Score: ${combinedScore} - <strong>${actionBucket}</strong>`;
