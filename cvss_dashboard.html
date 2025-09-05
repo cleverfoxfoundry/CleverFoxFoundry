@@ -282,14 +282,15 @@
     <label>
         Criticality- Check weights
         <span class="tooltip">❓
-            <span class="tooltiptext">Business/system criticality impact. **How granular should we get with this?</span>
+            <span class="tooltiptext">Business/system criticality impact. **How granular should we get with this? Review what we want this to represent </span>
         </span>
     </label>
     <select id="criticality">
-        <option value="-.20">None (-.20)</option>
-        <option value=".15">Low (+.15)</option>
-        <option value=".30">Medium (+.30)</option>
-        <option value=".50">High (+.50)</option>
+        <option value="-.20">None- Asset not important (-.20)</option>
+        <option value=".15">Low- Minor impact if compromised (+.15)</option>
+        <option value=".30">Medium- Some business disruption or exposure (+.30)</option>
+        <option value=".50">High- Significant impact (+.50)</option>
+        <option value=".70">Critical- Core to business survival or security (+.70)</option>
     </select>
 
     <button onclick="calculateRisk()">Calculate Risk Score</button>
@@ -375,6 +376,7 @@ const ENV_CONFIG = {
       ".15":  +0.15,  // Low
       ".30":  +0.30,  // Medium
       ".50":  +0.50   // High
+      ".70":  +0.70   // Critical  
     }
   }
 };
