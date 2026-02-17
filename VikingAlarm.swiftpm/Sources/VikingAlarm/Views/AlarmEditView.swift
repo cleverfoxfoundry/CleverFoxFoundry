@@ -265,6 +265,8 @@ struct AlarmEditView: View {
     }
 }
 
-#Preview {
-    AlarmEditView(manager: AlarmManager())
+struct AlarmEditView_Previews: PreviewProvider {
+    static var previews: some View {
+        AlarmEditView(manager: AlarmManager())
+    }
 }

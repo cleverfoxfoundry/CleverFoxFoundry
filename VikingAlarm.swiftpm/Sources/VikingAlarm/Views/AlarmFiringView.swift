@@ -191,11 +191,13 @@ struct AlarmFiringView: View {
     }
 }
 
-#Preview {
-    AlarmFiringView(manager: {
-        let m = AlarmManager()
-        m.firingAlarm = Alarm(hour: 7, minute: 0, label: "Time to raid!")
-        m.isAlarmFiring = true
-        return m
-    }())
+struct AlarmFiringView_Previews: PreviewProvider {
+    static var previews: some View {
+        AlarmFiringView(manager: {
+            let m = AlarmManager()
+            m.firingAlarm = Alarm(hour: 7, minute: 0, label: "Time to raid!")
+            m.isAlarmFiring = true
+            return m
+        }())
+    }
 }

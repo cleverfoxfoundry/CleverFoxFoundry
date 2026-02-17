@@ -51,9 +51,11 @@ struct ClockView: View {
     }
 }
 
-#Preview {
-    ZStack {
-        VikingColors.darkNavy.ignoresSafeArea()
-        ClockView()
+struct ClockView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            VikingColors.darkNavy.ignoresSafeArea()
+            ClockView()
+        }
     }
 }

@@ -116,14 +116,16 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView(manager: {
-        let m = AlarmManager()
-        m.alarms = [
-            Alarm(hour: 7, minute: 0, label: "Raid at dawn!"),
-            Alarm(hour: 12, minute: 30, isEnabled: false, label: "Midday feast"),
-            Alarm(hour: 22, minute: 0, label: "Sharpen axes", repeatDays: [.monday, .wednesday, .friday])
-        ]
-        return m
-    }())
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView(manager: {
+            let m = AlarmManager()
+            m.alarms = [
+                Alarm(hour: 7, minute: 0, label: "Raid at dawn!"),
+                Alarm(hour: 12, minute: 30, isEnabled: false, label: "Midday feast"),
+                Alarm(hour: 22, minute: 0, label: "Sharpen axes", repeatDays: [.monday, .wednesday, .friday])
+            ]
+            return m
+        }())
+    }
 }

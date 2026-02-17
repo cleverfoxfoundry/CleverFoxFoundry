@@ -114,9 +114,11 @@ struct AlarmRowView: View {
     }
 }
 
-#Preview {
-    ZStack {
-        VikingColors.darkNavy.ignoresSafeArea()
-        AlarmListView(manager: AlarmManager())
+struct AlarmListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            VikingColors.darkNavy.ignoresSafeArea()
+            AlarmListView(manager: AlarmManager())
+        }
     }
 }

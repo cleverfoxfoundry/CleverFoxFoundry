@@ -254,12 +254,14 @@ struct HornShape: Shape {
     }
 }
 
-#Preview {
-    ZStack {
-        VikingColors.darkNavy.ignoresSafeArea()
-        VStack(spacing: 40) {
-            VikingHeadView(size: 200, isAngry: false)
-            VikingHeadView(size: 200, isAngry: true)
+struct VikingHeadView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            VikingColors.darkNavy.ignoresSafeArea()
+            VStack(spacing: 40) {
+                VikingHeadView(size: 200, isAngry: false)
+                VikingHeadView(size: 200, isAngry: true)
+            }
         }
     }
 }
