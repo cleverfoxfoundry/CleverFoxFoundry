@@ -2,52 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CVSS v3.1 Contextual Calculator-  (credit: https://www.first.org/cvss/v3-1/specification-document)</title>
+    <title>CVSS v3.1 Contextual Calculator - (credit: https://www.first.org/cvss/v3-1/specification-document)</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f9f9f9; 
-            padding: 20px; 
-            max-width: 800px; 
-            margin: 0 auto; 
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
         }
         h2 { color: #2c3e50; }
-        .section { 
-            background: #fff; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        .section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             border-bottom: 2px solid #8e44ad;
         }
-        label { 
-            font-weight: bold; 
-            display: block; 
-            margin-top: 10px; 
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
             position: relative;
         }
-        select, input[type=text] { 
-            width: 100%; 
-            padding: 6px; 
-            margin-top: 5px; 
+        select, input[type=text], input[type=file] {
+            width: 100%;
+            padding: 6px;
+            margin-top: 5px;
+            box-sizing: border-box;
         }
-        button { 
-            margin-top: 20px; 
-            padding: 10px 20px; 
-            font-size: 16px; 
-            background: #8e44ad; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         button:hover {
             background: #7d2ca5;
         }
-        .result { 
-            margin-top: 20px; 
-            font-size: 18px; 
-            font-weight: bold; 
+        button:disabled {
+            background: #bbb;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
         }
         .tooltip {
             position: relative;
@@ -106,40 +111,153 @@
         .hidden {
             display: none;
         }
-        /* 🔥 Dumpster-fire animations */
-@keyframes flicker {
-  0%   { transform: translateY(0) rotate(-0.3deg) scale(1);   opacity: 0.92; }
-  10%  { transform: translateY(-0.3px) rotate(0.2deg) scale(1.005); opacity: 0.98; }
-  20%  { transform: translateY(-0.6px) rotate(-0.1deg) scale(0.998); opacity: 0.94; }
-  30%  { transform: translateY(-0.2px) rotate(0.3deg) scale(1.003); opacity: 1; }
-  40%  { transform: translateY(-0.5px) rotate(-0.2deg) scale(1.002); opacity: 0.96; }
-  50%  { transform: translateY(-0.8px) rotate(0.1deg) scale(1.004); opacity: 0.93; }
-  60%  { transform: translateY(-0.3px) rotate(-0.25deg) scale(1.002); opacity: 0.99; }
-  70%  { transform: translateY(-0.7px) rotate(0.15deg) scale(1.003); opacity: 0.95; }
-  80%  { transform: translateY(-0.4px) rotate(-0.1deg) scale(1.001); opacity: 0.97; }
-  100% { transform: translateY(-1px) rotate(0.25deg) scale(1.005); opacity: 0.92; }
-}
 
-@keyframes glow {
-  0%   { filter: brightness(1) drop-shadow(0 0 0px #ff6a00); }
-  50%  { filter: brightness(1.18) drop-shadow(0 0 12px #ff6a00); }
-  100% { filter: brightness(1) drop-shadow(0 0 0px #ff6a00); }
-}
+        /* Bulk lookup styles */
+        .bulk-section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #e67e22;
+        }
+        .bulk-section h3 {
+            color: #e67e22;
+        }
+        .api-key-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-top: 10px;
+        }
+        .api-key-row > div {
+            flex: 1;
+        }
+        .api-key-row input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #bulk-progress {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 8px;
+            height: 24px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #8e44ad;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 30px;
+        }
+        .bulk-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .bulk-results-table th {
+            background: #8e44ad;
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+        .bulk-results-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .bulk-results-table tr:hover {
+            background: #f5f0f8;
+        }
+        .bulk-results-table .severity-none { color: #666; }
+        .bulk-results-table .severity-low { color: #2ecc71; }
+        .bulk-results-table .severity-medium { color: #f39c12; }
+        .bulk-results-table .severity-high { color: #e74c3c; }
+        .bulk-results-table .severity-critical { color: #8e44ad; font-weight: bold; }
+        .bulk-table-wrap {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        .status-fetching { color: #3498db; }
+        .status-done { color: #2ecc71; }
+        .status-error { color: #e74c3c; }
+        .sample-csv {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+        }
+        .sample-csv code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .risk-select-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .risk-select-row > div {
+            flex: 1;
+            min-width: 180px;
+        }
+        .risk-select-row label {
+            font-size: 13px;
+        }
+        .risk-select-row select {
+            font-size: 13px;
+        }
 
-@media (prefers-reduced-motion: reduce) {
-  .flicker, .glow { animation: none !important; }
-}
+        /* Dumpster-fire animations */
+        @keyframes flicker {
+          0%   { transform: translateY(0) rotate(-0.3deg) scale(1);   opacity: 0.92; }
+          10%  { transform: translateY(-0.3px) rotate(0.2deg) scale(1.005); opacity: 0.98; }
+          20%  { transform: translateY(-0.6px) rotate(-0.1deg) scale(0.998); opacity: 0.94; }
+          30%  { transform: translateY(-0.2px) rotate(0.3deg) scale(1.003); opacity: 1; }
+          40%  { transform: translateY(-0.5px) rotate(-0.2deg) scale(1.002); opacity: 0.96; }
+          50%  { transform: translateY(-0.8px) rotate(0.1deg) scale(1.004); opacity: 0.93; }
+          60%  { transform: translateY(-0.3px) rotate(-0.25deg) scale(1.002); opacity: 0.99; }
+          70%  { transform: translateY(-0.7px) rotate(0.15deg) scale(1.003); opacity: 0.95; }
+          80%  { transform: translateY(-0.4px) rotate(-0.1deg) scale(1.001); opacity: 0.97; }
+          100% { transform: translateY(-1px) rotate(0.25deg) scale(1.005); opacity: 0.92; }
+        }
+
+        @keyframes glow {
+          0%   { filter: brightness(1) drop-shadow(0 0 0px #ff6a00); }
+          50%  { filter: brightness(1.18) drop-shadow(0 0 12px #ff6a00); }
+          100% { filter: brightness(1) drop-shadow(0 0 0px #ff6a00); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .flicker, .glow { animation: none !important; }
+        }
     </style>
 </head>
 <body>
-<h2>CVSS v3.1 Contextual Calculator version 5.2.2</h2>
+<h2>CVSS v3.1 Contextual Calculator version 6.0.0</h2>
 
+<!-- ============ SINGLE CVE SECTION ============ -->
 <div class="section">
     <label for="cve">Enter CVE ID:</label>
-    <input id="cve" placeholder="CVE-ID" type="text"/>
-   <!-- <button onclick="fetchCVE()">Fetch CVSS Data</button>
-    <div id="fetch-status"></div>-->
-    
+    <input id="cve" placeholder="e.g. CVE-2024-1234" type="text"/>
+    <button onclick="fetchSingleCVE()">Fetch CVSS Data</button>
+    <div id="fetch-status"></div>
     <div id="cve-metadata"></div>
 </div>
 
@@ -147,7 +265,7 @@
     <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
     <h3>Base Metrics</h3>
     <hr style="border-top: 2px solid #8e44ad;">
-    
+
     <label>Attack Vector (AV)</label>
     <select id="av">
         <option value="N">Network (0.85)</option>
@@ -155,46 +273,46 @@
         <option value="L">Local (0.55)</option>
         <option value="P">Physical (0.20)</option>
     </select>
-    
+
     <label>Attack Complexity (AC)</label>
     <select id="ac">
         <option value="L">Low (0.77)</option>
         <option value="H">High (0.44)</option>
     </select>
-    
+
     <label>Privileges Required (PR)</label>
     <select id="pr">
         <option value="N">None (0.85)</option>
         <option value="L">Low (0.62/0.68)</option>
         <option value="H">High (0.27/0.50)</option>
     </select>
-    
+
     <label>User Interaction (UI)</label>
     <select id="ui">
         <option value="N">None (0.85)</option>
         <option value="R">Required (0.62)</option>
     </select>
-    
+
     <label>Scope (S)</label>
     <select id="scope">
         <option value="U">Unchanged</option>
         <option value="C">Changed</option>
     </select>
-    
+
     <label>Confidentiality Impact (C)</label>
     <select id="c">
         <option value="H">High (0.56)</option>
         <option value="L">Low (0.22)</option>
         <option value="N">None (0.00)</option>
     </select>
-    
+
     <label>Integrity Impact (I)</label>
     <select id="i">
         <option value="H">High (0.56)</option>
         <option value="L">Low (0.22)</option>
         <option value="N">None (0.00)</option>
     </select>
-    
+
     <label>Availability Impact (A)</label>
     <select id="a">
         <option value="H">High (0.56)</option>
@@ -205,7 +323,7 @@
     <div style="border-top: 2px solid #8e44ad; margin-top: 20px;"></div>
     <h3>Temporal Metrics</h3>
     <hr style="border-top: 2px solid #8e44ad;">
-    
+
     <label>Exploit Code Maturity (E)</label>
     <select id="exploit_maturity">
         <option value="X">Not Defined (1.0)</option>
@@ -214,7 +332,7 @@
         <option value="F">Functional (0.97)</option>
         <option value="H">High (1.0)</option>
     </select>
-    
+
     <label>Remediation Level (RL)</label>
     <select id="remediation_level">
         <option value="X">Not Defined (1.0)</option>
@@ -223,7 +341,7 @@
         <option value="W">Workaround (0.97)</option>
         <option value="U">Unavailable (1.0)</option>
     </select>
-    
+
     <label>Report Confidence (RC)</label>
     <select id="report_confidence">
         <option value="X">Not Defined (1.0)</option>
@@ -239,12 +357,13 @@
 </div>
 
 <div id="risk-calculator-section" class="section">
-    <h3>Risk Impact Factors- This section to be developed further with the idea being to generate FPs at first to discuss with the team- Further refinement to come</h3>
-    
+    <h3>Risk Impact Factors</h3>
+    <p style="font-size:13px;color:#666;">Custom environmental factors to contextualize CVSS scores for your organization.</p>
+
     <label>
         Internet Facing
-        <span class="tooltip">❓
-            <span class="tooltiptext">Estimated number of public endpoints. **What do we want this to mean?</span>
+        <span class="tooltip">&#10067;
+            <span class="tooltiptext">Estimated number of public-facing endpoints affected by this vulnerability.</span>
         </span>
     </label>
     <select id="internet">
@@ -253,36 +372,36 @@
         <option value=".35">20+ public endpoints (+.35)</option>
         <option value=".50">50+ public endpoints (+.50)</option>
     </select>
-    
+
     <label>
         Number of Exposed Devices
-        <span class="tooltip">❓
-            <span class="tooltiptext">Approximate count of exposed devices. That we know of...</span>
+        <span class="tooltip">&#10067;
+            <span class="tooltiptext">Approximate count of devices in your environment affected by this vulnerability.</span>
         </span>
     </label>
     <select id="devices">
         <option value="-.30">0 devices (score -0.30)</option>
-        <option value=".10">1–10 devices (+0.10)</option>
-        <option value=".20">11–50 devices (+0.20)</option>
-        <option value=".35">51–100 devices (+0.35)</option>
+        <option value=".10">1&ndash;10 devices (+0.10)</option>
+        <option value=".20">11&ndash;50 devices (+0.20)</option>
+        <option value=".35">51&ndash;100 devices (+0.35)</option>
         <option value=".50">100+ devices (+0.50)</option>
     </select>
-    
+
     <label>
         Active Exploitation
-        <span class="tooltip">❓
-            <span class="tooltiptext">Is the vulnerability being actively exploited (e.g. in KEV). This is a separate factor from Exploit Code Maturity</span>
+        <span class="tooltip">&#10067;
+            <span class="tooltiptext">Is the vulnerability being actively exploited in the wild (e.g. listed in CISA KEV)? This is a separate factor from Exploit Code Maturity.</span>
         </span>
     </label>
     <select id="exploit">
         <option value=".50">Yes (+.50)</option>
         <option value="0">No (+0)</option>
     </select>
-    
+
     <label>
-        Criticality- Check weights
-        <span class="tooltip">❓
-            <span class="tooltiptext">Business/system criticality impact. **How granular should we get with this?</span>
+        Criticality
+        <span class="tooltip">&#10067;
+            <span class="tooltiptext">How critical are the affected systems to your business operations?</span>
         </span>
     </label>
     <select id="criticality">
@@ -303,12 +422,12 @@
     <div id="combinedResult" class="result"></div>
 </div>
 
-<!-- 🎬 Embeds (added, static) -->
+<!-- Embeds (GIF reactions) -->
 <div id="scoreGraphic" style="margin:16px 0;">
   <!-- Less than 9.0 -->
   <div id="gifLow" class="hidden">
     <div class="tenor-gif-embed" data-postid="22656380" data-share-method="host" data-aspect-ratio="1" data-width="100%">
-      <a href="https://tenor.com/view/cat-space-nyan-cat-gif-22656380">Cat Space GIF</a>from 
+      <a href="https://tenor.com/view/cat-space-nyan-cat-gif-22656380">Cat Space GIF</a>from
       <a href="https://tenor.com/search/cat-gifs">Cat GIFs</a>
     </div>
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
@@ -317,7 +436,7 @@
   <!-- 9.0 and over -->
   <div id="gifHigh" class="hidden">
     <div class="tenor-gif-embed" data-postid="7510700295202730251" data-share-method="host" data-aspect-ratio="1.46667" data-width="100%">
-      <a href="https://tenor.com/view/burn-elmo-pyro-burn-it-down-ashes-gif-7510700295202730251">Burn Elmo GIF</a>from 
+      <a href="https://tenor.com/view/burn-elmo-pyro-burn-it-down-ashes-gif-7510700295202730251">Burn Elmo GIF</a>from
       <a href="https://tenor.com/search/burn-gifs">Burn GIFs</a>
     </div>
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
@@ -329,57 +448,119 @@
     <button onclick="exportToCSV()">Export to CSV</button>
 </div>
 
+<!-- ============ BULK CVE LOOKUP SECTION ============ -->
+<div class="bulk-section">
+    <h3>Bulk CVE Lookup</h3>
+    <p style="font-size:14px;color:#444;">Upload a CSV file containing CVE IDs to automatically fetch CVSS scores from the NVD and apply your custom risk factors.</p>
+
+    <label>
+        NVD API Key (optional)
+        <span class="tooltip">&#10067;
+            <span class="tooltiptext">A free API key from <strong>nvd.nist.gov/developers/request-an-api-key</strong> increases the rate limit from ~5 to ~50 requests per 30 seconds. Leave blank to use the public rate limit.</span>
+        </span>
+    </label>
+    <input id="nvd-api-key" type="text" placeholder="Paste your NVD API key here (optional)"/>
+
+    <label>Upload CSV File</label>
+    <input id="csv-upload" type="file" accept=".csv,.txt"/>
+    <div class="sample-csv">
+        Expected format: one CVE ID per row. A header row is optional.<br>
+        Example: <code>CVE-2023-44487</code>, <code>CVE-2024-3094</code>, <code>CVE-2021-44228</code>
+    </div>
+
+    <label style="margin-top:15px;">Risk Factors for Bulk Assessment</label>
+    <p style="font-size:13px;color:#666;margin-top:4px;">These risk factors will be applied to all CVEs in the bulk lookup.</p>
+    <div class="risk-select-row">
+        <div>
+            <label>Internet Facing</label>
+            <select id="bulk-internet">
+                <option value="-.30">Not internet facing (-.30)</option>
+                <option value=".20">10+ endpoints (+.20)</option>
+                <option value=".35">20+ endpoints (+.35)</option>
+                <option value=".50">50+ endpoints (+.50)</option>
+            </select>
+        </div>
+        <div>
+            <label>Exposed Devices</label>
+            <select id="bulk-devices">
+                <option value="-.30">0 devices (-0.30)</option>
+                <option value=".10">1&ndash;10 (+0.10)</option>
+                <option value=".20">11&ndash;50 (+0.20)</option>
+                <option value=".35">51&ndash;100 (+0.35)</option>
+                <option value=".50">100+ (+0.50)</option>
+            </select>
+        </div>
+        <div>
+            <label>Active Exploitation</label>
+            <select id="bulk-exploit">
+                <option value="0">No (+0)</option>
+                <option value=".50">Yes (+.50)</option>
+            </select>
+        </div>
+        <div>
+            <label>Criticality</label>
+            <select id="bulk-criticality">
+                <option value="-.20">None (-.20)</option>
+                <option value=".15">Low (+.15)</option>
+                <option value=".30">Medium (+.30)</option>
+                <option value=".50">High (+.50)</option>
+            </select>
+        </div>
+    </div>
+
+    <button id="bulk-fetch-btn" onclick="startBulkLookup()">Fetch All CVE Scores</button>
+    <button id="bulk-cancel-btn" class="hidden" onclick="cancelBulkLookup()" style="background:#e74c3c;">Cancel</button>
+
+    <div id="bulk-progress" class="hidden">
+        <div id="bulk-progress-text"></div>
+        <div class="progress-bar-container">
+            <div id="bulk-progress-bar" class="progress-bar" style="width:0%">0%</div>
+        </div>
+    </div>
+
+    <div id="bulk-results" class="hidden">
+        <h4 style="margin-top:20px;">Results</h4>
+        <div class="bulk-table-wrap">
+            <table class="bulk-results-table">
+                <thead>
+                    <tr>
+                        <th>CVE ID</th>
+                        <th>Base Score</th>
+                        <th>Severity</th>
+                        <th>Vector String</th>
+                        <th>Risk Adj.</th>
+                        <th>Combined</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="bulk-results-body"></tbody>
+            </table>
+        </div>
+        <button onclick="exportBulkCSV()" style="background:#e67e22;">Export Bulk Results to CSV</button>
+    </div>
+</div>
+
 <script>
-// Global variables
+// ================================================================
+// Global state
+// ================================================================
 let baseScore = 0;
 let temporalScore = 0;
 let riskScore = 0;
+let bulkResults = [];
+let bulkCancelRequested = false;
 
-// === Environmental Factors (configurable add-on) ==================
-// TUNE HERE: add/remove criteria, adjust weights or value → score map.
+// ================================================================
+// Environmental Factors config (same as before)
+// ================================================================
 const ENV_CONFIG = {
-  internet: {
-    controlId: "internet",
-    weight: 1,
-    valuesToScore: {
-      "-.30": -0.30,  // Not internet facing
-      ".20":  +0.20,  // 10+ public endpoints
-      ".35":  +0.35,  // 20+ public endpoints
-      ".50":  +0.50   // 50+ public endpoints
-    }
-  },
-  devices: {
-    controlId: "devices",
-    weight: 1,
-    valuesToScore: {
-      "-.30": -0.30,  // 0 devices
-      ".10":  +0.10,  // 1–10
-      ".20":  +0.20,  // 11–50
-      ".35":  +0.35,  // 51–100
-      ".50":  +0.50   // 100+
-    }
-  },
-  exploit: {
-    controlId: "exploit",
-    weight: 1,
-    valuesToScore: {
-      ".50": +0.50,   // Active exploitation
-      "0":   0.00     // Not active
-    }
-  },
-  criticality: {
-    controlId: "criticality",
-    weight: 1,
-    valuesToScore: {
-      "-.20": -0.20,  // None → reduces score
-      ".15":  +0.15,  // Low
-      ".30":  +0.30,  // Medium
-      ".50":  +0.50   // High
-    }
-  }
+  internet:    { controlId: "internet",    weight: 1, valuesToScore: { "-.30": -0.30, ".20": +0.20, ".35": +0.35, ".50": +0.50 } },
+  devices:     { controlId: "devices",     weight: 1, valuesToScore: { "-.30": -0.30, ".10": +0.10, ".20": +0.20, ".35": +0.35, ".50": +0.50 } },
+  exploit:     { controlId: "exploit",     weight: 1, valuesToScore: { ".50": +0.50, "0": 0.00 } },
+  criticality: { controlId: "criticality", weight: 1, valuesToScore: { "-.20": -0.20, ".15": +0.15, ".30": +0.30, ".50": +0.50 } }
 };
 
-// Helper to compute riskScore from the config above
 function calculateEnvRisk() {
   let sum = 0;
   for (const cfg of Object.values(ENV_CONFIG)) {
@@ -392,211 +573,238 @@ function calculateEnvRisk() {
   return sum;
 }
 
-// Attempt to fetch CVE data (with fallback)
-function fetchCVE() {
-    const cveInput = document.getElementById("cve").value.trim();
-    
-    if (!cveInput) {
-        document.getElementById("fetch-status").innerHTML = '<span class="error">Please enter at least one CVE ID.</span>';
-        return;
-    }
-    
-    document.getElementById("fetch-status").innerHTML = "Currently unavailable. Please use the calculator below.";
-    document.getElementById("cve-metadata").style.display = "none";
+function calculateBulkEnvRisk() {
+  const vals = {
+    internet:    parseFloat(document.getElementById("bulk-internet").value)    || 0,
+    devices:     parseFloat(document.getElementById("bulk-devices").value)     || 0,
+    exploit:     parseFloat(document.getElementById("bulk-exploit").value)     || 0,
+    criticality: parseFloat(document.getElementById("bulk-criticality").value) || 0
+  };
+  return vals.internet + vals.devices + vals.exploit + vals.criticality;
 }
 
-
-// Calculate all CVSS scores
-function calculateScores() {
-    calculateBaseScore();
-    calculateTemporalScore();
+// ================================================================
+// Severity helpers
+// ================================================================
+function getSeverity(score) {
+  if (score === 0) return "None";
+  if (score < 4.0) return "Low";
+  if (score < 7.0) return "Medium";
+  if (score < 9.0) return "High";
+  return "Critical";
 }
 
-// Calculate the CVSS base score
-function calculateBaseScore() {
-    // Get Base Metric Values
-    const av_val = document.getElementById("av").value;
-    const ac_val = document.getElementById("ac").value;
-    const pr_val = document.getElementById("pr").value;
-    const ui_val = document.getElementById("ui").value;
-    const scope_val = document.getElementById("scope").value;
-    const c_val = document.getElementById("c").value;
-    const i_val = document.getElementById("i").value;
-    const a_val = document.getElementById("a").value;
-    
-    // Get modifier values
-    const av = {
-        "N": 0.85, // Network
-        "A": 0.62, // Adjacent
-        "L": 0.55, // Local
-        "P": 0.20  // Physical
-    }[av_val];
+function getSeverityClass(severity) {
+  return "severity-" + severity.toLowerCase();
+}
 
-    const ac = {
-        "L": 0.77, // Low
-        "H": 0.44  // High
-    }[ac_val];
+function getActionBucket(combinedScore) {
+  if (combinedScore >= 9.0) return "Critical - Patch Now!!";
+  if (combinedScore >= 7.0) return "Discuss with the team :)";
+  if (combinedScore >= 5.0) return "Regularly Scheduled Patching";
+  return "Informational";
+}
 
-    // Privileges Required Calculation varies based on Scope
+// ================================================================
+// CVSS v3.1 pure calculation (no DOM dependency)
+// ================================================================
+function computeCVSSBase(av_val, ac_val, pr_val, ui_val, scope_val, c_val, i_val, a_val) {
+    const av = { "N": 0.85, "A": 0.62, "L": 0.55, "P": 0.20 }[av_val];
+    const ac = { "L": 0.77, "H": 0.44 }[ac_val];
+
     let pr = 0;
     if (pr_val === "N") pr = 0.85;
     else if (pr_val === "L") pr = scope_val === "U" ? 0.62 : 0.68;
     else if (pr_val === "H") pr = scope_val === "U" ? 0.27 : 0.50;
 
-    const ui = {
-        "N": 0.85, // None
-        "R": 0.62  // Required
-    }[ui_val];
+    const ui = { "N": 0.85, "R": 0.62 }[ui_val];
+    const c  = { "H": 0.56, "L": 0.22, "N": 0.00 }[c_val];
+    const i  = { "H": 0.56, "L": 0.22, "N": 0.00 }[i_val];
+    const a  = { "H": 0.56, "L": 0.22, "N": 0.00 }[a_val];
 
-    const c = {
-        "H": 0.56,  // High
-        "L": 0.22,  // Low
-        "N": 0.00   // None
-    }[c_val];
-
-    const i = {
-        "H": 0.56,  // High
-        "L": 0.22,  // Low
-        "N": 0.00   // None
-    }[i_val];
-
-    const a = {
-        "H": 0.56,  // High
-        "L": 0.22,  // Low
-        "N": 0.00   // None
-    }[a_val];
-    
-    // Calculate Impact subscore
-    // https://www.first.org/cvss/v3-1/specification-document
     const impact = 1 - ((1 - c) * (1 - i) * (1 - a));
-    
     let impactSubScore;
     if (scope_val === "U") {
         impactSubScore = 6.42 * impact;
     } else {
         impactSubScore = 7.52 * (impact - 0.029) - 3.25 * Math.pow(impact - 0.02, 15);
     }
-    
-    // Calculate Exploitability subscore
+
     const exploitability = 8.22 * av * ac * pr * ui;
-    
-    // Calculate Base Score
+
+    let score;
     if (impactSubScore <= 0) {
-        baseScore = 0;
+        score = 0;
+    } else if (scope_val === "U") {
+        score = Math.min(impactSubScore + exploitability, 10);
     } else {
-        if (scope_val === "U") {
-            baseScore = Math.min(impactSubScore + exploitability, 10);
-        } else {
-            baseScore = Math.min(1.08 * (impactSubScore + exploitability), 10);
+        score = Math.min(1.08 * (impactSubScore + exploitability), 10);
+    }
+
+    return {
+        baseScore: Math.ceil(score * 10) / 10,
+        impactSubScore,
+        exploitability
+    };
+}
+
+// ================================================================
+// Single CVE fetch from NVD
+// ================================================================
+function fetchSingleCVE() {
+    const cveId = document.getElementById("cve").value.trim().toUpperCase();
+    const statusEl = document.getElementById("fetch-status");
+    const metaEl = document.getElementById("cve-metadata");
+
+    if (!cveId || !/^CVE-\d{4}-\d{4,}$/.test(cveId)) {
+        statusEl.innerHTML = '<span class="error">Please enter a valid CVE ID (e.g. CVE-2024-1234).</span>';
+        return;
+    }
+
+    statusEl.innerHTML = '<span class="status-fetching">Fetching from NVD...</span>';
+    metaEl.style.display = "none";
+
+    const apiKey = document.getElementById("nvd-api-key").value.trim();
+    const headers = {};
+    if (apiKey) headers["apiKey"] = apiKey;
+
+    fetch("https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=" + encodeURIComponent(cveId), { headers })
+        .then(function(resp) {
+            if (!resp.ok) throw new Error("NVD returned HTTP " + resp.status);
+            return resp.json();
+        })
+        .then(function(data) {
+            if (!data.vulnerabilities || data.vulnerabilities.length === 0) {
+                statusEl.innerHTML = '<span class="error">CVE not found in NVD.</span>';
+                return;
+            }
+
+            const vuln = data.vulnerabilities[0].cve;
+            const metrics = vuln.metrics;
+            let cvssData = null;
+
+            if (metrics.cvssMetricV31 && metrics.cvssMetricV31.length > 0) {
+                cvssData = metrics.cvssMetricV31[0].cvssData;
+            } else if (metrics.cvssMetricV30 && metrics.cvssMetricV30.length > 0) {
+                cvssData = metrics.cvssMetricV30[0].cvssData;
+            }
+
+            if (!cvssData) {
+                statusEl.innerHTML = '<span class="error">No CVSS v3 data available for this CVE.</span>';
+                return;
+            }
+
+            // Populate the calculator dropdowns from the vector
+            setDropdownFromVector(cvssData);
+
+            const desc = vuln.descriptions.find(function(d) { return d.lang === "en"; });
+            metaEl.innerHTML = '<div class="cve-item">' +
+                '<strong>' + vuln.id + '</strong> &mdash; Base Score: ' + cvssData.baseScore + ' (' + cvssData.baseSeverity + ')<br>' +
+                '<small>Vector: ' + cvssData.vectorString + '</small><br>' +
+                (desc ? '<p style="margin-top:8px;font-size:13px;">' + escapeHtml(desc.value) + '</p>' : '') +
+                '</div>';
+            metaEl.style.display = "block";
+            statusEl.innerHTML = '<span class="status-done">Loaded! Calculator fields have been updated.</span>';
+
+            // Auto-calculate
+            calculateScores();
+        })
+        .catch(function(err) {
+            statusEl.innerHTML = '<span class="error">Error: ' + escapeHtml(err.message) + '</span>';
+        });
+}
+
+function setDropdownFromVector(cvssData) {
+    const map = {
+        "AV": "av", "AC": "ac", "PR": "pr", "UI": "ui",
+        "S": "scope", "C": "c", "I": "i", "A": "a"
+    };
+    // Parse vector string like CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+    const parts = cvssData.vectorString.split("/");
+    for (var idx = 0; idx < parts.length; idx++) {
+        var kv = parts[idx].split(":");
+        if (kv.length === 2 && map[kv[0]]) {
+            var sel = document.getElementById(map[kv[0]]);
+            if (sel) {
+                // For Scope, map U/C correctly
+                if (kv[0] === "S") {
+                    sel.value = kv[1];
+                } else {
+                    sel.value = kv[1];
+                }
+            }
         }
     }
-    
-    // Round up to 1 decimal place
-    baseScore = Math.ceil(baseScore * 10) / 10;
-    
-    // Determine severity
-    let severity = "";
-    if (baseScore === 0) severity = "None";
-    else if (baseScore < 4.0) severity = "Low";
-    else if (baseScore < 7.0) severity = "Medium";
-    else if (baseScore < 9.0) severity = "High";
-    else severity = "Critical";
-    
-    // Display results
-    document.getElementById("baseScore").innerHTML = `CVSS Base Score: (${severity})`;
-    
-    // Store calculation details
-    const calculationDetails = `
-        <h4>Base Score Calculation</h4>
-        <ul>
-            <li>Impact Subscore: ${impactSubScore.toFixed(2)}</li>
-            <li>Exploitability: ${exploitability.toFixed(2)}</li>
-            <li>Scope: ${scope_val === "U" ? "Unchanged" : "Changed"}</li>
-            <li>Base Score Formula: ${scope_val === "U" ? 
-                `min(Impact + Exploitability, 10)` : 
-                `min(1.08 × (Impact + Exploitability), 10)`}</li>
-            <li>Final Base Score (rounded up): ${baseScore.toFixed(1)}</li>
-        </ul>
-    `;
-    
-    document.getElementById("calculationDetails").innerHTML = calculationDetails;
+}
+
+// ================================================================
+// Calculate scores (single CVE, from form)
+// ================================================================
+function calculateScores() {
+    calculateBaseScore();
+    calculateTemporalScore();
+}
+
+function calculateBaseScore() {
+    const result = computeCVSSBase(
+        document.getElementById("av").value,
+        document.getElementById("ac").value,
+        document.getElementById("pr").value,
+        document.getElementById("ui").value,
+        document.getElementById("scope").value,
+        document.getElementById("c").value,
+        document.getElementById("i").value,
+        document.getElementById("a").value
+    );
+
+    baseScore = result.baseScore;
+    const severity = getSeverity(baseScore);
+    const scope_val = document.getElementById("scope").value;
+
+    document.getElementById("baseScore").innerHTML = "CVSS Base Score: " + baseScore.toFixed(1) + " (" + severity + ")";
+
+    document.getElementById("calculationDetails").innerHTML =
+        '<h4>Base Score Calculation</h4>' +
+        '<ul>' +
+        '<li>Impact Subscore: ' + result.impactSubScore.toFixed(2) + '</li>' +
+        '<li>Exploitability: ' + result.exploitability.toFixed(2) + '</li>' +
+        '<li>Scope: ' + (scope_val === "U" ? "Unchanged" : "Changed") + '</li>' +
+        '<li>Base Score Formula: ' + (scope_val === "U" ? 'min(Impact + Exploitability, 10)' : 'min(1.08 &times; (Impact + Exploitability), 10)') + '</li>' +
+        '<li>Final Base Score (rounded up): ' + baseScore.toFixed(1) + '</li>' +
+        '</ul>';
     document.getElementById("calculationDetails").style.display = "block";
-    
+
     return baseScore;
 }
 
-// Calculate Temporal Score
 function calculateTemporalScore() {
     if (baseScore === 0) {
         baseScore = calculateBaseScore();
     }
-    
-    // Get temporal metrics
-    const e_val = document.getElementById("exploit_maturity").value;
-    const rl_val = document.getElementById("remediation_level").value;
-    const rc_val = document.getElementById("report_confidence").value;
-    
-    // Get values
-    const e = {
-        "X": 1.0,   // Not Defined
-        "U": 0.91,  // Unproven
-        "P": 0.94,  // Proof-of-Concept
-        "F": 0.97,  // Functional
-        "H": 1.0    // High
-    }[e_val];
-    
-    const rl = {
-        "X": 1.0,   // Not Defined
-        "O": 0.95,  // Official Fix
-        "T": 0.96,  // Temporary Fix
-        "W": 0.97,  // Workaround
-        "U": 1.0    // Unavailable
-    }[rl_val];
-    
-    const rc = {
-        "X": 1.0,   // Not Defined
-        "U": 0.92,  // Unknown
-        "R": 0.96,  // Reasonable
-        "C": 1.0    // Confirmed
-    }[rc_val];
-    
-    // Calculate Temporal Score
-    temporalScore = baseScore * e * rl * rc;
-    
-    // Round up to 1 decimal place
-    temporalScore = Math.ceil(temporalScore * 10) / 10;
-    
-    // Determine severity
-    let severity = "";
-    if (temporalScore === 0) severity = "None";
-    else if (temporalScore < 4.0) severity = "Low";
-    else if (temporalScore < 7.0) severity = "Medium";
-    else if (temporalScore < 9.0) severity = "High";
-    else severity = "Critical";
-    
-    // Display results
-    document.getElementById("temporalScore").innerHTML = `CVSS Temporal Score: (${severity})`;
 
-    
-    // Update calculation details
-    const currentDetails = document.getElementById("calculationDetails").innerHTML;
-    const temporalDetails = `
-        <h4>Temporal Score Calculation</h4>
-        <ul>
-            <li>Exploit Code Maturity: ${e.toFixed(2)}</li>
-            <li>Remediation Level: ${rl.toFixed(2)}</li>
-            <li>Report Confidence: ${rc.toFixed(2)}</li>
-            <li>Temporal Score Formula: Base Score × E × RL × RC</li>
-            <li>Final Temporal Score (rounded up): ${temporalScore.toFixed(1)}</li>
-        </ul>
-    `;
-    
-    document.getElementById("calculationDetails").innerHTML = currentDetails + temporalDetails;
-    
+    const e = { "X": 1.0, "U": 0.91, "P": 0.94, "F": 0.97, "H": 1.0 }[document.getElementById("exploit_maturity").value];
+    const rl = { "X": 1.0, "O": 0.95, "T": 0.96, "W": 0.97, "U": 1.0 }[document.getElementById("remediation_level").value];
+    const rc = { "X": 1.0, "U": 0.92, "R": 0.96, "C": 1.0 }[document.getElementById("report_confidence").value];
+
+    temporalScore = Math.ceil(baseScore * e * rl * rc * 10) / 10;
+    const severity = getSeverity(temporalScore);
+
+    document.getElementById("temporalScore").innerHTML = "CVSS Temporal Score: " + temporalScore.toFixed(1) + " (" + severity + ")";
+
+    var currentDetails = document.getElementById("calculationDetails").innerHTML;
+    document.getElementById("calculationDetails").innerHTML = currentDetails +
+        '<h4>Temporal Score Calculation</h4>' +
+        '<ul>' +
+        '<li>Exploit Code Maturity: ' + e.toFixed(2) + '</li>' +
+        '<li>Remediation Level: ' + rl.toFixed(2) + '</li>' +
+        '<li>Report Confidence: ' + rc.toFixed(2) + '</li>' +
+        '<li>Temporal Score Formula: Base Score &times; E &times; RL &times; RC</li>' +
+        '<li>Final Temporal Score (rounded up): ' + temporalScore.toFixed(1) + '</li>' +
+        '</ul>';
+
     return temporalScore;
 }
 
-// Calculate Risk Score (modular add-on; same output & buckets)
 function calculateRisk() {
     riskScore = calculateEnvRisk();
 
@@ -605,38 +813,24 @@ function calculateRisk() {
     else if (riskScore >= 0.5) bucket = "High";
     else if (riskScore < 0.5) bucket = "Track";
 
-    const riskText = `Custom Risk Score: ${riskScore.toFixed(2)} (${bucket})`;
-    document.getElementById("riskResult").innerHTML = riskText;
-    
+    document.getElementById("riskResult").innerHTML = "Custom Risk Score: " + riskScore.toFixed(2) + " (" + bucket + ")";
     return riskScore;
 }
 
-// Calculate Combined Score
 function calculateCombined() {
-    // Calculate base score if not already calculated
-    if (baseScore === 0) {
-        calculateBaseScore();
-    }
-    
-    // Calculate risk score if not already calculated
-    if (riskScore === 0) {
-        calculateRisk();
-    }
-    
-    const combinedScore = (baseScore + (riskScore)).toFixed(1);
-    
-    let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical- Patch Now!!";
-    else if (combinedScore >= 7.0) actionBucket = "Discuss with the team :)";
-    else if (combinedScore >= 5.0) actionBucket = "Relax! It's probably fine... - Regularly Scheduled Patching";
-    
-    document.getElementById("combinedResult").innerHTML = 
-        `Combined Score: ${combinedScore} - <strong>${actionBucket}</strong>`;
+    if (baseScore === 0) calculateBaseScore();
+    if (riskScore === 0) calculateRisk();
 
-    // 🔁 Toggle embeds (no other changes)
-    const low = document.getElementById("gifLow");
-    const high = document.getElementById("gifHigh");
-    if (parseFloat(combinedScore) >= 9.0) {
+    const combinedScore = parseFloat((baseScore + riskScore).toFixed(1));
+    const actionBucket = getActionBucket(combinedScore);
+
+    document.getElementById("combinedResult").innerHTML =
+        'Combined Score: ' + combinedScore.toFixed(1) + ' - <strong>' + actionBucket + '</strong>';
+
+    // Toggle GIF embeds
+    var low = document.getElementById("gifLow");
+    var high = document.getElementById("gifHigh");
+    if (combinedScore >= 9.0) {
         high.classList.remove("hidden");
         low.classList.add("hidden");
     } else {
@@ -645,45 +839,293 @@ function calculateCombined() {
     }
 }
 
-// Export to CSV
+// ================================================================
+// Single-CVE CSV export
+// ================================================================
 function exportToCSV() {
-    // Calculate scores if not calculated
-    if (baseScore === 0) {
-        calculateBaseScore();
-    }
-    
-    if (temporalScore === 0) {
-        calculateTemporalScore();
-    }
-    
-    if (riskScore === 0) {
-        calculateRisk();
-    }
-    
-    const combinedScore = (baseScore + (riskScore)).toFixed(1);
-    
-    // Create CSV header
-    let csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
-    
-    // Add row for current assessment
+    if (baseScore === 0) calculateBaseScore();
+    if (temporalScore === 0) calculateTemporalScore();
+    if (riskScore === 0) calculateRisk();
+
+    const combinedScore = (baseScore + riskScore).toFixed(1);
     const cveId = document.getElementById("cve").value.trim() || "Custom Assessment";
-    let actionBucket = "Informational";
-    if (combinedScore >= 9.0) actionBucket = "Critical - Patch Now";
-    else if (combinedScore >= 7.0) actionBucket = "Regularly Scheduled Patching";
-    else if (combinedScore >= 5.0) actionBucket = "No Additional Action";
-    
-    csvContent += `${cveId},${baseScore.toFixed(1)},${temporalScore.toFixed(1)},${(riskScore).toFixed(1)},${combinedScore},${actionBucket}\n`;
-    
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    const actionBucket = getActionBucket(parseFloat(combinedScore));
+
+    var csvContent = "CVE ID,Base Score,Temporal Score,Risk Score,Combined Score,Action\n";
+    csvContent += cveId + "," + baseScore.toFixed(1) + "," + temporalScore.toFixed(1) + "," + riskScore.toFixed(1) + "," + combinedScore + "," + actionBucket + "\n";
+
+    downloadCSV(csvContent, "cvss_assessment.csv");
+}
+
+// ================================================================
+// Bulk CVE Lookup
+// ================================================================
+function sleep(ms) {
+    return new Promise(function(resolve) { setTimeout(resolve, ms); });
+}
+
+async function fetchCVEFromNVD(cveId, apiKey) {
+    const headers = {};
+    if (apiKey) headers["apiKey"] = apiKey;
+
+    const resp = await fetch(
+        "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=" + encodeURIComponent(cveId),
+        { headers: headers }
+    );
+
+    if (resp.status === 403 || resp.status === 429) {
+        // Rate limited - throw a retriable error
+        throw { retriable: true, status: resp.status, message: "Rate limited (HTTP " + resp.status + ")" };
+    }
+
+    if (!resp.ok) {
+        throw { retriable: false, status: resp.status, message: "HTTP " + resp.status };
+    }
+
+    const data = await resp.json();
+
+    if (!data.vulnerabilities || data.vulnerabilities.length === 0) {
+        return { found: false, cveId: cveId };
+    }
+
+    const vuln = data.vulnerabilities[0].cve;
+    const metrics = vuln.metrics;
+    let cvssData = null;
+
+    if (metrics.cvssMetricV31 && metrics.cvssMetricV31.length > 0) {
+        cvssData = metrics.cvssMetricV31[0].cvssData;
+    } else if (metrics.cvssMetricV30 && metrics.cvssMetricV30.length > 0) {
+        cvssData = metrics.cvssMetricV30[0].cvssData;
+    }
+
+    const desc = vuln.descriptions.find(function(d) { return d.lang === "en"; });
+
+    return {
+        found: true,
+        cveId: vuln.id,
+        baseScore: cvssData ? cvssData.baseScore : null,
+        severity: cvssData ? cvssData.baseSeverity : null,
+        vectorString: cvssData ? cvssData.vectorString : null,
+        description: desc ? desc.value : ""
+    };
+}
+
+function parseCVEsFromCSV(text) {
+    var cvePattern = /CVE-\d{4}-\d{4,}/gi;
+    var matches = text.match(cvePattern);
+    if (!matches) return [];
+    // Deduplicate and uppercase
+    var seen = {};
+    var result = [];
+    for (var idx = 0; idx < matches.length; idx++) {
+        var id = matches[idx].toUpperCase();
+        if (!seen[id]) {
+            seen[id] = true;
+            result.push(id);
+        }
+    }
+    return result;
+}
+
+async function startBulkLookup() {
+    var fileInput = document.getElementById("csv-upload");
+    if (!fileInput.files || fileInput.files.length === 0) {
+        alert("Please select a CSV file first.");
+        return;
+    }
+
+    var file = fileInput.files[0];
+    var text = await file.text();
+    var cveIds = parseCVEsFromCSV(text);
+
+    if (cveIds.length === 0) {
+        alert("No valid CVE IDs found in the file. Expected format: CVE-YYYY-NNNNN");
+        return;
+    }
+
+    var apiKey = document.getElementById("nvd-api-key").value.trim();
+    // Rate limits: with key ~50/30s = ~1.7/s, without key ~5/30s = ~0.17/s
+    var delayMs = apiKey ? 700 : 6500;
+    var envRisk = calculateBulkEnvRisk();
+
+    bulkResults = [];
+    bulkCancelRequested = false;
+
+    // Show progress, hide results, toggle buttons
+    document.getElementById("bulk-progress").classList.remove("hidden");
+    document.getElementById("bulk-results").classList.remove("hidden");
+    document.getElementById("bulk-fetch-btn").disabled = true;
+    document.getElementById("bulk-cancel-btn").classList.remove("hidden");
+    document.getElementById("bulk-results-body").innerHTML = "";
+
+    // Pre-populate table rows
+    for (var idx = 0; idx < cveIds.length; idx++) {
+        var row = document.createElement("tr");
+        row.id = "bulk-row-" + idx;
+        row.innerHTML =
+            '<td>' + escapeHtml(cveIds[idx]) + '</td>' +
+            '<td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td>' +
+            '<td><span class="status-fetching">Pending</span></td>';
+        document.getElementById("bulk-results-body").appendChild(row);
+    }
+
+    for (var i = 0; i < cveIds.length; i++) {
+        if (bulkCancelRequested) break;
+
+        updateProgress(i, cveIds.length, "Fetching " + cveIds[i] + "...");
+        updateRowStatus(i, "Fetching...", "status-fetching");
+
+        var result;
+        var retries = 0;
+        var maxRetries = 3;
+
+        while (retries <= maxRetries) {
+            try {
+                result = await fetchCVEFromNVD(cveIds[i], apiKey);
+                break;
+            } catch (err) {
+                if (err.retriable && retries < maxRetries) {
+                    retries++;
+                    var backoff = delayMs * retries;
+                    updateRowStatus(i, "Rate limited, retrying in " + (backoff / 1000).toFixed(0) + "s...", "status-fetching");
+                    await sleep(backoff);
+                } else {
+                    result = { found: false, cveId: cveIds[i], error: err.message || "Unknown error" };
+                    break;
+                }
+            }
+        }
+
+        if (bulkCancelRequested) break;
+
+        // Process result
+        var entry = {
+            cveId: cveIds[i],
+            baseScore: null,
+            severity: null,
+            vectorString: null,
+            riskAdj: envRisk,
+            combinedScore: null,
+            action: null,
+            status: "OK",
+            description: ""
+        };
+
+        if (result.error) {
+            entry.status = "Error: " + result.error;
+            updateRowStatus(i, entry.status, "status-error");
+        } else if (!result.found) {
+            entry.status = "Not found in NVD";
+            updateRowStatus(i, entry.status, "status-error");
+        } else if (result.baseScore === null) {
+            entry.status = "No CVSS v3 data";
+            updateRowStatus(i, entry.status, "status-error");
+        } else {
+            entry.baseScore = result.baseScore;
+            entry.severity = result.severity;
+            entry.vectorString = result.vectorString;
+            entry.combinedScore = parseFloat((entry.baseScore + envRisk).toFixed(1));
+            entry.action = getActionBucket(entry.combinedScore);
+            entry.description = result.description;
+            entry.status = "OK";
+            updateRowData(i, entry);
+        }
+
+        bulkResults.push(entry);
+
+        // Throttle between requests (skip delay on last item)
+        if (i < cveIds.length - 1 && !bulkCancelRequested) {
+            await sleep(delayMs);
+        }
+    }
+
+    updateProgress(cveIds.length, cveIds.length, bulkCancelRequested ? "Cancelled." : "Done!");
+    document.getElementById("bulk-fetch-btn").disabled = false;
+    document.getElementById("bulk-cancel-btn").classList.add("hidden");
+}
+
+function cancelBulkLookup() {
+    bulkCancelRequested = true;
+}
+
+function updateProgress(current, total, text) {
+    var pct = total > 0 ? Math.round((current / total) * 100) : 0;
+    document.getElementById("bulk-progress-text").textContent = text + " (" + current + "/" + total + ")";
+    var bar = document.getElementById("bulk-progress-bar");
+    bar.style.width = pct + "%";
+    bar.textContent = pct + "%";
+}
+
+function updateRowStatus(idx, statusText, cssClass) {
+    var row = document.getElementById("bulk-row-" + idx);
+    if (!row) return;
+    var cells = row.getElementsByTagName("td");
+    cells[7].innerHTML = '<span class="' + cssClass + '">' + escapeHtml(statusText) + '</span>';
+}
+
+function updateRowData(idx, entry) {
+    var row = document.getElementById("bulk-row-" + idx);
+    if (!row) return;
+    var cells = row.getElementsByTagName("td");
+    var sevClass = getSeverityClass(entry.severity || "None");
+    cells[1].textContent = entry.baseScore !== null ? entry.baseScore.toFixed(1) : "--";
+    cells[2].innerHTML = '<span class="' + sevClass + '">' + (entry.severity || "--") + '</span>';
+    cells[3].textContent = entry.vectorString || "--";
+    cells[4].textContent = entry.riskAdj.toFixed(2);
+    cells[5].textContent = entry.combinedScore !== null ? entry.combinedScore.toFixed(1) : "--";
+    cells[6].textContent = entry.action || "--";
+    cells[7].innerHTML = '<span class="status-done">OK</span>';
+}
+
+// ================================================================
+// Bulk CSV export
+// ================================================================
+function exportBulkCSV() {
+    if (bulkResults.length === 0) {
+        alert("No results to export. Run a bulk lookup first.");
+        return;
+    }
+
+    var csv = "CVE ID,Base Score,Severity,Vector String,Risk Adjustment,Combined Score,Action,Status,Description\n";
+    for (var i = 0; i < bulkResults.length; i++) {
+        var r = bulkResults[i];
+        csv += '"' + (r.cveId || "") + '",' +
+            (r.baseScore !== null ? r.baseScore.toFixed(1) : "") + ',' +
+            '"' + (r.severity || "") + '",' +
+            '"' + (r.vectorString || "") + '",' +
+            (r.riskAdj !== null ? r.riskAdj.toFixed(2) : "") + ',' +
+            (r.combinedScore !== null ? r.combinedScore.toFixed(1) : "") + ',' +
+            '"' + (r.action || "") + '",' +
+            '"' + (r.status || "") + '",' +
+            '"' + escapeCSV(r.description || "") + '"\n';
+    }
+
+    downloadCSV(csv, "bulk_cvss_assessment.csv");
+}
+
+// ================================================================
+// Utility functions
+// ================================================================
+function downloadCSV(content, filename) {
+    var blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "cvss_assessment.csv");
+    link.setAttribute("download", filename);
     document.body.appendChild(link);
-    
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function escapeCSV(str) {
+    return str.replace(/"/g, '""').replace(/\n/g, " ");
 }
 </script>
 </body>
