@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AlarmListView: View {
-    @Bindable var manager: AlarmManager
+    @ObservedObject var manager: AlarmManager
     @State private var showingAddAlarm = false
 
     var body: some View {
@@ -49,7 +49,7 @@ struct AlarmListView: View {
 
 struct AlarmRowView: View {
     let alarm: Alarm
-    @Bindable var manager: AlarmManager
+    @ObservedObject var manager: AlarmManager
     @State private var showingEdit = false
 
     var body: some View {
@@ -110,13 +110,6 @@ struct AlarmRowView: View {
         .buttonStyle(.plain)
         .sheet(isPresented: $showingEdit) {
             AlarmEditView(manager: manager, alarm: alarm)
-        }
-        .swipeActions(edge: .trailing) {
-            Button(role: .destructive) {
-                manager.deleteAlarm(alarm)
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
         }
     }
 }

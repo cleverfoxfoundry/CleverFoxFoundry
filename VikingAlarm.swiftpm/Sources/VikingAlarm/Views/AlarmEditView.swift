@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AlarmEditView: View {
-    @Bindable var manager: AlarmManager
+    @ObservedObject var manager: AlarmManager
     @Environment(\.dismiss) private var dismiss
 
     @State private var hour: Int

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AlarmFiringView: View {
-    @Bindable var manager: AlarmManager
+    @ObservedObject var manager: AlarmManager
     @State private var rotationAngle: Double = 0
     @State private var isShaking = false
     @State private var glowIntensity: Double = 0.5

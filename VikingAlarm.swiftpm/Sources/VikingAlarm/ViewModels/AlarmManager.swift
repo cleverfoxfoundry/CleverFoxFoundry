@@ -1,11 +1,10 @@
 import SwiftUI
 import UserNotifications
 
-@Observable
-class AlarmManager {
-    var alarms: [Alarm] = []
-    var firingAlarm: Alarm?
-    var isAlarmFiring: Bool = false
+class AlarmManager: ObservableObject {
+    @Published var alarms: [Alarm] = []
+    @Published var firingAlarm: Alarm?
+    @Published var isAlarmFiring: Bool = false
 
     private let storageKey = "viking_alarms"
 

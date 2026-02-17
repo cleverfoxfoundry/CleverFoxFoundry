@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Bindable var manager: AlarmManager
+    @ObservedObject var manager: AlarmManager
     @State private var showingAddAlarm = false
 
     var body: some View {

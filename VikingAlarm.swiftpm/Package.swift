@@ -16,11 +16,8 @@ let package = Package(
             bundleVersion: "1",
             appIcon: .placeholder(icon: .clock),
             accentColor: .presetColor(.orange),
-            supportedDeviceFamilies: [.phone],
+            supportedDeviceFamilies: [.phone, .pad],
             supportedInterfaceOrientations: [.portrait],
-            capabilities: [
-                .push(environment: .development)
-            ],
             appCategory: .utilities
         )
     ],

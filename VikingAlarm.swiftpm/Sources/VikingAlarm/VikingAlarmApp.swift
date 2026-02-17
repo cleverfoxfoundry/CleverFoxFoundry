@@ -3,7 +3,7 @@ import UserNotifications
 
 @main
 struct VikingAlarmApp: App {
-    @State private var alarmManager = AlarmManager()
+    @StateObject private var alarmManager = AlarmManager()
 
     var body: some Scene {
         WindowGroup {
