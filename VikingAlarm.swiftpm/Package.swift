@@ -1,10 +1,10 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
     name: "VikingAlarm",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v17)
     ],
     products: [
         .iOSApplication(
@@ -17,7 +17,8 @@ let package = Package(
             appIcon: .placeholder(icon: .clock),
             accentColor: .presetColor(.orange),
             supportedDeviceFamilies: [.phone, .pad],
-            supportedInterfaceOrientations: [.portrait]
+            supportedInterfaceOrientations: [.portrait],
+            appCategory: .utilities
         )
     ],
     targets: [
