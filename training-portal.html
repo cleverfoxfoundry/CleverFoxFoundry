@@ -252,6 +252,109 @@ table.lb-table{width:100%;border-collapse:collapse;}
 .bm-rm:hover{color:var(–red);}
 
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+header {
+padding: 0 16px;
+height: auto;
+min-height: 56px;
+flex-wrap: wrap;
+gap: 8px;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+.logo { font-size: 12px; }
+.logo-icon { width: 26px; height: 26px; font-size: 12px; }
+.nav-tabs { order: 3; width: 100%; overflow-x: auto; padding-bottom: 2px; gap: 2px; }
+.nav-tab { font-size: 9px; padding: 5px 10px; white-space: nowrap; }
+.header-right { gap: 8px; }
+.analyst-input { width: 100px; font-size: 10px; }
+.header-badge { display: none; }
+
+.page { padding: 24px 16px 60px; }
+
+h1.hero-title { font-size: clamp(26px, 7vw, 38px); }
+.hero-sub { font-size: 14px; }
+.stats-row { gap: 18px; }
+.stat-num { font-size: 22px; }
+
+.progress-card {
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+padding: 14px 16px;
+}
+.progress-bar-wrap { width: 100%; }
+
+.filters { gap: 6px; }
+.filter-btn { font-size: 9px; padding: 5px 10px; }
+
+.modules-grid { grid-template-columns: 1fr; gap: 14px; }
+
+.module-card-top { padding: 14px 14px 12px; }
+.module-title { font-size: 15px; }
+.resource-section, .topics-section, .notes-section { padding: 0 14px 4px; }
+.action-row { padding: 0 14px 12px; gap: 8px; }
+.quiz-btn, .lab-btn { font-size: 9px; padding: 8px 8px; }
+
+.resource-link { padding: 7px 8px; }
+.resource-name { font-size: 12px; }
+.resource-desc { font-size: 10px; }
+.res-icon { width: 24px; height: 24px; font-size: 11px; }
+
+/* Glossary */
+.glossary-grid { grid-template-columns: 1fr; gap: 10px; }
+.glossary-search { font-size: 14px; padding: 9px 14px; }
+
+/* Leaderboard */
+.top3-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.top3-card { padding: 14px 10px; }
+.top3-avatar { width: 40px; height: 40px; font-size: 15px; }
+.top3-name { font-size: 12px; }
+.top3-score { font-size: 16px; }
+.top3-crown { font-size: 18px; }
+
+/* Hide some table columns on mobile */
+.lb-table th:nth-child(5),
+.lb-table td:nth-child(5),
+.lb-table th:nth-child(4),
+.lb-table td:nth-child(4) { display: none; }
+.lb-av { width: 28px; height: 28px; font-size: 11px; }
+.lb-role { display: none; }
+.lb-table td, .lb-table th { padding: 10px 10px; font-size: 12px; }
+
+/* Modal */
+.modal { padding: 22px 18px; width: 95%; max-height: 92vh; }
+.modal-title { font-size: 17px; }
+.quiz-q-text { font-size: 13px; }
+.quiz-opt { font-size: 12px; padding: 9px 12px; }
+
+/* Bookmarks */
+.bm-list { grid-template-columns: 1fr; }
+
+/* Section title */
+.section-title { font-size: 20px; }
+}
+
+@media (max-width: 480px) {
+header { padding: 8px 12px; }
+.page { padding: 20px 12px 60px; }
+h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
+.stats-row { gap: 12px; }
+.stat-num { font-size: 20px; }
+.nav-tab { font-size: 8px; padding: 4px 8px; }
+
+.top3-grid { gap: 6px; }
+.top3-card { padding: 12px 8px; }
+.top3-name { font-size: 11px; }
+.top3-avatar { width: 36px; height: 36px; font-size: 13px; }
+.top3-crown { font-size: 16px; }
+
+/* Stack action buttons on very small screens */
+.action-row { flex-direction: column; }
+.quiz-btn, .lab-btn { justify-content: center; }
+}
 </style>
 
 </head>
@@ -345,43 +448,43 @@ table.lb-table{width:100%;border-collapse:collapse;}
 </div>
 
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────────
+// - DATA -
 
 const modules = [
 {
   num:1, title:"Foundations of Threat Intelligence", duration:"4 hours", level:"Foundation",
-  topics:["What is CTI — data vs. information vs. intelligence","Types of TI: strategic, operational, tactical, technical","The Intelligence Lifecycle: planning, collection, processing, analysis, dissemination, feedback","Key concepts: TTPs, IOCs, campaigns, threat actors","TI in the SOC: how analysts consume and produce intelligence","Introduction to key frameworks: ATT&CK, Kill Chain, Diamond Model"],
+  topics:["What is CTI -- data vs. information vs. intelligence","Types of TI: strategic, operational, tactical, technical","The Intelligence Lifecycle: planning, collection, processing, analysis, dissemination, feedback","Key concepts: TTPs, IOCs, campaigns, threat actors","TI in the SOC: how analysts consume and produce intelligence","Introduction to key frameworks: ATT&CK, Kill Chain, Diamond Model"],
   videos:[
-    {name:"SOCRadar: CTI Fundamentals for SOC Analysts",desc:"Full lifecycle, TI types, tools, frameworks — on-demand course",url:"https://university.socradar.io/course/cti-fundamentals-for-soc-analysts",level:"beg",time:"~3 hrs"},
-    {name:"Recorded Future: Intelligence Fundamentals I",desc:"Intelligence overview — 25 min, earns CPE credit, free registration",url:"https://university.recordedfuture.com/",level:"beg",time:"25 min"},
-    {name:"Recorded Future: Intelligence Fundamentals II",desc:"Types and sources of intelligence — 25 min, free registration",url:"https://university.recordedfuture.com/",level:"beg",time:"25 min"},
+    {name:"SOCRadar: CTI Fundamentals for SOC Analysts",desc:"Full lifecycle, TI types, tools, frameworks -- on-demand course",url:"https://university.socradar.io/course/cti-fundamentals-for-soc-analysts",level:"beg",time:"~3 hrs"},
+    {name:"Recorded Future: Intelligence Fundamentals I",desc:"Intelligence overview -- 25 min, earns CPE credit, free registration",url:"https://university.recordedfuture.com/",level:"beg",time:"25 min"},
+    {name:"Recorded Future: Intelligence Fundamentals II",desc:"Types and sources of intelligence -- 25 min, free registration",url:"https://university.recordedfuture.com/",level:"beg",time:"25 min"},
     {name:"The Cycle of Cyber Threat Intelligence (YouTube)",desc:"Beginner overview of CTI lifecycle and concepts",url:"https://www.youtube.com/watch?v=J7e74QLVxCk",level:"beg",time:"15 min"},
     {name:"Cybrary: Introduction to IT & Cybersecurity",desc:"Free foundation course covering core security concepts for new analysts",url:"https://www.cybrary.it/course/introduction-to-it-and-cybersecurity",level:"beg",time:"~6 hrs"},
   ],
   reading:[
-    {name:"NIST SP 800-150: Guide to Cyber Threat Information Sharing",desc:"Official government guide covering CTI concepts, lifecycle, and sharing practices — foundational reading",url:"https://nvlpubs.nist.gov/nistpubs/specialpublications/nist.sp.800-150.pdf",level:"beg",time:"PDF"},
+    {name:"NIST SP 800-150: Guide to Cyber Threat Information Sharing",desc:"Official government guide covering CTI concepts, lifecycle, and sharing practices -- foundational reading",url:"https://nvlpubs.nist.gov/nistpubs/specialpublications/nist.sp.800-150.pdf",level:"beg",time:"PDF"},
     {name:"CISA: Service Models for Cyber Threat Intelligence (White Paper)",desc:"CISA whitepaper on how organizations structure and consume CTI",url:"https://www.cisa.gov/resources-tools/resources/service-models-cyber-threat-intelligence-white-paper",level:"beg",time:"White Paper"},
-    {name:"Katie Nickels: Top 10 Reading List for Getting Started in CTI",desc:"Curated reading list by MITRE ATT&CK lead — essential starting point for every new TI analyst",url:"https://medium.com/katies-five-cents/a-top-10-reading-list-if-youre-getting-started-in-cyber-threat-intelligence-c11a18fc9798",level:"beg",time:"Blog"},
+    {name:"Katie Nickels: Top 10 Reading List for Getting Started in CTI",desc:"Curated reading list by MITRE ATT&CK lead -- essential starting point for every new TI analyst",url:"https://medium.com/katies-five-cents/a-top-10-reading-list-if-youre-getting-started-in-cyber-threat-intelligence-c11a18fc9798",level:"beg",time:"Blog"},
     {name:"Andy Piazza: Cyber Threat Intelligence Study Plan",desc:"Structured self-study plan covering books, frameworks, tools, and skills for CTI analysts",url:"https://klrgrz.medium.com/cyber-threat-intelligence-study-plan-c60484d319cb",level:"beg",time:"Blog"},
-    {name:"Mandiant CTI Analyst Core Competencies Framework (PDF)",desc:"Free whitepaper defining the full skill set for CTI analysts — use this as a personal gap analysis",url:"https://www.mandiant.com/sites/default/files/2022-05/cti-analyst-core-competencies-framework-v1.pdf",level:"beg",time:"PDF"},
-    {name:"curated-intel/CTI-fundamentals (GitHub)",desc:"Community-maintained list of the quintessential papers, frameworks, and resources for CTI — bookmark this",url:"https://github.com/curated-intel/CTI-fundamentals",level:"beg",time:"Reference"},
+    {name:"Mandiant CTI Analyst Core Competencies Framework (PDF)",desc:"Free whitepaper defining the full skill set for CTI analysts -- use this as a personal gap analysis",url:"https://www.mandiant.com/sites/default/files/2022-05/cti-analyst-core-competencies-framework-v1.pdf",level:"beg",time:"PDF"},
+    {name:"curated-intel/CTI-fundamentals (GitHub)",desc:"Community-maintained list of the quintessential papers, frameworks, and resources for CTI -- bookmark this",url:"https://github.com/curated-intel/CTI-fundamentals",level:"beg",time:"Reference"},
   ],
   practice:[
     {name:"TryHackMe: Cyber Threat Intelligence Room",desc:"Free hands-on room covering CTI fundamentals, lifecycle, and frameworks interactively",url:"https://tryhackme.com/room/cyberthreatintel",level:"beg",time:"~1 hr"},
-    {name:"Coursera: Basics of Cyber Threat Intelligence (Audit Free)",desc:"Free to audit — covers CTI lifecycle, MITRE ATT&CK, SIEM, and threat analysis",url:"https://www.coursera.org/learn/basics-of-cyber-threat-intelligence",level:"beg",time:"~10 hrs"},
+    {name:"Coursera: Basics of Cyber Threat Intelligence (Audit Free)",desc:"Free to audit -- covers CTI lifecycle, MITRE ATT&CK, SIEM, and threat analysis",url:"https://www.coursera.org/learn/basics-of-cyber-threat-intelligence",level:"beg",time:"~10 hrs"},
   ],
   quiz:[
-    {q:"Which phase of the Intelligence Lifecycle involves converting raw collected data into a usable format?",opts:["Collection","Processing","Dissemination","Planning"],ans:1,explain:"Processing transforms raw data — normalizing, translating, structuring — into something analysts can actually work with. Without processing, raw data is noise."},
+    {q:"Which phase of the Intelligence Lifecycle involves converting raw collected data into a usable format?",opts:["Collection","Processing","Dissemination","Planning"],ans:1,explain:"Processing transforms raw data -- normalizing, translating, structuring -- into something analysts can actually work with. Without processing, raw data is noise."},
     {q:"What is the key distinction between 'tactical' and 'strategic' threat intelligence?",opts:["Tactical is for executives; strategic is for analysts","Tactical covers TTPs and IOCs used day-to-day; strategic covers broader trends and organizational risk","Tactical is more expensive to produce","Tactical only applies to nation-state actors"],ans:1,explain:"Tactical TI feeds the SOC with actionable indicators and TTPs. Strategic TI informs leadership decisions about investment, risk posture, and long-term priorities."},
     {q:"What does 'TTP' stand for?",opts:["Threat, Target, Profile","Tactics, Techniques, and Procedures","Threat Tracking Platform","Technical Threat Profile"],ans:1,explain:"TTPs describe adversary behavior: Tactics (the why/goal), Techniques (the how), Procedures (specific implementation). TTPs are more durable and valuable than indicators alone."},
     {q:"Which framework maps adversary behavior across the full attack lifecycle using a matrix of tactics and techniques?",opts:["Cyber Kill Chain","Diamond Model","MITRE ATT&CK","STIX/TAXII"],ans:2,explain:"MITRE ATT&CK is the standard knowledge base for TTP mapping. The Kill Chain covers phases but lacks ATT&CK's technique-level granularity and community breadth."},
-    {q:"A threat feed provides a list of malicious IP addresses. What type of intelligence is this?",opts:["Strategic","Operational","Tactical","Technical"],ans:3,explain:"Technical intelligence is the most granular — specific indicators like IPs, hashes, domains. It has the shortest shelf life and the lowest adversary cost to change (per the Pyramid of Pain)."}
+    {q:"A threat feed provides a list of malicious IP addresses. What type of intelligence is this?",opts:["Strategic","Operational","Tactical","Technical"],ans:3,explain:"Technical intelligence is the most granular -- specific indicators like IPs, hashes, domains. It has the shortest shelf life and the lowest adversary cost to change (per the Pyramid of Pain)."}
   ],
   lab:{title:"Module 1 Lab: Classify the Intelligence",scenario:"You've received the following items during your shift. Classify each by intelligence type and lifecycle phase.",data:`Item A: "Nation-state actor APT29 is increasingly targeting energy firms in Q4."
-Item B: 185.220.101.47 — flagged as C2 server, active since 2024-11-01
+Item B: 185.220.101.47 -- flagged as C2 server, active since 2024-11-01
 Item C: Spearphishing emails with PDF lures observed against finance teams this week.
 Item D: "Organization should invest in email security controls given phishing trends."
-Item E: SHA256: e3b0c44298fc1c149afb — known ransomware dropper`,tasks:["Classify each item (A–E) as Strategic, Operational, Tactical, or Technical. Explain your reasoning.","Which lifecycle phase does each item likely come from? (Collection, Processing, Analysis, Dissemination)","Which item has the shortest shelf life? Which has the longest? Why?","How would a Tier 1 SOC analyst use Item B differently from how a CISO would use Item A?"]}
+Item E: SHA256: e3b0c44298fc1c149afb -- known ransomware dropper`,tasks:["Classify each item (A-E) as Strategic, Operational, Tactical, or Technical. Explain your reasoning.","Which lifecycle phase does each item likely come from? (Collection, Processing, Analysis, Dissemination)","Which item has the shortest shelf life? Which has the longest? Why?","How would a Tier 1 SOC analyst use Item B differently from how a CISO would use Item A?"]}
 },
 {
   num:2, title:"Threat Actor Profiling", duration:"5 hours", level:"Foundation",
@@ -389,26 +492,26 @@ Item E: SHA256: e3b0c44298fc1c149afb — known ransomware dropper`,tasks:["Class
   videos:[
     {name:"SOCRadar: Mastering CTI for SOC Analysts",desc:"Covers threat actor categories, APT profiling, motivations, and TTPs in depth",url:"https://academy.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts",level:"beg",time:"~4 hrs"},
     {name:"Cybrary: Threat Actor Profiling (Free Tier)",desc:"Overview of threat actor types, motivations, and profiling methodology",url:"https://www.cybrary.it/",level:"beg",time:"~45 min"},
-    {name:"SANS CTI Summit: Threat Intelligence Naming Conventions (Robert M. Lee)",desc:"Why vendor naming diverges and why that matters for analysts — essential viewing",url:"https://www.youtube.com/watch?v=3CUSdqQLEFI",level:"beg",time:"30 min"},
-    {name:"SANS CTI Summit Videos (Full Playlist)",desc:"Annual conference talks on CTI topics — beginner to advanced; browse by year",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"int",time:"Various"},
+    {name:"SANS CTI Summit: Threat Intelligence Naming Conventions (Robert M. Lee)",desc:"Why vendor naming diverges and why that matters for analysts -- essential viewing",url:"https://www.youtube.com/watch?v=3CUSdqQLEFI",level:"beg",time:"30 min"},
+    {name:"SANS CTI Summit Videos (Full Playlist)",desc:"Annual conference talks on CTI topics -- beginner to advanced; browse by year",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"int",time:"Various"},
   ],
   reading:[
-    {name:"MITRE ATT&CK: Groups (Actor Database)",desc:"Official, continuously updated database of named threat groups with full TTP mappings — primary reference for actor research",url:"https://attack.mitre.org/groups/",level:"beg",time:"Reference"},
-    {name:"The Diamond Model of Intrusion Analysis (Original Paper)",desc:"Foundational academic paper by Caltagirone, Pendergast & Betz — must-read for understanding intrusion analysis",url:"https://www.activeresponse.org/wp-content/uploads/2013/09/diamond.pdf",level:"beg",time:"PDF"},
-    {name:"Mandiant APT1 Report (Free)",desc:"Landmark 2013 report that established the template for threat actor reporting — read as a case study in finished intelligence",url:"https://www.mandiant.com/sites/default/files/2021-09/mandiant-apt1-report.pdf",level:"beg",time:"PDF"},
-    {name:"Sarah Jones: A Brief History of Attribution Mistakes",desc:"Critical reading on why actor attribution is hard and common errors analysts make — helps calibrate analytical humility",url:"https://www.youtube.com/watch?v=4uFM0YbHKKU",level:"beg",time:"Presentation"},
+    {name:"MITRE ATT&CK: Groups (Actor Database)",desc:"Official, continuously updated database of named threat groups with full TTP mappings -- primary reference for actor research",url:"https://attack.mitre.org/groups/",level:"beg",time:"Reference"},
+    {name:"The Diamond Model of Intrusion Analysis (Original Paper)",desc:"Foundational academic paper by Caltagirone, Pendergast & Betz -- must-read for understanding intrusion analysis",url:"https://www.activeresponse.org/wp-content/uploads/2013/09/diamond.pdf",level:"beg",time:"PDF"},
+    {name:"Mandiant APT1 Report (Free)",desc:"Landmark 2013 report that established the template for threat actor reporting -- read as a case study in finished intelligence",url:"https://www.mandiant.com/sites/default/files/2021-09/mandiant-apt1-report.pdf",level:"beg",time:"PDF"},
+    {name:"Sarah Jones: A Brief History of Attribution Mistakes",desc:"Critical reading on why actor attribution is hard and common errors analysts make -- helps calibrate analytical humility",url:"https://www.youtube.com/watch?v=4uFM0YbHKKU",level:"beg",time:"Presentation"},
     {name:"Malpedia: Threat Actor and Malware Database",desc:"Free community database linking threat actor names, malware families, and reports across vendors",url:"https://malpedia.caad.fkie.fraunhofer.de/",level:"beg",time:"Reference"},
-    {name:"EE-ISAC: Threat Intelligence Management White Paper",desc:"Industry whitepaper covering actor profiling, IOC management, and TI lifecycle — practical and tool-agnostic",url:"https://www.ee-isac.eu/media/2023/05/Threat-Management-Master-v1.2_ENISA_Proofreading_SA.pdf",level:"int",time:"PDF"},
+    {name:"EE-ISAC: Threat Intelligence Management White Paper",desc:"Industry whitepaper covering actor profiling, IOC management, and TI lifecycle -- practical and tool-agnostic",url:"https://www.ee-isac.eu/media/2023/05/Threat-Management-Master-v1.2_ENISA_Proofreading_SA.pdf",level:"int",time:"PDF"},
   ],
   practice:[
     {name:"TryHackMe: Threat Intelligence Tools Room",desc:"Hands-on exercises using real TI tools and actor research methods",url:"https://tryhackme.com/room/threatinteltools",level:"beg",time:"~1.5 hrs"},
     {name:"MITRE ATT&CK Groups: Research Exercise",desc:"Pick any listed group, read all referenced reports, and build a one-page profile using only free sources",url:"https://attack.mitre.org/groups/",level:"beg",time:"Exercise"},
   ],
   quiz:[
-    {q:"A threat actor defaces government websites and leaks data to embarrass officials. What category best describes them?",opts:["Nation-state","Cybercriminal","Hacktivist","Insider threat"],ans:2,explain:"Hacktivists are ideologically motivated — using hacking as a form of protest. Website defacement and leak for embarrassment are classic hacktivist TTPs."},
-    {q:"What does 'APT' stand for?",opts:["Advanced Phishing Technique","Advanced Persistent Threat","Automated Penetration Tool","Active Payload Targeting"],ans:1,explain:"APT — Advanced Persistent Threat — refers to sophisticated, well-resourced threat actors (typically nation-state backed) that maintain long-term stealthy access to target networks."},
+    {q:"A threat actor defaces government websites and leaks data to embarrass officials. What category best describes them?",opts:["Nation-state","Cybercriminal","Hacktivist","Insider threat"],ans:2,explain:"Hacktivists are ideologically motivated -- using hacking as a form of protest. Website defacement and leak for embarrassment are classic hacktivist TTPs."},
+    {q:"What does 'APT' stand for?",opts:["Advanced Phishing Technique","Advanced Persistent Threat","Automated Penetration Tool","Active Payload Targeting"],ans:1,explain:"APT -- Advanced Persistent Threat -- refers to sophisticated, well-resourced threat actors (typically nation-state backed) that maintain long-term stealthy access to target networks."},
     {q:"CrowdStrike uses animal-themed naming. Which animal suffix represents Russian nation-state actors?",opts:["Panda","Kitten","Spider","Bear"],ans:3,explain:"CrowdStrike uses Bears for Russia, Pandas for China, Kittens for Iran, Spiders for cybercriminals. Knowing vendor naming conventions helps you correlate reporting across sources."},
-    {q:"An insider threat is most dangerous primarily because:",opts:["They use advanced malware","They have legitimate access and knowledge of internal systems","They always work with nation-states","They are impossible to detect"],ans:1,explain:"Insiders bypass perimeter controls by design — they have authorized access, understand internal processes, and know where sensitive data lives."},
+    {q:"An insider threat is most dangerous primarily because:",opts:["They use advanced malware","They have legitimate access and knowledge of internal systems","They always work with nation-states","They are impossible to detect"],ans:1,explain:"Insiders bypass perimeter controls by design -- they have authorized access, understand internal processes, and know where sensitive data lives."},
     {q:"What is the key difference between 'capability' and 'intent' in threat actor assessment?",opts:["Capability is what they can do; intent is whether they will target you","Intent is always higher than capability","Capability only applies to nation-states","They mean the same thing"],ans:0,explain:"A highly capable actor with no intent to target you is less of a risk than a motivated but less capable actor. Effective threat assessment requires evaluating both dimensions together."}
   ],
   lab:{title:"Module 2 Lab: Build a Threat Actor Profile",scenario:"Your SOC has observed indicators suggesting targeting by a known financially motivated group. Using only free public sources, build a threat actor profile for FIN7 / Carbon Spider.",data:`Known aliases: Carbon Spider (CrowdStrike), Sangria Tempest (Microsoft), FIN7 (Mandiant)
@@ -418,39 +521,39 @@ Known targets: Retail, hospitality, financial services
 Common entry vector: Spearphishing with malicious attachments
 Notable tools: CARBANAK backdoor, PowerShell scripts
 Documented since: 2015
-Free sources: attack.mitre.org/groups/G0046, Malpedia, public vendor reports`,tasks:["Summarize the actor's motivation, capability level (Low/Medium/High), and primary target profile.","List 3 TTPs this actor uses and map each to a MITRE ATT&CK tactic (e.g. T1566 — Spearphishing Attachment → Initial Access).","What defensive controls would you recommend to your SOC based on this actor's known behavior?","Rate your confidence in this profile (High/Medium/Low) and explain what additional information would strengthen it."]}
+Free sources: attack.mitre.org/groups/G0046, Malpedia, public vendor reports`,tasks:["Summarize the actor's motivation, capability level (Low/Medium/High), and primary target profile.","List 3 TTPs this actor uses and map each to a MITRE ATT&CK tactic (e.g. T1566 -- Spearphishing Attachment -> Initial Access).","What defensive controls would you recommend to your SOC based on this actor's known behavior?","Rate your confidence in this profile (High/Medium/Low) and explain what additional information would strengthen it."]}
 },
 {
   num:3, title:"MITRE ATT&CK Framework", duration:"6 hours", level:"Foundation",
-  topics:["ATT&CK structure: matrices, tactics, techniques, sub-techniques, procedures","ATT&CK for Enterprise, Mobile, and ICS — scope and differences","Navigating the ATT&CK website, API, and ATT&CK Navigator","Reading a technique page: detection guidance, mitigations, data sources","TTP mapping from threat reports — extracting and codifying behavior","Detection coverage mapping and gap analysis"],
+  topics:["ATT&CK structure: matrices, tactics, techniques, sub-techniques, procedures","ATT&CK for Enterprise, Mobile, and ICS -- scope and differences","Navigating the ATT&CK website, API, and ATT&CK Navigator","Reading a technique page: detection guidance, mitigations, data sources","TTP mapping from threat reports -- extracting and codifying behavior","Detection coverage mapping and gap analysis"],
   videos:[
-    {name:"MITRE ATT&CK Fundamentals Training (Official)",desc:"Free official course from the ATT&CK team — concepts, use cases, and operationalizing ATT&CK",url:"https://attack.mitre.org/resources/learn-more-about-attack/training/attack-fundamentals/",level:"beg",time:"~2 hrs"},
-    {name:"MITRE ATT&CK CTI Training (Official)",desc:"Official ATT&CK training on mapping threat reports to techniques — includes exercises and slides",url:"https://attack.mitre.org/resources/learn-more-about-attack/training/cti/",level:"beg",time:"~3 hrs"},
+    {name:"MITRE ATT&CK Fundamentals Training (Official)",desc:"Free official course from the ATT&CK team -- concepts, use cases, and operationalizing ATT&CK",url:"https://attack.mitre.org/resources/learn-more-about-attack/training/attack-fundamentals/",level:"beg",time:"~2 hrs"},
+    {name:"MITRE ATT&CK CTI Training (Official)",desc:"Official ATT&CK training on mapping threat reports to techniques -- includes exercises and slides",url:"https://attack.mitre.org/resources/learn-more-about-attack/training/cti/",level:"beg",time:"~3 hrs"},
     {name:"Cybrary: Application of the MITRE ATT&CK Framework (Free)",desc:"Free course walking through the 12 core ATT&CK tactic areas with examples",url:"https://www.cybrary.it/course/application-of-the-mitre-attack-framework",level:"beg",time:"~3 hrs"},
-    {name:"Cybrary: MITRE ATT&CK Defender (MAD) — ATT&CK Fundamentals (Free)",desc:"Official MAD certification course from MITRE's own engineers — free on Cybrary",url:"https://www.cybrary.it/course/mitre-attack-defender-mad-attack-fundamentals",level:"beg",time:"~4 hrs"},
+    {name:"Cybrary: MITRE ATT&CK Defender (MAD) -- ATT&CK Fundamentals (Free)",desc:"Official MAD certification course from MITRE's own engineers -- free on Cybrary",url:"https://www.cybrary.it/course/mitre-attack-defender-mad-attack-fundamentals",level:"beg",time:"~4 hrs"},
     {name:"Picus Purple Academy: Beginner's Guide to MITRE ATT&CK (Free)",desc:"Micro-course covering ATT&CK concepts for Red, Blue, and Purple teams",url:"https://academy.picussecurity.com/course/cyber-threat-intelligence",level:"beg",time:"~1.5 hrs"},
     {name:"SANS ATT&CK Talk: Putting ATT&CK Into Action (Sp4rkcon)",desc:"Practical presentation on applying ATT&CK at different maturity levels",url:"https://www.youtube.com/watch?v=bkfwMADar0I",level:"int",time:"45 min"},
   ],
   reading:[
-    {name:"MITRE ATT&CK Design and Philosophy (Official Paper)",desc:"The foundational paper explaining ATT&CK's design principles, structure, and intended uses — read before going deep",url:"https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf",level:"beg",time:"PDF"},
+    {name:"MITRE ATT&CK Design and Philosophy (Official Paper)",desc:"The foundational paper explaining ATT&CK's design principles, structure, and intended uses -- read before going deep",url:"https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf",level:"beg",time:"PDF"},
     {name:"Getting Started with ATT&CK eBook (Free PDF)",desc:"Official MITRE ebook covering threat intelligence, detection, assessments, and red teaming use cases",url:"https://attack.mitre.org/resources/getting-started/",level:"beg",time:"eBook"},
-    {name:"ATT&CK for ICS: Extension Paper",desc:"Official paper on ATT&CK for Industrial Control Systems — important for OT/ICS environments",url:"https://attack.mitre.org/docs/ATTACK_for_ICS_Philosophy_March_2020.pdf",level:"int",time:"PDF"},
+    {name:"ATT&CK for ICS: Extension Paper",desc:"Official paper on ATT&CK for Industrial Control Systems -- important for OT/ICS environments",url:"https://attack.mitre.org/docs/ATTACK_for_ICS_Philosophy_March_2020.pdf",level:"int",time:"PDF"},
     {name:"MITRE ATT&CK Blog: Threat Intelligence Use Cases",desc:"Series of blog posts explaining how to use ATT&CK for TI at beginner, intermediate, and advanced levels",url:"https://medium.com/mitre-attack/att-ck-for-cyber-threat-intelligence-2ec37d163078",level:"beg",time:"Blog Series"},
-    {name:"MITRE ATT&CK Navigator Documentation",desc:"Official docs for ATT&CK Navigator — the primary tool for building and sharing coverage layers",url:"https://github.com/mitre-attack/attack-navigator",level:"beg",time:"Reference"},
+    {name:"MITRE ATT&CK Navigator Documentation",desc:"Official docs for ATT&CK Navigator -- the primary tool for building and sharing coverage layers",url:"https://github.com/mitre-attack/attack-navigator",level:"beg",time:"Reference"},
   ],
   practice:[
     {name:"TryHackMe: MITRE Room (Free)",desc:"Hands-on room practicing ATT&CK navigation, technique identification, and Navigator",url:"https://tryhackme.com/room/mitre",level:"beg",time:"~1.5 hrs"},
     {name:"Cybrary: MAD ATT&CK SOC Assessments (Free)",desc:"Free MITRE course on using ATT&CK to assess your SOC's detection coverage gaps",url:"https://www.cybrary.it/course/mitre-attack-defender-mad-attack-for-soc-assessments",level:"int",time:"~3 hrs"},
-    {name:"ATT&CK Navigator Web App (Free Tool)",desc:"Try the live ATT&CK Navigator directly in your browser — build your first coverage layer",url:"https://mitre-attack.github.io/attack-navigator/",level:"beg",time:"Tool"},
+    {name:"ATT&CK Navigator Web App (Free Tool)",desc:"Try the live ATT&CK Navigator directly in your browser -- build your first coverage layer",url:"https://mitre-attack.github.io/attack-navigator/",level:"beg",time:"Tool"},
   ],
   quiz:[
-    {q:"In ATT&CK, what does a 'Tactic' represent?",opts:["A specific tool used by an adversary","The adversary's goal or reason for an action","A step-by-step procedure","A vulnerability class"],ans:1,explain:"Tactics represent the 'why' — the adversary's objective (e.g. Initial Access, Persistence, Exfiltration). Techniques are 'how' they achieve that objective."},
+    {q:"In ATT&CK, what does a 'Tactic' represent?",opts:["A specific tool used by an adversary","The adversary's goal or reason for an action","A step-by-step procedure","A vulnerability class"],ans:1,explain:"Tactics represent the 'why' -- the adversary's objective (e.g. Initial Access, Persistence, Exfiltration). Techniques are 'how' they achieve that objective."},
     {q:"T1059.001 refers to what type of ATT&CK entry?",opts:["A tactic","A technique","A sub-technique","A procedure"],ans:2,explain:"The decimal notation (.001) indicates a sub-technique. T1059 is Command and Scripting Interpreter; T1059.001 is the PowerShell sub-technique."},
-    {q:"Which ATT&CK tactic covers actions adversaries take to avoid being detected?",opts:["Persistence","Defense Evasion","Lateral Movement","Collection"],ans:1,explain:"Defense Evasion covers techniques used to avoid detection — obfuscation, disabling security tools, masquerading, process injection, etc."},
+    {q:"Which ATT&CK tactic covers actions adversaries take to avoid being detected?",opts:["Persistence","Defense Evasion","Lateral Movement","Collection"],ans:1,explain:"Defense Evasion covers techniques used to avoid detection -- obfuscation, disabling security tools, masquerading, process injection, etc."},
     {q:"What tool does MITRE provide for visualizing ATT&CK technique coverage as heat maps?",opts:["ATT&CK Studio","ATT&CK Navigator","MITRE Compass","ATT&CK Mapper"],ans:1,explain:"ATT&CK Navigator is the free, official web tool for creating, sharing, and comparing ATT&CK coverage layers. Used widely in TI, detection engineering, and red teaming."},
-    {q:"You see 'net user /domain' executed on compromised hosts. Which tactic does this map to?",opts:["Execution","Collection","Discovery","Lateral Movement"],ans:2,explain:"Running 'net user /domain' is account enumeration — the adversary is mapping domain accounts. This maps to Discovery (T1087 - Account Discovery)."}
+    {q:"You see 'net user /domain' executed on compromised hosts. Which tactic does this map to?",opts:["Execution","Collection","Discovery","Lateral Movement"],ans:2,explain:"Running 'net user /domain' is account enumeration -- the adversary is mapping domain accounts. This maps to Discovery (T1087 - Account Discovery)."}
   ],
-  lab:{title:"Module 3 Lab: Map a Threat Report to ATT&CK",scenario:"Map the behaviors in this simulated incident excerpt to ATT&CK tactics and techniques.",data:`INCIDENT EXCERPT — TLP:WHITE
+  lab:{title:"Module 3 Lab: Map a Threat Report to ATT&CK",scenario:"Map the behaviors in this simulated incident excerpt to ATT&CK tactics and techniques.",data:`INCIDENT EXCERPT -- TLP:WHITE
 
 The adversary gained initial access via a spearphishing email with a malicious 
 Word document containing a macro (CVE-2021-40444).
@@ -463,38 +566,38 @@ then used Pass-the-Hash to move laterally to three workstations.
 
 On a domain controller, the actor created a new admin account and 
 scheduled a task for persistence. Data was staged in C:\Windows\Temp\ 
-before exfiltration via DNS tunneling to an actor-controlled domain.`,tasks:["Map each behavior to an ATT&CK Tactic and Technique ID (e.g. T1566.001 — Initial Access). List at least 8 techniques.","Which tactic appears most in this report? What does that tell you about the stage of the intrusion?","For each technique, identify one detection data source (e.g. Windows Event Log, EDR, DNS logs).","Build a list of 3 detection gaps — what techniques had no logging or controls in place?"]}
+before exfiltration via DNS tunneling to an actor-controlled domain.`,tasks:["Map each behavior to an ATT&CK Tactic and Technique ID (e.g. T1566.001 -- Initial Access). List at least 8 techniques.","Which tactic appears most in this report? What does that tell you about the stage of the intrusion?","For each technique, identify one detection data source (e.g. Windows Event Log, EDR, DNS logs).","Build a list of 3 detection gaps -- what techniques had no logging or controls in place?"]}
 },
 {
   num:4, title:"Indicator Management & IOCs", duration:"5 hours", level:"Intermediate",
   topics:["IOC types: IP addresses, domains, file hashes, URLs, email addresses, registry keys, mutexes","Pyramid of Pain: indicator value vs. adversary cost","Indicator enrichment: WHOIS, passive DNS, VirusTotal, Shodan, AbuseIPDB","Threat intelligence platforms (TIPs): MISP and OpenCTI","STIX 2.x and TAXII: structured sharing standards","Indicator lifecycle management: confidence, expiry, false positive rates"],
   videos:[
-    {name:"SOCRadar: CTI Fundamentals — IOC Module",desc:"Covers IOC types, enrichment workflows, TIPs, and indicator lifecycle",url:"https://university.socradar.io/course/cti-fundamentals-for-soc-analysts",level:"int",time:"~1 hr (module)"},
-    {name:"MISP Project: Introduction to MISP (Official)",desc:"Free introduction to MISP — the world's most widely used open-source TIP",url:"https://www.youtube.com/watch?v=00jq7Gbqdz8",level:"int",time:"~30 min"},
+    {name:"SOCRadar: CTI Fundamentals -- IOC Module",desc:"Covers IOC types, enrichment workflows, TIPs, and indicator lifecycle",url:"https://university.socradar.io/course/cti-fundamentals-for-soc-analysts",level:"int",time:"~1 hr (module)"},
+    {name:"MISP Project: Introduction to MISP (Official)",desc:"Free introduction to MISP -- the world's most widely used open-source TIP",url:"https://www.youtube.com/watch?v=00jq7Gbqdz8",level:"int",time:"~30 min"},
     {name:"OpenCTI: Platform Introduction (Official)",desc:"Introduction to the OpenCTI open-source threat intelligence platform",url:"https://www.youtube.com/watch?v=0wlbBq2QrDU",level:"int",time:"~25 min"},
     {name:"TryHackMe: Pyramid of Pain Explanation (Video)",desc:"Visual walkthrough of the Pyramid of Pain model with examples",url:"https://www.youtube.com/watch?v=XNzVa9ZtcRM",level:"beg",time:"15 min"},
     {name:"VirusTotal: Understanding and Using VirusTotal (Official)",desc:"How to use VirusTotal for IOC enrichment and malware investigation",url:"https://www.youtube.com/watch?v=5mVhRFiVyTs",level:"beg",time:"~20 min"},
   ],
   reading:[
-    {name:"The Pyramid of Pain (David Bianco — Original Blog Post)",desc:"The original post introducing the Pyramid of Pain model — essential foundational reading for IOC management",url:"https://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html",level:"beg",time:"Blog"},
+    {name:"The Pyramid of Pain (David Bianco -- Original Blog Post)",desc:"The original post introducing the Pyramid of Pain model -- essential foundational reading for IOC management",url:"https://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html",level:"beg",time:"Blog"},
     {name:"SANS: The Pyramid of Pain Tool Page",desc:"SANS tool page with references and context for the Pyramid of Pain model",url:"https://www.sans.org/tools/the-pyramid-of-pain/",level:"beg",time:"Reference"},
-    {name:"STIX 2.1 Documentation (OASIS Official)",desc:"Official specification for STIX 2.1 — the standard language for structuring and sharing threat intelligence",url:"https://oasis-open.github.io/cti-documentation/stix/intro",level:"int",time:"Reference"},
-    {name:"TAXII 2.1 Documentation (OASIS Official)",desc:"Official TAXII specification for automated sharing of STIX intelligence — pairs with STIX",url:"https://oasis-open.github.io/cti-documentation/taxii/intro",level:"int",time:"Reference"},
+    {name:"STIX 2.1 Documentation (OASIS Official)",desc:"Official specification for STIX 2.1 -- the standard language for structuring and sharing threat intelligence",url:"https://oasis-open.github.io/cti-documentation/stix/intro",level:"int",time:"Reference"},
+    {name:"TAXII 2.1 Documentation (OASIS Official)",desc:"Official TAXII specification for automated sharing of STIX intelligence -- pairs with STIX",url:"https://oasis-open.github.io/cti-documentation/taxii/intro",level:"int",time:"Reference"},
     {name:"MISP Best Practices and User Guide",desc:"Community best practices for deploying and managing the MISP threat intelligence platform",url:"https://www.misp-project.org/documentation/",level:"int",time:"Reference"},
     {name:"ThreatConnect: Maturing a Threat Intelligence Program (White Paper)",desc:"Whitepaper covering IOC management, enrichment, and TIP adoption at different maturity levels",url:"https://threatconnect.com/wp-content/uploads/Maturity-Model-Whitepaper-2017-1.pdf",level:"int",time:"PDF"},
-    {name:"A Framework for Cyber Threat Hunting — Pyramid of Pain (Sqrrl/AWS)",desc:"Detailed paper applying Pyramid of Pain to hunt hypothesis development",url:"https://www.threathunting.net/files/A%20Framework%20for%20Cyber%20Threat%20Hunting%20Part%201_%20The%20Pyramid%20of%20Pain%20_%20Sqrrl.pdf",level:"int",time:"PDF"},
+    {name:"A Framework for Cyber Threat Hunting -- Pyramid of Pain (Sqrrl/AWS)",desc:"Detailed paper applying Pyramid of Pain to hunt hypothesis development",url:"https://www.threathunting.net/files/A%20Framework%20for%20Cyber%20Threat%20Hunting%20Part%201_%20The%20Pyramid%20of%20Pain%20_%20Sqrrl.pdf",level:"int",time:"PDF"},
   ],
   practice:[
-    {name:"TryHackMe: MISP Room (Free)",desc:"Hands-on MISP platform exercise — creating events, adding IOCs, sharing intelligence",url:"https://tryhackme.com/room/misp",level:"int",time:"~1.5 hrs"},
-    {name:"VirusTotal Free Account",desc:"Create a free account and practice enriching IOCs — pivot on hashes, IPs, domains",url:"https://www.virustotal.com/",level:"beg",time:"Tool"},
-    {name:"AbuseIPDB Free Lookup",desc:"Free IP reputation lookup — check IPs against community-reported abuse data",url:"https://www.abuseipdb.com/",level:"beg",time:"Tool"},
+    {name:"TryHackMe: MISP Room (Free)",desc:"Hands-on MISP platform exercise -- creating events, adding IOCs, sharing intelligence",url:"https://tryhackme.com/room/misp",level:"int",time:"~1.5 hrs"},
+    {name:"VirusTotal Free Account",desc:"Create a free account and practice enriching IOCs -- pivot on hashes, IPs, domains",url:"https://www.virustotal.com/",level:"beg",time:"Tool"},
+    {name:"AbuseIPDB Free Lookup",desc:"Free IP reputation lookup -- check IPs against community-reported abuse data",url:"https://www.abuseipdb.com/",level:"beg",time:"Tool"},
   ],
   quiz:[
-    {q:"According to the Pyramid of Pain, which indicator type causes the most pain to an adversary when denied?",opts:["IP addresses","Domain names","File hashes","TTPs"],ans:3,explain:"TTPs sit at the top of the Pyramid of Pain. Blocking IPs or hashes is easy to evade — adversaries just change them. Forcing a change in TTPs requires real operational effort and expense."},
+    {q:"According to the Pyramid of Pain, which indicator type causes the most pain to an adversary when denied?",opts:["IP addresses","Domain names","File hashes","TTPs"],ans:3,explain:"TTPs sit at the top of the Pyramid of Pain. Blocking IPs or hashes is easy to evade -- adversaries just change them. Forcing a change in TTPs requires real operational effort and expense."},
     {q:"What does STIX stand for?",opts:["Structured Threat Intelligence Exchange","Security Threat Indicator XML","Standard Tactical Intelligence Exchange","Structured Threat Information eXpression"],ans:3,explain:"STIX (Structured Threat Information eXpression) is a standardized language for representing CTI. It pairs with TAXII (Trusted Automated eXchange of Intelligence) for transport."},
     {q:"A hash IOC from 18 months ago is still in your blocklist. What is the primary concern?",opts:["Hashes never expire","It may cause false positives on legitimate files that share the same hash","It's too short to be useful","Hashes cannot be blocked in SIEMs"],ans:1,explain:"Stale IOCs inflate false positive rates. Old hashes may match legitimate software. Always enforce lifecycle management with expiry dates and confidence scoring."},
     {q:"You receive an IP address IOC from a threat feed. What should be your FIRST step?",opts:["Block it immediately in the firewall","Enrich it using VirusTotal, passive DNS, and WHOIS before acting","Email the threat feed vendor","Add it directly to SIEM rules"],ans:1,explain:"Enrich before acting. Enrichment tells you if the IP is actually malicious, what infrastructure it's linked to, and whether it's shared infrastructure (CDN, Tor exit node) that would cause false positives."},
-    {q:"Which STIX 2.x object would you use to express a detection pattern for a known malicious IP?",opts:["Threat Actor","Observable","Indicator","Attack Pattern"],ans:2,explain:"In STIX 2.x, an Indicator object wraps an Observable with a detection pattern (STIX Patterning Language) and contextual metadata — it's the right object for operationalizing IOCs."}
+    {q:"Which STIX 2.x object would you use to express a detection pattern for a known malicious IP?",opts:["Threat Actor","Observable","Indicator","Attack Pattern"],ans:2,explain:"In STIX 2.x, an Indicator object wraps an Observable with a detection pattern (STIX Patterning Language) and contextual metadata -- it's the right object for operationalizing IOCs."}
   ],
   lab:{title:"Module 4 Lab: IOC Triage Exercise",scenario:"You've received 8 indicators from a third-party feed claiming ransomware campaign association. Triage each one.",data:`IOC-001: 185.220.101.47       Type: IPv4    Confidence: High
 IOC-002: d41d8cd98f00b204e9800998ecf8427e  Type: MD5  Confidence: Med
@@ -507,61 +610,61 @@ IOC-008: 1.1.1.1                Type: IPv4    Confidence: Med`,tasks:["For each 
 },
 {
   num:5, title:"Open Source Intelligence (OSINT)", duration:"6 hours", level:"Intermediate",
-  topics:["OSINT methodology: requirements, collection planning, source evaluation, pivoting","Key OSINT sources: Shodan, Censys, VirusTotal Graph, URLScan.io, WHOIS, passive DNS","OPSEC for analysts: isolated VMs, proxies, sock puppet accounts, attribution hygiene","Dark web basics: when and how analysts engage safely and legally","Source reliability: evaluating and citing OSINT appropriately","Pivot techniques: IP → domain → certificate → registrant → infrastructure"],
+  topics:["OSINT methodology: requirements, collection planning, source evaluation, pivoting","Key OSINT sources: Shodan, Censys, VirusTotal Graph, URLScan.io, WHOIS, passive DNS","OPSEC for analysts: isolated VMs, proxies, sock puppet accounts, attribution hygiene","Dark web basics: when and how analysts engage safely and legally","Source reliability: evaluating and citing OSINT appropriately","Pivot techniques: IP -> domain -> certificate -> registrant -> infrastructure"],
   videos:[
     {name:"The Cyber Mentor: OSINT in 4.5 Hours (Free YouTube)",desc:"Comprehensive free course covering sock puppets, search operators, EXIF, email, username, social media OSINT",url:"https://www.youtube.com/watch?v=qwA6MmbeGNo",level:"beg",time:"4.5 hrs"},
     {name:"Class Central: Complete OSINT Training Course (Irfan Shakeel)",desc:"Free 2.5-hour course covering search engine OSINT, dark web, people search, document metadata, image OSINT",url:"https://www.classcentral.com/course/youtube-the-complete-open-source-intelligence-osint-training-course-80389",level:"beg",time:"2.5 hrs"},
     {name:"SANS Blog: Must-Have Free Resources for OSINT",desc:"SANS-curated list of OSINT tools and resources with video walkthroughs",url:"https://www.sans.org/blog/-must-have-free-resources-for-open-source-intelligence-osint-/",level:"beg",time:"Reference"},
-    {name:"David Bombal: Top 10 Free OSINT Tools (YouTube)",desc:"Tool demos including Maltego, Shodan, SpiderFoot, and others — great for getting started",url:"https://www.youtube.com/watch?v=X0yLd6FIgUs",level:"beg",time:"~45 min"},
-    {name:"Shodan.io Tutorial: Infrastructure Intelligence",desc:"How to use Shodan for threat intelligence — finding exposed services, C2 infrastructure pivoting",url:"https://www.youtube.com/watch?v=w5jWs8wSvVQ",level:"int",time:"~30 min"},
+    {name:"David Bombal: Top 10 Free OSINT Tools (YouTube)",desc:"Tool demos including Maltego, Shodan, SpiderFoot, and others -- great for getting started",url:"https://www.youtube.com/watch?v=X0yLd6FIgUs",level:"beg",time:"~45 min"},
+    {name:"Shodan.io Tutorial: Infrastructure Intelligence",desc:"How to use Shodan for threat intelligence -- finding exposed services, C2 infrastructure pivoting",url:"https://www.youtube.com/watch?v=w5jWs8wSvVQ",level:"int",time:"~30 min"},
   ],
   reading:[
     {name:"SANS: Must-Have Free OSINT Resources (Reading List)",desc:"Curated list of free OSINT tools, data sources, and methodologies from SANS instructors",url:"https://www.sans.org/blog/-must-have-free-resources-for-open-source-intelligence-osint-/",level:"beg",time:"Blog"},
     {name:"FreeOSINT.org: Free Training Modules",desc:"Open-source OSINT training platform with beginner to advanced modules maintained by the community",url:"https://freeosint.github.io/",level:"beg",time:"Course"},
-    {name:"awesome-threat-intelligence (GitHub — hslatman)",desc:"Comprehensive curated list of OSINT and TI sources, tools, formats, frameworks, and research papers",url:"https://github.com/hslatman/awesome-threat-intelligence",level:"int",time:"Reference"},
-    {name:"OSINT Framework (Justin Nordine)",desc:"Free interactive OSINT tool directory organized by category — bookmark this for any investigation",url:"https://osintframework.com/",level:"beg",time:"Reference"},
-    {name:"Bellingcat OSINT Toolkit",desc:"Bellingcat's curated list of OSINT tools used by professional investigators — regularly updated",url:"https://docs.google.com/spreadsheets/d/18rtqh8EG2q1xBo2cLNyhIDuK9jrPGwYr9DI2UncoqJQ/",level:"int",time:"Reference"},
+    {name:"awesome-threat-intelligence (GitHub -- hslatman)",desc:"Comprehensive curated list of OSINT and TI sources, tools, formats, frameworks, and research papers",url:"https://github.com/hslatman/awesome-threat-intelligence",level:"int",time:"Reference"},
+    {name:"OSINT Framework (Justin Nordine)",desc:"Free interactive OSINT tool directory organized by category -- bookmark this for any investigation",url:"https://osintframework.com/",level:"beg",time:"Reference"},
+    {name:"Bellingcat OSINT Toolkit",desc:"Bellingcat's curated list of OSINT tools used by professional investigators -- regularly updated",url:"https://docs.google.com/spreadsheets/d/18rtqh8EG2q1xBo2cLNyhIDuK9jrPGwYr9DI2UncoqJQ/",level:"int",time:"Reference"},
     {name:"HarfangLab: OSINT as a Vector for Cyber Threat Intelligence",desc:"Technical blog on using OSINT for infrastructure attribution, actor identification, and TTP research",url:"https://harfanglab.io/blog/methodology/osint-vector-cyber-threat-intelligence-indicator-collection-attribution/",level:"int",time:"Blog"},
   ],
   practice:[
-    {name:"TryHackMe: OhSINT Room (Free)",desc:"Beginner OSINT room — solve a real investigation challenge using only open sources",url:"https://tryhackme.com/room/ohsint",level:"beg",time:"~45 min"},
+    {name:"TryHackMe: OhSINT Room (Free)",desc:"Beginner OSINT room -- solve a real investigation challenge using only open sources",url:"https://tryhackme.com/room/ohsint",level:"beg",time:"~45 min"},
     {name:"TryHackMe: Searchlight OSINT Room (Free)",desc:"OSINT investigation challenge with image and web-based clues",url:"https://tryhackme.com/room/searchlightosint",level:"beg",time:"~1 hr"},
-    {name:"Trace Labs: OSINT CTFs (Community Events)",desc:"Regular OSINT CTF events focused on finding missing persons — excellent real-world practice",url:"https://www.tracelabs.org/",level:"int",time:"Events"},
+    {name:"Trace Labs: OSINT CTFs (Community Events)",desc:"Regular OSINT CTF events focused on finding missing persons -- excellent real-world practice",url:"https://www.tracelabs.org/",level:"int",time:"Events"},
   ],
   quiz:[
     {q:"What is 'pivoting' in OSINT investigation?",opts:["Changing your VPN exit node","Using one known data point to discover related infrastructure or identifiers","Switching between threat intelligence platforms","Rotating sock puppet accounts"],ans:1,explain:"Pivoting is the core investigative skill in OSINT: starting from one indicator (e.g. an IP), finding connected data (domains, SSL certs, registrant emails, other IPs) to map adversary infrastructure."},
-    {q:"Why is OPSEC critical when conducting OSINT against threat actors?",opts:["It's not important for defensive analysts","Visiting actor-controlled infrastructure may alert the adversary to your investigation","OPSEC only applies to red teams","It saves bandwidth"],ans:1,explain:"Visiting actor C2 pages, registering on dark web forums, or searching specific indicators can tip off the adversary. Use isolated VMs, proxies, and separate identities — not your corporate laptop."},
-    {q:"A domain was registered 3 days ago, uses a privacy registrar, and has no historical passive DNS records. What does this suggest?",opts:["Likely a legitimate new business","Likely newly staged attack infrastructure","A CDN node","A government domain"],ans:1,explain:"Newly registered domains with privacy protection and no DNS history are classic fresh attack infrastructure — common in phishing campaigns and C2 staging."},
-    {q:"What is the primary ethical and legal constraint when conducting OSINT?",opts:["Only use paid tools","Never search for more than 10 indicators at once","Collect only publicly available information without unauthorized access to private systems","Always share findings publicly"],ans:2,explain:"OSINT by definition uses publicly available data. Accessing systems without authorization — even to investigate adversaries — is illegal regardless of intent. Stay within public sources."},
+    {q:"Why is OPSEC critical when conducting OSINT against threat actors?",opts:["It's not important for defensive analysts","Visiting actor-controlled infrastructure may alert the adversary to your investigation","OPSEC only applies to red teams","It saves bandwidth"],ans:1,explain:"Visiting actor C2 pages, registering on dark web forums, or searching specific indicators can tip off the adversary. Use isolated VMs, proxies, and separate identities -- not your corporate laptop."},
+    {q:"A domain was registered 3 days ago, uses a privacy registrar, and has no historical passive DNS records. What does this suggest?",opts:["Likely a legitimate new business","Likely newly staged attack infrastructure","A CDN node","A government domain"],ans:1,explain:"Newly registered domains with privacy protection and no DNS history are classic fresh attack infrastructure -- common in phishing campaigns and C2 staging."},
+    {q:"What is the primary ethical and legal constraint when conducting OSINT?",opts:["Only use paid tools","Never search for more than 10 indicators at once","Collect only publicly available information without unauthorized access to private systems","Always share findings publicly"],ans:2,explain:"OSINT by definition uses publicly available data. Accessing systems without authorization -- even to investigate adversaries -- is illegal regardless of intent. Stay within public sources."},
     {q:"Which free tool allows you to find internet-exposed devices and services by banner data and port?",opts:["Maltego","Shodan","PassiveTotal","URLScan"],ans:1,explain:"Shodan indexes internet-exposed services by banner data, making it invaluable for identifying actor-controlled infrastructure, misconfigured services, and C2 patterns."}
   ],
   lab:{title:"Module 5 Lab: OSINT Pivot Investigation",scenario:"Your SOC flagged outbound connections to an IP from three workstations. Conduct a full OSINT pivot to assess the indicator.",data:`Starting indicator: 91.108.4.179
 
 Recommended free tools:
-  - VirusTotal (virustotal.com) — reputation + related samples
-  - Shodan (shodan.io) — port/service/banner data  
-  - URLScan.io — URL and domain scanning
+  - VirusTotal (virustotal.com) -- reputation + related samples
+  - Shodan (shodan.io) -- port/service/banner data  
+  - URLScan.io -- URL and domain scanning
   - WHOIS / RDAP lookup (who.is or rdap.org)
-  - AbuseIPDB (abuseipdb.com) — community abuse reports
+  - AbuseIPDB (abuseipdb.com) -- community abuse reports
   - PassiveTotal community (community.riskiq.com)
-  - Censys (censys.io) — certificate and host data
+  - Censys (censys.io) -- certificate and host data
 
-OPSEC note: Use a browser VM or browser profile isolated from corporate accounts.`,tasks:["Document your pivot chain: starting from the IP, what related domains, certificates, hosting info, or actor infrastructure did you find?","What is your assessment of this indicator — malicious, suspicious, or benign? Justify with specific evidence from your tools.","Which OSINT sources provided the most actionable intelligence for this indicator type?","List any additional indicators you discovered during pivoting that should be added to your watchlist.","What OPSEC precautions did or should you take during this investigation?"]}
+OPSEC note: Use a browser VM or browser profile isolated from corporate accounts.`,tasks:["Document your pivot chain: starting from the IP, what related domains, certificates, hosting info, or actor infrastructure did you find?","What is your assessment of this indicator -- malicious, suspicious, or benign? Justify with specific evidence from your tools.","Which OSINT sources provided the most actionable intelligence for this indicator type?","List any additional indicators you discovered during pivoting that should be added to your watchlist.","What OPSEC precautions did or should you take during this investigation?"]}
 },
 {
   num:6, title:"Intelligence Analysis Techniques", duration:"5 hours", level:"Intermediate",
-  topics:["Foundations: evidence vs. inference vs. judgment","Structured Analytic Techniques (SATs): overview and when to apply each","Analysis of Competing Hypotheses (ACH) — deep dive","Cognitive biases in TI: anchoring, confirmation bias, mirror imaging, groupthink","Confidence language: high/medium/low confidence standards (ICD 203)","The Diamond Model applied to case analysis and structured reporting"],
+  topics:["Foundations: evidence vs. inference vs. judgment","Structured Analytic Techniques (SATs): overview and when to apply each","Analysis of Competing Hypotheses (ACH) -- deep dive","Cognitive biases in TI: anchoring, confirmation bias, mirror imaging, groupthink","Confidence language: high/medium/low confidence standards (ICD 203)","The Diamond Model applied to case analysis and structured reporting"],
   videos:[
-    {name:"ODNI: Psychology of Intelligence Analysis (Reading & Lecture)",desc:"Based on Heuer's classic text — covers cognitive biases, structured analysis, and analytic thinking",url:"https://www.youtube.com/watch?v=7RhiGkXDWO4",level:"int",time:"~40 min"},
+    {name:"ODNI: Psychology of Intelligence Analysis (Reading & Lecture)",desc:"Based on Heuer's classic text -- covers cognitive biases, structured analysis, and analytic thinking",url:"https://www.youtube.com/watch?v=7RhiGkXDWO4",level:"int",time:"~40 min"},
     {name:"SANS CTI Summit: Structured Analytical Techniques for CTI",desc:"Applied SATs in a CTI context from SANS summit presenters",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"int",time:"~45 min"},
     {name:"Cybrary: Critical Thinking for Cybersecurity Analysts (Free)",desc:"Free course covering analytical reasoning, bias recognition, and structured thinking for security professionals",url:"https://www.cybrary.it/",level:"int",time:"~2 hrs"},
     {name:"MITRE: Diamond Model Training with Sergio Caltagirone",desc:"Training on applying the Diamond Model from one of its original creators",url:"https://www.youtube.com/watch?v=4E0mLXt_mvM",level:"int",time:"~1 hr"},
   ],
   reading:[
-    {name:"Psychology of Intelligence Analysis — Richards Heuer Jr. (Free PDF)",desc:"The foundational text on analytical thinking, cognitive biases, and structured analysis — free from CIA/ODNI",url:"https://www.cia.gov/static/9a5f1162fd0932c29bfed1c030edf4ae/Pyschology-of-Intelligence-Analysis.pdf",level:"int",time:"PDF (free)"},
-    {name:"ICD 203: Analytic Standards (ODNI — Free)",desc:"Official US intelligence community standards for confidence language, sourcing, and analytical tradecraft — foundational for writing assessments",url:"https://www.dni.gov/files/documents/ICD/ICD%20203%20Analytic%20Standards.pdf",level:"int",time:"PDF"},
-    {name:"The Diamond Model of Intrusion Analysis (Full Paper)",desc:"Complete academic paper — read all sections including axioms, which define fundamental CTI principles",url:"https://www.activeresponse.org/wp-content/uploads/2013/09/diamond.pdf",level:"int",time:"PDF"},
-    {name:"ACH Analysis Tool (PARC Free)",desc:"Free web tool for running Analysis of Competing Hypotheses — use alongside the SAT methodology",url:"https://www.parc.com/work/project/ach-analysis/",level:"int",time:"Tool"},
+    {name:"Psychology of Intelligence Analysis -- Richards Heuer Jr. (Free PDF)",desc:"The foundational text on analytical thinking, cognitive biases, and structured analysis -- free from CIA/ODNI",url:"https://www.cia.gov/static/9a5f1162fd0932c29bfed1c030edf4ae/Pyschology-of-Intelligence-Analysis.pdf",level:"int",time:"PDF (free)"},
+    {name:"ICD 203: Analytic Standards (ODNI -- Free)",desc:"Official US intelligence community standards for confidence language, sourcing, and analytical tradecraft -- foundational for writing assessments",url:"https://www.dni.gov/files/documents/ICD/ICD%20203%20Analytic%20Standards.pdf",level:"int",time:"PDF"},
+    {name:"The Diamond Model of Intrusion Analysis (Full Paper)",desc:"Complete academic paper -- read all sections including axioms, which define fundamental CTI principles",url:"https://www.activeresponse.org/wp-content/uploads/2013/09/diamond.pdf",level:"int",time:"PDF"},
+    {name:"ACH Analysis Tool (PARC Free)",desc:"Free web tool for running Analysis of Competing Hypotheses -- use alongside the SAT methodology",url:"https://www.parc.com/work/project/ach-analysis/",level:"int",time:"Tool"},
     {name:"CISA: Structured Threat Intelligence Reporting Guide",desc:"Government guidance on producing structured, rigorous threat intelligence assessments",url:"https://www.cisa.gov/sites/default/files/2023-01/CISA_Cyber_Threat_Reporting_Guide.pdf",level:"int",time:"PDF"},
   ],
   practice:[
@@ -570,9 +673,9 @@ OPSEC note: Use a browser VM or browser profile isolated from corporate accounts
   ],
   quiz:[
     {q:"Which cognitive bias causes an analyst to over-weight the first piece of information they receive?",opts:["Confirmation bias","Anchoring bias","Availability heuristic","Groupthink"],ans:1,explain:"Anchoring bias causes analysts to give disproportionate weight to the first data point, which can skew entire assessments if that initial information is misleading or incomplete."},
-    {q:"In Analysis of Competing Hypotheses (ACH), what is the key analytical step?",opts:["Identify the most likely hypothesis and prove it","List evidence supporting the favored hypothesis","Evaluate evidence against ALL hypotheses and eliminate those with strong contradictions","Vote on the most likely hypothesis as a team"],ans:2,explain:"ACH is diagnostic, not confirmatory. You test evidence against all hypotheses to eliminate impossibilities. The surviving hypothesis is your conclusion — not the one with the most supporting evidence."},
+    {q:"In Analysis of Competing Hypotheses (ACH), what is the key analytical step?",opts:["Identify the most likely hypothesis and prove it","List evidence supporting the favored hypothesis","Evaluate evidence against ALL hypotheses and eliminate those with strong contradictions","Vote on the most likely hypothesis as a team"],ans:2,explain:"ACH is diagnostic, not confirmatory. You test evidence against all hypotheses to eliminate impossibilities. The surviving hypothesis is your conclusion -- not the one with the most supporting evidence."},
     {q:"The Diamond Model's four core features are Adversary, Infrastructure, Capability, and which fourth element?",opts:["Timeline","Victim","Intent","Malware"],ans:1,explain:"The four Diamond Model features are: Adversary, Infrastructure, Capability, and Victim. Each intrusion event can be plotted on this model to structure analysis and enable pivoting."},
-    {q:"An analyst writes: 'We assess with high confidence that the actor is based in Russia.' What does 'high confidence' indicate per ICD 203?",opts:["100% certainty","Strong, corroborated sourcing with few analytical gaps","The analyst has worked many hours on this","The judgment is based on a single strong source"],ans:1,explain:"Per ICD 203, confidence levels reflect the quality of underlying information and the analytical process — not certainty. High confidence = strong, corroborated sourcing with few gaps."},
+    {q:"An analyst writes: 'We assess with high confidence that the actor is based in Russia.' What does 'high confidence' indicate per ICD 203?",opts:["100% certainty","Strong, corroborated sourcing with few analytical gaps","The analyst has worked many hours on this","The judgment is based on a single strong source"],ans:1,explain:"Per ICD 203, confidence levels reflect the quality of underlying information and the analytical process -- not certainty. High confidence = strong, corroborated sourcing with few gaps."},
     {q:"'Mirror imaging' is a cognitive bias where an analyst:",opts:["Copies another analyst's work","Assumes adversaries think and behave the same way the analyst would","Over-relies on pattern matching","Refuses to update assessments with new evidence"],ans:1,explain:"Mirror imaging causes analysts to project their own logic onto adversaries. This is dangerous in CTI because adversaries may have entirely different decision-making frameworks, risk tolerances, and constraints."}
   ],
   lab:{title:"Module 6 Lab: Apply ACH to an Intrusion",scenario:"Apply Analysis of Competing Hypotheses to determine the most likely actor behind this intrusion.",data:`HYPOTHESES:
@@ -588,33 +691,33 @@ E4: Data exfiltrated: drug trial documents and patent applications
 E5: C2 traffic during business hours (9-5 target timezone)
 E6: Commercial VPN used to mask origin
 E7: Custom malware not seen in public repositories
-E8: No financial accounts or HR data accessed`,tasks:["Build an ACH matrix: for each piece of evidence (E1–E8), assess whether it is Consistent (C), Inconsistent (I), or Not Applicable (N/A) with each hypothesis.","Which hypothesis is most supported? Which can you eliminate? Explain.","What additional intelligence collection would reduce your uncertainty most?","Identify one cognitive bias that could distort this analysis. How would you mitigate it?"]}
+E8: No financial accounts or HR data accessed`,tasks:["Build an ACH matrix: for each piece of evidence (E1-E8), assess whether it is Consistent (C), Inconsistent (I), or Not Applicable (N/A) with each hypothesis.","Which hypothesis is most supported? Which can you eliminate? Explain.","What additional intelligence collection would reduce your uncertainty most?","Identify one cognitive bias that could distort this analysis. How would you mitigate it?"]}
 },
 {
   num:7, title:"Intelligence Production & Reporting", duration:"5 hours", level:"Intermediate",
   topics:["Types of intelligence products: flash reports, tactical bulletins, strategic assessments, advisories","Audience analysis: writing for executives vs. operations vs. technical audiences","Intelligence writing standards: BLUF, active voice, sourcing, confidence caveats","Avoiding pitfalls: vagueness, over-claiming, unsourced assertions","Traffic Light Protocol (TLP) and classification standards","Peer review and quality assurance processes"],
   videos:[
-    {name:"Recorded Future: Intelligence Fundamentals Lessons I–IV (Free)",desc:"Series of free eLearning modules covering intelligence production, dissemination, and consumer requirements",url:"https://university.recordedfuture.com/",level:"int",time:"~2 hrs total"},
+    {name:"Recorded Future: Intelligence Fundamentals Lessons I-IV (Free)",desc:"Series of free eLearning modules covering intelligence production, dissemination, and consumer requirements",url:"https://university.recordedfuture.com/",level:"int",time:"~2 hrs total"},
     {name:"SANS CTI Summit: Writing Intelligence Products That Get Read",desc:"CTI Summit talk on producing consumable, actionable intelligence products for different audiences",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"int",time:"~45 min"},
     {name:"Cybrary: Threat Reporting Fundamentals",desc:"Free course section covering report structure, audience adaptation, and production workflows",url:"https://www.cybrary.it/",level:"int",time:"~1 hr"},
   ],
   reading:[
-    {name:"ICD 203: Analytic Standards (ODNI)",desc:"Official IC standards for analytic writing — confidence language, sourcing standards, judgment expression",url:"https://www.dni.gov/files/documents/ICD/ICD%20203%20Analytic%20Standards.pdf",level:"int",time:"PDF"},
-    {name:"CIA Directorate of Intelligence Style Manual (Declassified)",desc:"The legendary IC writing guide — BLUF, active voice, precision, sourcing. Free declassified version",url:"https://www.cia.gov/static/0aae8f84700a163c82f75be4b1bc0df1/DI-Style-Manual.pdf",level:"int",time:"PDF"},
+    {name:"ICD 203: Analytic Standards (ODNI)",desc:"Official IC standards for analytic writing -- confidence language, sourcing standards, judgment expression",url:"https://www.dni.gov/files/documents/ICD/ICD%20203%20Analytic%20Standards.pdf",level:"int",time:"PDF"},
+    {name:"CIA Directorate of Intelligence Style Manual (Declassified)",desc:"The legendary IC writing guide -- BLUF, active voice, precision, sourcing. Free declassified version",url:"https://www.cia.gov/static/0aae8f84700a163c82f75be4b1bc0df1/DI-Style-Manual.pdf",level:"int",time:"PDF"},
     {name:"The Analyst's Style Manual (CTI Adaptation)",desc:"CTI-adapted version of writing standards for threat intelligence analysts",url:"https://github.com/curated-intel/CTI-fundamentals",level:"int",time:"Reference"},
-    {name:"FIRST.org: TLP Standard (Traffic Light Protocol)",desc:"Official FIRST TLP standard specification — required reading for understanding intelligence sharing labels",url:"https://www.first.org/tlp/",level:"beg",time:"Reference"},
-    {name:"CISA: Sharing Cyber Event Information Guide",desc:"Government guidance on classifying and sharing cyber threat information — includes TLP application",url:"https://www.cisa.gov/sites/default/files/2023-01/Sharing_Cyber_Event_Information.pdf",level:"int",time:"PDF"},
+    {name:"FIRST.org: TLP Standard (Traffic Light Protocol)",desc:"Official FIRST TLP standard specification -- required reading for understanding intelligence sharing labels",url:"https://www.first.org/tlp/",level:"beg",time:"Reference"},
+    {name:"CISA: Sharing Cyber Event Information Guide",desc:"Government guidance on classifying and sharing cyber threat information -- includes TLP application",url:"https://www.cisa.gov/sites/default/files/2023-01/Sharing_Cyber_Event_Information.pdf",level:"int",time:"PDF"},
   ],
   practice:[
     {name:"CISA: Cyber Threat Information Sharing Templates",desc:"Free templates for standardizing how your organization reports and shares threat intelligence",url:"https://www.cisa.gov/cyber-information-sharing",level:"int",time:"Templates"},
-    {name:"Write a Flash Report — Self-Guided Exercise",desc:"Using a public CISA advisory as your source, practice writing a 1-page flash report for your SOC team using BLUF format",url:"https://www.cisa.gov/news-events/cybersecurity-advisories",level:"int",time:"Exercise"},
+    {name:"Write a Flash Report -- Self-Guided Exercise",desc:"Using a public CISA advisory as your source, practice writing a 1-page flash report for your SOC team using BLUF format",url:"https://www.cisa.gov/news-events/cybersecurity-advisories",level:"int",time:"Exercise"},
   ],
   quiz:[
-    {q:"What does BLUF stand for in intelligence writing?",opts:["Brief Layered Unified Format","Bottom Line Up Front","Basic Level of Understanding First","Broad Language Under Framework"],ans:1,explain:"Bottom Line Up Front — the key judgment appears first, before supporting evidence. Intelligence consumers are busy; give them the conclusion before the reasoning."},
+    {q:"What does BLUF stand for in intelligence writing?",opts:["Brief Layered Unified Format","Bottom Line Up Front","Basic Level of Understanding First","Broad Language Under Framework"],ans:1,explain:"Bottom Line Up Front -- the key judgment appears first, before supporting evidence. Intelligence consumers are busy; give them the conclusion before the reasoning."},
     {q:"Which product type is best suited for immediate notification of a newly detected, active malware campaign?",opts:["Strategic assessment","Annual threat landscape report","Flash report","Finished intelligence brief"],ans:2,explain:"Flash reports are short (often 1 page), urgent products designed for speed. Analytical depth is secondary to timeliness when an active campaign is underway."},
-    {q:"An analyst writes: 'The threat actor will definitely attack our network next quarter.' What is wrong?",opts:["Nothing — specificity is good","It over-claims certainty that intelligence cannot support","It's too short","'Threat actor' is incorrect terminology"],ans:1,explain:"'Definitely' claims absolute certainty, which intelligence assessments cannot support. Use calibrated language aligned to ICD 203: 'we assess with high confidence' or 'it is likely'."},
+    {q:"An analyst writes: 'The threat actor will definitely attack our network next quarter.' What is wrong?",opts:["Nothing -- specificity is good","It over-claims certainty that intelligence cannot support","It's too short","'Threat actor' is incorrect terminology"],ans:1,explain:"'Definitely' claims absolute certainty, which intelligence assessments cannot support. Use calibrated language aligned to ICD 203: 'we assess with high confidence' or 'it is likely'."},
     {q:"TLP:AMBER intelligence can be shared with:",opts:["Anyone publicly","Recipients and their organizations on a need-to-know basis","Only the originator","All government agencies"],ans:1,explain:"TLP:AMBER restricts sharing to the recipient's organization on a need-to-know basis. It cannot be shared publicly or with organizations outside the recipient's organization without the originator's permission."},
-    {q:"What is the purpose of a peer review process for TI products?",opts:["To slow down production","To catch analytical errors, unsourced claims, and logical gaps before dissemination","To assign credit","To make the report longer"],ans:1,explain:"Peer review is a quality gate — a second analyst checks for logical gaps, over-confident language, unsourced claims, and factual errors before the product reaches consumers."}
+    {q:"What is the purpose of a peer review process for TI products?",opts:["To slow down production","To catch analytical errors, unsourced claims, and logical gaps before dissemination","To assign credit","To make the report longer"],ans:1,explain:"Peer review is a quality gate -- a second analyst checks for logical gaps, over-confident language, unsourced claims, and factual errors before the product reaches consumers."}
   ],
   lab:{title:"Module 7 Lab: Write a Threat Advisory",scenario:"Using findings from your Module 5 OSINT investigation and Module 6 ACH analysis, produce a formal threat advisory.",data:`AUDIENCE: SOC Manager + IT Director (mixed technical/non-technical)
 FORMAT:
@@ -629,36 +732,36 @@ FORMAT:
 AVAILABLE INPUT:
   - Malicious IP: 91.108.4.179 (assessed: C2 infrastructure)
   - Related domain: update-telemetry[.]net  
-  - TTPs: Spearphishing → PowerShell → LSASS dump → DNS exfil
+  - TTPs: Spearphishing -> PowerShell -> LSASS dump -> DNS exfil
   - Actor assessment: Likely financially motivated, Medium confidence`,tasks:["Write the full threat advisory using the format requirements above.","Review your advisory: Is the BLUF clear in sentence 1? Are all claims sourced? Is confidence language calibrated? Is it appropriate for a mixed technical/non-technical audience?","What would you change if this advisory was going only to the SOC vs. only to the CISO? List 3 specific changes."]}
 },
 {
   num:8, title:"Threat Hunting Fundamentals", duration:"6 hours", level:"Advanced",
-  topics:["Threat hunting vs. alert triage and incident response — key distinctions","The hunting loop: hypothesis → data → investigation → discovery → detection → feedback","TI-driven hunting: using ATT&CK TTPs and actor profiles as hunt hypotheses","Hunt techniques: frequency/stack analysis, clustering, baseline deviation, timeline analysis","Data sources: EDR telemetry, SIEM, network flow, DNS, authentication logs, Sysmon","Converting hunt findings into detection rules and engineering improvements"],
+  topics:["Threat hunting vs. alert triage and incident response -- key distinctions","The hunting loop: hypothesis -> data -> investigation -> discovery -> detection -> feedback","TI-driven hunting: using ATT&CK TTPs and actor profiles as hunt hypotheses","Hunt techniques: frequency/stack analysis, clustering, baseline deviation, timeline analysis","Data sources: EDR telemetry, SIEM, network flow, DNS, authentication logs, Sysmon","Converting hunt findings into detection rules and engineering improvements"],
   videos:[
-    {name:"Cybrary: MAD ATT&CK Threat Hunting (Free — MITRE Official)",desc:"Free MITRE Engenuity course from ATT&CK team authors on TTP-based threat hunting using ATT&CK",url:"https://www.cybrary.it/course/mitre-attack-threat-hunting",level:"adv",time:"~4 hrs"},
-    {name:"SANS CTI Summit: Threat Hunting with Threat Intelligence",desc:"Applied threat hunting using TI to develop hunt hypotheses — SANS summit talk",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"adv",time:"~50 min"},
+    {name:"Cybrary: MAD ATT&CK Threat Hunting (Free -- MITRE Official)",desc:"Free MITRE Engenuity course from ATT&CK team authors on TTP-based threat hunting using ATT&CK",url:"https://www.cybrary.it/course/mitre-attack-threat-hunting",level:"adv",time:"~4 hrs"},
+    {name:"SANS CTI Summit: Threat Hunting with Threat Intelligence",desc:"Applied threat hunting using TI to develop hunt hypotheses -- SANS summit talk",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"adv",time:"~50 min"},
     {name:"InfSec Train: SOC Analyst Masterclass (Free YouTube)",desc:"Free 87-min YouTube class covering threat patterns, alert triage, and threat hunting basics",url:"https://www.classcentral.com/course/youtube-soc-analyst-masterclass-threat-patterns-response-and-careers-468906",level:"int",time:"87 min"},
     {name:"SANS: Threat Hunting Analysis Rundown (YouTube)",desc:"SANS walkthrough of CTI concepts applied to threat hunting",url:"https://www.youtube.com/watch?v=J7e74QLVxCk",level:"adv",time:"~35 min"},
-    {name:"Security Onion: Threat Hunting with Free Tools (YouTube)",desc:"Demo of threat hunting using open-source Security Onion — practical and hands-on",url:"https://www.youtube.com/watch?v=B5lRbWr8Cmo",level:"adv",time:"~45 min"},
+    {name:"Security Onion: Threat Hunting with Free Tools (YouTube)",desc:"Demo of threat hunting using open-source Security Onion -- practical and hands-on",url:"https://www.youtube.com/watch?v=B5lRbWr8Cmo",level:"adv",time:"~45 min"},
   ],
   reading:[
-    {name:"TTP-Based Hunting (Steve Luke, MITRE — Free PDF)",desc:"Original MITRE paper on building hunt hypotheses from ATT&CK TTPs — co-authored by the MAD course instructor",url:"https://www.mitre.org/sites/default/files/2021-11/prs-19-3892-ttp-based-hunting.pdf",level:"adv",time:"PDF"},
-    {name:"Sqrrl: A Framework for Cyber Threat Hunting (Full White Paper)",desc:"The seminal threat hunting framework document — covers hunt loops, data sources, and hypothesis development",url:"https://www.threathunting.net/files/framework-for-threat-hunting-whitepaper.pdf",level:"adv",time:"PDF"},
+    {name:"TTP-Based Hunting (Steve Luke, MITRE -- Free PDF)",desc:"Original MITRE paper on building hunt hypotheses from ATT&CK TTPs -- co-authored by the MAD course instructor",url:"https://www.mitre.org/sites/default/files/2021-11/prs-19-3892-ttp-based-hunting.pdf",level:"adv",time:"PDF"},
+    {name:"Sqrrl: A Framework for Cyber Threat Hunting (Full White Paper)",desc:"The seminal threat hunting framework document -- covers hunt loops, data sources, and hypothesis development",url:"https://www.threathunting.net/files/framework-for-threat-hunting-whitepaper.pdf",level:"adv",time:"PDF"},
     {name:"Building Threat Hunting Strategies with the Diamond Model (Caltagirone)",desc:"Blog post on using the Diamond Model to develop structured hunt hypotheses",url:"https://www.activeresponse.org/building-threat-hunting-strategies/",level:"adv",time:"Blog"},
-    {name:"MITRE CTID: Hunt Vocabulary (Free Reference)",desc:"Standardized vocabulary for threat hunting — enables consistent communication about hunt activities",url:"https://github.com/OTRF/OSSEM-DM",level:"adv",time:"Reference"},
-    {name:"Threat Hunter Playbook (Open Source GitHub)",desc:"Community-maintained hunt playbooks with Jupyter notebooks and SIGMA rules — practical and free",url:"https://threathunterplaybook.com/",level:"adv",time:"Reference + Labs"},
+    {name:"MITRE CTID: Hunt Vocabulary (Free Reference)",desc:"Standardized vocabulary for threat hunting -- enables consistent communication about hunt activities",url:"https://github.com/OTRF/OSSEM-DM",level:"adv",time:"Reference"},
+    {name:"Threat Hunter Playbook (Open Source GitHub)",desc:"Community-maintained hunt playbooks with Jupyter notebooks and SIGMA rules -- practical and free",url:"https://threathunterplaybook.com/",level:"adv",time:"Reference + Labs"},
   ],
   practice:[
     {name:"Threat Hunter Playbook Notebooks (Free GitHub)",desc:"Open-source Jupyter notebooks for practicing hunt techniques on real datasets",url:"https://threathunterplaybook.com/",level:"adv",time:"Labs"},
     {name:"TryHackMe: Threat Hunting: Introduction Room (Free)",desc:"Hands-on introduction to threat hunting methodology and tools",url:"https://tryhackme.com/room/introductiontothreathunting",level:"int",time:"~1.5 hrs"},
-    {name:"SIGMA Rules Repository (GitHub)",desc:"Community-maintained library of detection rules — learn rule structure and convert hunt findings to detections",url:"https://github.com/SigmaHQ/sigma",level:"adv",time:"Reference"},
+    {name:"SIGMA Rules Repository (GitHub)",desc:"Community-maintained library of detection rules -- learn rule structure and convert hunt findings to detections",url:"https://github.com/SigmaHQ/sigma",level:"adv",time:"Reference"},
   ],
   quiz:[
-    {q:"What most fundamentally distinguishes threat hunting from alert-based detection?",opts:["Threat hunting only uses commercial tools","Threat hunting is proactive — analysts develop hypotheses and search for threats without waiting for alerts","Threat hunting replaces the SOC tier 1 function","Threat hunting is only done by red teams"],ans:1,explain:"Threat hunting is proactive and hypothesis-driven. Rather than responding to alerts, hunters assume adversaries may already be present and actively search for evidence — moving the defensive posture forward."},
-    {q:"Which data source is most valuable for detecting credential theft via LSASS memory access?",opts:["Network flow (NetFlow)","DNS logs","EDR/endpoint telemetry","Email gateway logs"],ans:2,explain:"EDR provides process-level visibility including LSASS access, memory reads, and process injection — behaviors that signature-based tools miss. It's the primary data source for endpoint-focused hunts."},
-    {q:"You are hunting for lateral movement. 'Stack analysis' involves:",opts:["Building protocol stacks","Sorting processes or events by frequency to identify rare/anomalous items","Stacking firewall rules","Comparing log timestamps"],ans:1,explain:"Stack (frequency) analysis sorts processes, connections, or events by how often they appear. Rare items are anomalies worth investigating — adversary tools typically appear very infrequently across an enterprise."},
-    {q:"A hunt identifies evidence of Pass-the-Hash lateral movement. What should happen immediately after?",opts:["Close the hunt — job done","Delete affected system logs","Escalate to incident response AND convert the finding into a detection rule for future automated coverage","Inform HR"],ans:2,explain:"Hunt findings feed two outputs: incident response (if active compromise is confirmed) and detection engineering (new SIEM/EDR rules to automatically detect this technique going forward). Both are required."},
+    {q:"What most fundamentally distinguishes threat hunting from alert-based detection?",opts:["Threat hunting only uses commercial tools","Threat hunting is proactive -- analysts develop hypotheses and search for threats without waiting for alerts","Threat hunting replaces the SOC tier 1 function","Threat hunting is only done by red teams"],ans:1,explain:"Threat hunting is proactive and hypothesis-driven. Rather than responding to alerts, hunters assume adversaries may already be present and actively search for evidence -- moving the defensive posture forward."},
+    {q:"Which data source is most valuable for detecting credential theft via LSASS memory access?",opts:["Network flow (NetFlow)","DNS logs","EDR/endpoint telemetry","Email gateway logs"],ans:2,explain:"EDR provides process-level visibility including LSASS access, memory reads, and process injection -- behaviors that signature-based tools miss. It's the primary data source for endpoint-focused hunts."},
+    {q:"You are hunting for lateral movement. 'Stack analysis' involves:",opts:["Building protocol stacks","Sorting processes or events by frequency to identify rare/anomalous items","Stacking firewall rules","Comparing log timestamps"],ans:1,explain:"Stack (frequency) analysis sorts processes, connections, or events by how often they appear. Rare items are anomalies worth investigating -- adversary tools typically appear very infrequently across an enterprise."},
+    {q:"A hunt identifies evidence of Pass-the-Hash lateral movement. What should happen immediately after?",opts:["Close the hunt -- job done","Delete affected system logs","Escalate to incident response AND convert the finding into a detection rule for future automated coverage","Inform HR"],ans:2,explain:"Hunt findings feed two outputs: incident response (if active compromise is confirmed) and detection engineering (new SIEM/EDR rules to automatically detect this technique going forward). Both are required."},
     {q:"What makes a well-formed hunt hypothesis?",opts:["As broad as possible to maximize coverage","Specific, testable, grounded in threat intelligence, and tied to an available data source","Written without referencing threat intelligence to avoid bias","Impossible to test so it motivates thorough investigation"],ans:1,explain:"Good hypotheses are specific and testable. E.g. 'Based on APT29 TTPs, I hypothesize that encoded PowerShell commands may be present in our EDR process creation logs.' Vague hypotheses produce vague results."}
   ],
   lab:{title:"Module 8 Lab: Develop a Hunt Hypothesis",scenario:"Develop a formal hunt hypothesis and query plan based on threat intelligence about current actor TTPs.",data:`THREAT INTEL CONTEXT:
@@ -674,14 +777,14 @@ YOUR ENVIRONMENT:
   - EDR: CrowdStrike Falcon (full process telemetry enabled)
   - SIEM: Splunk (Windows Event Logs, Sysmon, DNS)
   - ~3,000 Windows endpoints
-  - Logging: Sysmon Event ID 1 (process create), 7 (image load), 10 (process access)`,tasks:["Write a formal hunt hypothesis: 'Based on [TI source], I hypothesize that [adversary behavior] may exist in our environment, evidenced by [observable] in [data source].'","Write a Splunk search (or pseudocode) to hunt for encoded PowerShell execution. What fields and logic would you use?","How would you distinguish malicious encoded PowerShell from legitimate admin use? What additional context would you collect?","If your hunt returns 0 results — is that a success or failure? What are your next steps?"]}
+  - Logging: Sysmon Event ID 1 (process create), 7 (image load), 10 (process access)`,tasks:["Write a formal hunt hypothesis: 'Based on [TI source], I hypothesize that [adversary behavior] may exist in our environment, evidenced by [observable] in [data source].'","Write a Splunk search (or pseudocode) to hunt for encoded PowerShell execution. What fields and logic would you use?","How would you distinguish malicious encoded PowerShell from legitimate admin use? What additional context would you collect?","If your hunt returns 0 results -- is that a success or failure? What are your next steps?"]}
 },
 {
   num:9, title:"Strategic & Finished Intelligence", duration:"6 hours", level:"Advanced",
-  topics:["Strategic vs. operational vs. tactical TI revisited — revisited with depth","Threat landscape assessments: methodology, data sources, executive presentation","Priority Intelligence Requirements (PIRs) — developing and managing","Evaluating external TI vendors and feed quality","Translating cyber threats into business risk language","TI program maturity models and building a roadmap"],
+  topics:["Strategic vs. operational vs. tactical TI revisited -- revisited with depth","Threat landscape assessments: methodology, data sources, executive presentation","Priority Intelligence Requirements (PIRs) -- developing and managing","Evaluating external TI vendors and feed quality","Translating cyber threats into business risk language","TI program maturity models and building a roadmap"],
   videos:[
-    {name:"SOCRadar: Mastering CTI — Strategic Intelligence Module",desc:"Covers strategic TI, program maturity, threat landscape analysis, and executive communication",url:"https://academy.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts",level:"adv",time:"~1 hr (module)"},
-    {name:"SANS CTI Summit: Building an Intelligence Program (Full Talks)",desc:"Multi-year collection of CTI Summit talks on building and maturing a TI program — advanced track",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"adv",time:"Various"},
+    {name:"SOCRadar: Mastering CTI -- Strategic Intelligence Module",desc:"Covers strategic TI, program maturity, threat landscape analysis, and executive communication",url:"https://academy.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts",level:"adv",time:"~1 hr (module)"},
+    {name:"SANS CTI Summit: Building an Intelligence Program (Full Talks)",desc:"Multi-year collection of CTI Summit talks on building and maturing a TI program -- advanced track",url:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",level:"adv",time:"Various"},
     {name:"Recorded Future: Strategic Intelligence Production (Free)",desc:"Free course covering strategic threat landscape assessment methodology and PIR development",url:"https://university.recordedfuture.com/",level:"adv",time:"~30 min"},
     {name:"Katie Nickels: CTI Self-Study Plan Parts 1 & 2 (Medium)",desc:"Advanced self-guided learning plan for experienced CTI analysts covering strategic and program-level skills",url:"https://medium.com/katies-five-cents/a-cyber-threat-intelligence-self-study-plan-part-1-968b5a8daf9a",level:"adv",time:"Blog Series"},
   ],
@@ -690,19 +793,19 @@ YOUR ENVIRONMENT:
     {name:"CISA: Cyber Threat Intelligence Integration Network (CTIIC) Guide",desc:"Government framework for integrating CTI into organizational risk management and decision support",url:"https://www.cisa.gov/topics/cyber-threats-and-advisories/information-sharing",level:"adv",time:"Reference"},
     {name:"SANS: Operationalizing Threat Intelligence (White Paper)",desc:"SANS paper on moving from raw TI to actionable, operationalized intelligence within a SOC",url:"https://www.sans.org/reading-room/whitepapers/threatintelligence/",level:"adv",time:"White Paper"},
     {name:"Chad Warner: CTI Learning Resources (Comprehensive List)",desc:"Master list of CTI books, courses, whitepapers, blogs, and tools for advanced analysts",url:"https://warnerchad.medium.com/cyber-threat-intelligence-learning-resources-5cf00f9fe6c5",level:"adv",time:"Reference"},
-    {name:"Katie Nickels: A Cyber Threat Intelligence Self-Study Plan (Parts 1 & 2)",desc:"Advanced structured self-study curriculum designed by MITRE ATT&CK lead — reading, labs, and skills",url:"https://medium.com/katies-five-cents/a-cyber-threat-intelligence-self-study-plan-part-1-968b5a8daf9a",level:"adv",time:"Blog Series"},
-    {name:"ThreatConnect: Maturing a Threat Intelligence Program (White Paper)",desc:"End-to-end whitepaper on building TI maturity from Level 1 to Level 4 — includes PIRs and vendor management",url:"https://threatconnect.com/wp-content/uploads/Maturity-Model-Whitepaper-2017-1.pdf",level:"adv",time:"PDF"},
+    {name:"Katie Nickels: A Cyber Threat Intelligence Self-Study Plan (Parts 1 & 2)",desc:"Advanced structured self-study curriculum designed by MITRE ATT&CK lead -- reading, labs, and skills",url:"https://medium.com/katies-five-cents/a-cyber-threat-intelligence-self-study-plan-part-1-968b5a8daf9a",level:"adv",time:"Blog Series"},
+    {name:"ThreatConnect: Maturing a Threat Intelligence Program (White Paper)",desc:"End-to-end whitepaper on building TI maturity from Level 1 to Level 4 -- includes PIRs and vendor management",url:"https://threatconnect.com/wp-content/uploads/Maturity-Model-Whitepaper-2017-1.pdf",level:"adv",time:"PDF"},
   ],
   practice:[
     {name:"Mandiant CTI Program Self-Assessment (Free)",desc:"Free 42-question self-assessment to benchmark your CTI program maturity across people, process, and technology",url:"https://cloud.google.com/blog/products/identity-security/cti-program-maturity-assessment/",level:"adv",time:"~45 min"},
-    {name:"Write a Strategic Threat Assessment — Self-Guided",desc:"Use CISA advisories, public OSINT, and ATT&CK to write a 2-page strategic assessment for your sector",url:"https://www.cisa.gov/news-events/cybersecurity-advisories",level:"adv",time:"Exercise"},
+    {name:"Write a Strategic Threat Assessment -- Self-Guided",desc:"Use CISA advisories, public OSINT, and ATT&CK to write a 2-page strategic assessment for your sector",url:"https://www.cisa.gov/news-events/cybersecurity-advisories",level:"adv",time:"Exercise"},
   ],
   quiz:[
-    {q:"What is a Priority Intelligence Requirement (PIR)?",opts:["A list of all IOCs to collect","A formal statement of the intelligence an organization needs most to support key decisions","A vendor SLA for threat feeds","A SIEM rule priority level"],ans:1,explain:"PIRs formally define what intelligence your organization needs most. They drive collection planning, resource allocation, and reporting priorities — and should be approved by leadership."},
-    {q:"A CISO asks: 'Should we be worried about ransomware groups targeting our sector?' This is best answered with:",opts:["A list of ransomware IOCs","A strategic threat landscape assessment","A flash report","A STIX bundle"],ans:1,explain:"A strategic threat landscape assessment synthesizes intelligence about threats relevant to the organization's sector — exactly what executive risk decision-making requires. IOC lists answer different questions."},
+    {q:"What is a Priority Intelligence Requirement (PIR)?",opts:["A list of all IOCs to collect","A formal statement of the intelligence an organization needs most to support key decisions","A vendor SLA for threat feeds","A SIEM rule priority level"],ans:1,explain:"PIRs formally define what intelligence your organization needs most. They drive collection planning, resource allocation, and reporting priorities -- and should be approved by leadership."},
+    {q:"A CISO asks: 'Should we be worried about ransomware groups targeting our sector?' This is best answered with:",opts:["A list of ransomware IOCs","A strategic threat landscape assessment","A flash report","A STIX bundle"],ans:1,explain:"A strategic threat landscape assessment synthesizes intelligence about threats relevant to the organization's sector -- exactly what executive risk decision-making requires. IOC lists answer different questions."},
     {q:"When evaluating an external TI vendor, which criterion is most important?",opts:["Price","Relevance and timeliness to your specific sector and threat model","Raw number of IOCs in their feed","Brand recognition and market share"],ans:1,explain:"A feed with millions of generic IOCs is less valuable than timely, relevant intelligence about threats targeting your specific sector, geography, and technology stack. Relevance beats volume."},
-    {q:"What does a TI program maturity model help an organization understand?",opts:["Which threat actors to ignore","Their current TI capabilities and a roadmap to improve them","How many analysts to hire","Which intelligence vendors to purchase"],ans:1,explain:"TI maturity models assess current capabilities across people, process, and technology, then provide a structured roadmap for improvement — helping organizations prioritize investments."},
-    {q:"How should a TI analyst best translate a threat to a board-level audience?",opts:["Share raw IOC lists and STIX data","Present ATT&CK Navigator layers","Translate the threat into potential business impact: financial loss, regulatory exposure, reputational damage","Use technical jargon to demonstrate depth of knowledge"],ans:2,explain:"Board members think in business terms. Translate: 'This ransomware group targets healthcare via spearphishing' → 'A successful attack could result in $X operational downtime, HIPAA penalties, and reputational damage to patient trust.'"}
+    {q:"What does a TI program maturity model help an organization understand?",opts:["Which threat actors to ignore","Their current TI capabilities and a roadmap to improve them","How many analysts to hire","Which intelligence vendors to purchase"],ans:1,explain:"TI maturity models assess current capabilities across people, process, and technology, then provide a structured roadmap for improvement -- helping organizations prioritize investments."},
+    {q:"How should a TI analyst best translate a threat to a board-level audience?",opts:["Share raw IOC lists and STIX data","Present ATT&CK Navigator layers","Translate the threat into potential business impact: financial loss, regulatory exposure, reputational damage","Use technical jargon to demonstrate depth of knowledge"],ans:2,explain:"Board members think in business terms. Translate: 'This ransomware group targets healthcare via spearphishing' -> 'A successful attack could result in $X operational downtime, HIPAA penalties, and reputational damage to patient trust.'"}
   ],
   lab:{title:"Module 9 Lab: Strategic Threat Assessment",scenario:"You are a senior TI analyst at a mid-sized healthcare organization. The CISO has requested a 2-page strategic threat assessment to inform next year's security budget.",data:`ORGANIZATIONAL CONTEXT:
   - Healthcare provider: 12 hospitals, 40 clinics, ~18,000 employees
@@ -725,10 +828,10 @@ FREE SOURCES TO USE:
 ];
 
 const glossaryTerms = [
-  {term:"Threat Intelligence",abbr:"TI / CTI",def:"Analyzed information about adversaries — their capabilities, motivations, and TTPs — used to support informed security decisions and improve defenses.",tag:"Core Concept"},
+  {term:"Threat Intelligence",abbr:"TI / CTI",def:"Analyzed information about adversaries -- their capabilities, motivations, and TTPs -- used to support informed security decisions and improve defenses.",tag:"Core Concept"},
   {term:"Tactics, Techniques & Procedures",abbr:"TTPs",def:"Patterns of adversary behavior. Tactics = why (goals), Techniques = how (methods), Procedures = specific implementations. More durable indicators than IOCs.",tag:"Core Concept"},
-  {term:"Indicator of Compromise",abbr:"IOC",def:"Artifacts suggesting compromise — IPs, domains, file hashes, URLs, registry keys, mutexes. Technical-level intelligence with a short shelf life.",tag:"Indicators"},
-  {term:"Intelligence Lifecycle",abbr:"",def:"The cyclical process of producing intelligence: Planning → Collection → Processing → Analysis → Dissemination → Feedback. Feedback loops back to planning.",tag:"Core Concept"},
+  {term:"Indicator of Compromise",abbr:"IOC",def:"Artifacts suggesting compromise -- IPs, domains, file hashes, URLs, registry keys, mutexes. Technical-level intelligence with a short shelf life.",tag:"Indicators"},
+  {term:"Intelligence Lifecycle",abbr:"",def:"The cyclical process of producing intelligence: Planning -> Collection -> Processing -> Analysis -> Dissemination -> Feedback. Feedback loops back to planning.",tag:"Core Concept"},
   {term:"Pyramid of Pain",abbr:"",def:"A model (David Bianco, 2013) ranking indicator types by how much disruption they cause adversaries when denied. TTPs cause most pain; hashes cause least.",tag:"Frameworks"},
   {term:"Advanced Persistent Threat",abbr:"APT",def:"A sophisticated, well-resourced threat actor (typically nation-state backed) that maintains long-term stealthy access to target networks with strategic objectives.",tag:"Threat Actors"},
   {term:"MITRE ATT&CK",abbr:"ATT&CK",def:"A globally accessible knowledge base of adversary tactics and techniques based on real-world observations. Used for detection, threat modeling, hunting, and gap analysis.",tag:"Frameworks"},
@@ -739,21 +842,21 @@ const glossaryTerms = [
   {term:"Traffic Light Protocol",abbr:"TLP",def:"A system for labeling intelligence to control sharing. TLP:RED (recipient only), TLP:AMBER (limited to recipient org), TLP:GREEN (community), TLP:CLEAR (public).",tag:"Sharing"},
   {term:"Analysis of Competing Hypotheses",abbr:"ACH",def:"A structured analytic technique (SAT) that evaluates evidence against multiple hypotheses simultaneously to reduce cognitive bias and produce more rigorous assessments.",tag:"Analysis"},
   {term:"Threat Intelligence Platform",abbr:"TIP",def:"Software that aggregates, correlates, enriches, and manages threat intelligence. Open-source options: MISP, OpenCTI. Commercial: ThreatConnect, Anomali, Recorded Future.",tag:"Tools"},
-  {term:"Command & Control",abbr:"C2 / C&C",def:"Infrastructure adversaries use to communicate with compromised systems — issue commands, receive stolen data, and maintain persistence. Detecting C2 is a key SOC priority.",tag:"Adversary Ops"},
+  {term:"Command & Control",abbr:"C2 / C&C",def:"Infrastructure adversaries use to communicate with compromised systems -- issue commands, receive stolen data, and maintain persistence. Detecting C2 is a key SOC priority.",tag:"Adversary Ops"},
   {term:"Living off the Land",abbr:"LotL / LOLBAS",def:"Adversary technique using legitimate OS tools (PowerShell, WMI, certutil, mshta) rather than custom malware to blend in and evade detection.",tag:"Adversary Ops"},
   {term:"Pass-the-Hash",abbr:"PtH",def:"An attack technique (T1550.002) where an adversary captures an NTLM hash and authenticates with it without knowing the plaintext password.",tag:"ATT&CK"},
-  {term:"Lateral Movement",abbr:"",def:"ATT&CK tactic covering techniques adversaries use to move through a network after initial access — gaining access to additional systems and resources.",tag:"ATT&CK"},
+  {term:"Lateral Movement",abbr:"",def:"ATT&CK tactic covering techniques adversaries use to move through a network after initial access -- gaining access to additional systems and resources.",tag:"ATT&CK"},
   {term:"Priority Intelligence Requirement",abbr:"PIR",def:"A formal statement of the intelligence an organization needs most to support key decisions. PIRs drive collection planning, analyst tasking, and reporting priorities.",tag:"Core Concept"},
   {term:"Open Source Intelligence",abbr:"OSINT",def:"Intelligence collected from publicly available sources: websites, social media, DNS records, Shodan, dark web forums, WHOIS, passive DNS, certificate transparency logs.",tag:"Collection"},
-  {term:"Passive DNS",abbr:"pDNS",def:"Historical records of which IP addresses domains have resolved to over time. Invaluable for infrastructure pivoting — mapping domain-to-IP relationships historically.",tag:"OSINT"},
-  {term:"False Positive",abbr:"FP",def:"An alert or indicator flagged as malicious that is actually benign. High FP rates degrade analyst trust and consume investigation capacity — a key TI quality metric.",tag:"Operations"},
+  {term:"Passive DNS",abbr:"pDNS",def:"Historical records of which IP addresses domains have resolved to over time. Invaluable for infrastructure pivoting -- mapping domain-to-IP relationships historically.",tag:"OSINT"},
+  {term:"False Positive",abbr:"FP",def:"An alert or indicator flagged as malicious that is actually benign. High FP rates degrade analyst trust and consume investigation capacity -- a key TI quality metric.",tag:"Operations"},
   {term:"Bottom Line Up Front",abbr:"BLUF",def:"Intelligence writing principle: the key judgment or recommendation appears in the first sentence, before supporting evidence. Essential for executive and operational audiences.",tag:"Reporting"},
-  {term:"Confidence Level",abbr:"",def:"An assessment of the quality of underlying information and soundness of analytical process per ICD 203. High/Medium/Low — not a measure of certainty but of sourcing quality.",tag:"Analysis"},
+  {term:"Confidence Level",abbr:"",def:"An assessment of the quality of underlying information and soundness of analytical process per ICD 203. High/Medium/Low -- not a measure of certainty but of sourcing quality.",tag:"Analysis"},
   {term:"Threat Hunting",abbr:"",def:"Proactive, hypothesis-driven search for threats that have evaded existing detection controls. Analyst-initiated based on threat intelligence, not alert-driven.",tag:"Operations"},
   {term:"Mirror Imaging",abbr:"",def:"Cognitive bias where an analyst assumes adversaries think and act the same way they would. Dangerous in CTI because adversaries may have entirely different decision-making frameworks.",tag:"Analysis"},
-  {term:"Indicator Enrichment",abbr:"",def:"Adding context to a raw indicator — geolocation, WHOIS data, passive DNS, malware family associations, related infrastructure — to assess its significance before acting.",tag:"Indicators"},
+  {term:"Indicator Enrichment",abbr:"",def:"Adding context to a raw indicator -- geolocation, WHOIS data, passive DNS, malware family associations, related infrastructure -- to assess its significance before acting.",tag:"Indicators"},
   {term:"SIGMA Rules",abbr:"",def:"A generic, open-source SIEM rule format that allows analysts to write detection logic once and convert it to Splunk, Elastic, QRadar, and other platforms automatically.",tag:"Tools"},
-  {term:"Anchoring Bias",abbr:"",def:"Cognitive bias giving disproportionate weight to the first piece of information received. Can skew entire assessments if initial data is misleading — mitigated by structured analysis.",tag:"Analysis"},
+  {term:"Anchoring Bias",abbr:"",def:"Cognitive bias giving disproportionate weight to the first piece of information received. Can skew entire assessments if initial data is misleading -- mitigated by structured analysis.",tag:"Analysis"},
   {term:"Groupthink",abbr:"",def:"Cognitive bias where team cohesion pressures members to conform to the dominant view. Mitigated by devil's advocacy, red teaming, and ACH in analytic teams.",tag:"Analysis"},
 ];
 
@@ -767,7 +870,7 @@ const leaderboard = [
   {name:"Sam",role:"Network Analyst",av:"S",color:"#F1C40F",mods:3,quiz:68,badge:"ba"},
 ];
 
-// ─── STATE ─────────────────────────────────────────────────────────────────────
+// - STATE -
 const state = {
   completed: new Set(JSON.parse(localStorage.getItem('tiC2')||'[]')),
   bookmarks: new Set(JSON.parse(localStorage.getItem('tiB2')||'[]')),
@@ -787,7 +890,7 @@ function save() {
   localStorage.setItem('tiLD2',JSON.stringify([...state.labDone]));
 }
 
-// ─── NAV ───────────────────────────────────────────────────────────────────────
+// - NAV -
 document.querySelectorAll('.nav-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
@@ -802,7 +905,7 @@ const analystInput = document.getElementById('analystName');
 analystInput.value = localStorage.getItem('tiAnalystName')||'';
 analystInput.addEventListener('change', () => localStorage.setItem('tiAnalystName', analystInput.value));
 
-// ─── MODULES ───────────────────────────────────────────────────────────────────
+// - MODULES -
 function renderModules(filter = currentFilter) {
   currentFilter = filter;
   const grid = document.getElementById('modulesGrid');
@@ -829,7 +932,7 @@ function renderModules(filter = currentFilter) {
     const levelMap = {beg:'rl-beg',int:'rl-int',adv:'rl-adv'};
     const levelLabel = {beg:'Beginner',int:'Intermediate',adv:'Advanced'};
     const iconMap = {video:'ri-video',reading:'ri-paper',practice:'ri-lab'};
-    const emojiMap = {video:'▶',reading:'📄',practice:'🔬'};
+    const emojiMap = {video:'&#9654;',reading:'\u{1F4C4}',practice:'\u{1F52C}'};
 
     const buildRes = (arr,type) => arr.map(r => `
       <a class="resource-link" href="${r.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
@@ -856,33 +959,33 @@ function renderModules(filter = currentFilter) {
         <div class="module-info-row">
           <span class="module-duration">${mod.duration}</span>
           <div class="card-actions">
-            <button class="bookmark-btn" data-num="${mod.num}" title="Bookmark">${isBookmarked?'★':'☆'}</button>
-            <div class="complete-check" data-num="${mod.num}" title="Mark complete">${isComplete?'✓':''}</div>
+            <button class="bookmark-btn" data-num="${mod.num}" title="Bookmark">${isBookmarked?'&#9733;':'&#9734;'}</button>
+            <div class="complete-check" data-num="${mod.num}" title="Mark complete">${isComplete?'\u2713':''}</div>
           </div>
         </div>
       </div>
       <div class="topics-section">
-        <button class="topics-toggle" onclick="toggleSec(this,event)"><span class="arr">▶</span> Topics Covered</button>
+        <button class="topics-toggle" onclick="toggleSec(this,event)"><span class="arr">&#9654;</span> Topics Covered</button>
         <div class="topics-list">${topicsHtml}</div>
       </div>
       <div class="resource-section res-type-video">
-        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">▶</span> 📹 Video & Course Training (${mod.videos.length})</button>
+        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">&#9654;</span> \u{1F4F9} Video & Course Training (${mod.videos.length})</button>
         <div class="resource-list">${buildRes(mod.videos,'video')}</div>
       </div>
       <div class="resource-section res-type-reading">
-        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">▶</span> 📄 Papers, Whitepapers & Reading (${mod.reading.length})</button>
+        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">&#9654;</span> \u{1F4C4} Papers, Whitepapers & Reading (${mod.reading.length})</button>
         <div class="resource-list">${buildRes(mod.reading,'reading')}</div>
       </div>
       <div class="resource-section res-type-practice">
-        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">▶</span> 🔬 Hands-On Practice & Labs (${mod.practice.length})</button>
+        <button class="resource-section-toggle" onclick="toggleSec(this,event)"><span class="arr">&#9654;</span> \u{1F52C} Hands-On Practice & Labs (${mod.practice.length})</button>
         <div class="resource-list">${buildRes(mod.practice,'practice')}</div>
       </div>
       <div class="action-row">
-        <button class="quiz-btn" onclick="openQuiz(${mod.num},event)">🧠 Quiz${score!==undefined?` <span class="quiz-score-small">${score}%</span>`:''}</button>
-        <button class="lab-btn" onclick="openLab(${mod.num},event)">🔬 Lab${labDone?' ✓':''}</button>
+        <button class="quiz-btn" onclick="openQuiz(${mod.num},event)">\u{1F9E0} Quiz${score!==undefined?` <span class="quiz-score-small">${score}%</span>`:''}</button>
+        <button class="lab-btn" onclick="openLab(${mod.num},event)">\u{1F52C} Lab${labDone?' \u2713':''}</button>
       </div>
       <div class="notes-section">
-        <button class="notes-toggle" onclick="toggleSec(this,event)">✏ Analyst Notes${note?' (saved)':''}</button>
+        <button class="notes-toggle" onclick="toggleSec(this,event)">\u270F Analyst Notes${note?' (saved)':''}</button>
         <div class="notes-area">
           <textarea class="notes-textarea" placeholder="Add your notes, key takeaways, observations..." data-num="${mod.num}">${note}</textarea>
 
@@ -894,14 +997,14 @@ function renderModules(filter = currentFilter) {
 card.querySelector('.complete-check').addEventListener('click', e => {
   e.stopPropagation();
   if (state.completed.has(mod.num)) { state.completed.delete(mod.num); card.classList.remove('completed'); e.currentTarget.textContent=''; }
-  else { state.completed.add(mod.num); card.classList.add('completed'); e.currentTarget.textContent='✓'; }
+  else { state.completed.add(mod.num); card.classList.add('completed'); e.currentTarget.textContent='\u2713'; }
   save(); updateProgress();
 });
 
 card.querySelector('.bookmark-btn').addEventListener('click', e => {
   e.stopPropagation();
-  if (state.bookmarks.has(mod.num)) { state.bookmarks.delete(mod.num); card.classList.remove('bookmarked'); e.currentTarget.textContent='☆'; }
-  else { state.bookmarks.add(mod.num); card.classList.add('bookmarked'); e.currentTarget.textContent='★'; }
+  if (state.bookmarks.has(mod.num)) { state.bookmarks.delete(mod.num); card.classList.remove('bookmarked'); e.currentTarget.textContent='&#9734;'; }
+  else { state.bookmarks.add(mod.num); card.classList.add('bookmarked'); e.currentTarget.textContent='&#9733;'; }
   save();
 });
 
@@ -924,7 +1027,7 @@ e.stopPropagation();
 const ta = document.querySelector(`.notes-textarea[data-num="${num}"]`);
 if (ta) { state.notes[num]=ta.value; save(); }
 const btn=e.currentTarget;
-btn.textContent=‘Saved ✓’; btn.style.color=‘var(–green)’;
+btn.textContent=‘Saved \u2713’; btn.style.color=‘var(–green)’;
 setTimeout(()=>{btn.textContent=‘Save Note’;btn.style.color=’’;},1500);
 }
 
@@ -942,14 +1045,14 @@ renderModules(btn.dataset.filter);
 });
 });
 
-// ─── QUIZ ──────────────────────────────────────────────────────────────────────
+// - QUIZ -
 function openQuiz(num,e) {
 e&&e.stopPropagation();
 const mod=modules.find(m=>m.num===num);
 if (!mod) return;
 quizState={num,questions:mod.quiz,current:0,correct:0};
 document.getElementById(‘quizTitle’).textContent=mod.title;
-document.getElementById(‘quizSub’).textContent=`MODULE ${String(num).padStart(2,'0')} · ${mod.quiz.length} QUESTIONS`;
+document.getElementById(‘quizSub’).textContent=`MODULE ${String(num).padStart(2,'0')} &middot; ${mod.quiz.length} QUESTIONS`;
 renderQuizQ();
 document.getElementById(‘quizModal’).classList.add(‘open’);
 }
@@ -961,12 +1064,12 @@ const body=document.getElementById(‘quizBody’);
 if (current>=questions.length) {
 const sc=Math.round(quizState.correct/questions.length*100);
 state.quizScores[quizState.num]=sc; save();
-const msg=sc>=80?‘🎉 Great work! You're ready to move on.’:sc>=60?‘👍 Good effort — review the explanations and try again.’:‘📚 Review this module's content and retake the quiz.’;
+const msg=sc>=80?’\u{1F389} Great work! You're ready to move on.’:sc>=60?’\u{1F44D} Good effort – review the explanations and try again.’:’\u{1F4DA} Review this module's content and retake the quiz.’;
 body.innerHTML=`<div class="quiz-result"><div class="quiz-result-score">${sc}%</div><div class="quiz-result-label">${quizState.correct} of ${questions.length} correct</div><div class="quiz-result-msg">${msg}</div><button class="quiz-restart" onclick="openQuiz(${quizState.num})">Retake Quiz</button></div>`;
 renderModules(currentFilter); return;
 }
 const q=questions[current];
-body.innerHTML=`<div class="quiz-q-text">Q${current+1}. ${q.q}</div> <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="selectAns(${i})">${o}</button>`).join('')}</div> <div class="quiz-explain" id="qEx">${q.explain}</div> <div class="quiz-next"><button class="quiz-next-btn" id="qNext" onclick="nextQ()">${current+1<questions.length?'Next →':'See Results'}</button></div>`;
+body.innerHTML=`<div class="quiz-q-text">Q${current+1}. ${q.q}</div> <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="selectAns(${i})">${o}</button>`).join('')}</div> <div class="quiz-explain" id="qEx">${q.explain}</div> <div class="quiz-next"><button class="quiz-next-btn" id="qNext" onclick="nextQ()">${current+1<questions.length?'Next ->':'See Results'}</button></div>`;
 }
 
 function selectAns(idx) {
@@ -982,7 +1085,7 @@ document.getElementById(‘qNext’).style.display=‘inline-block’;
 function nextQ() { quizState.current++; renderQuizQ(); }
 document.getElementById(‘quizModal’).addEventListener(‘click’,e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove(‘open’);});
 
-// ─── LAB ───────────────────────────────────────────────────────────────────────
+// - LAB -
 function openLab(num,e) {
 e&&e.stopPropagation();
 const mod=modules.find(m=>m.num===num);
@@ -991,7 +1094,7 @@ const lab=mod.lab;
 const isDone=state.labDone.has(num);
 document.getElementById(‘labTitle’).textContent=lab.title;
 const saved=labAnswers[num]||{};
-document.getElementById(‘labBody’).innerHTML=` <div class="lab-scenario"><strong>Scenario:</strong> ${lab.scenario}</div> <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.1em;text-transform:uppercase;">Data / Context</div> <div class="lab-data">${lab.data}</div> ${lab.tasks.map((t,i)=>`<div class="lab-task-label">Task ${i+1}</div><div class="lab-task-q">${t}</div><textarea class="lab-ta" placeholder="Your analysis..." data-task="${i}" rows="4">${saved[i]||’’}</textarea>`).join('')} ${isDone?'<div class="lab-done-badge">✅ Lab marked complete — answers saved.</div>':''} <div class="lab-hint">💡 Labs are assessed on analytical reasoning, use of evidence, and completeness — not a single correct answer. Focus on justifying your conclusions.</div> <button class="lab-submit" onclick="submitLab(${num})">${isDone?'Update Answers':'Mark Complete & Save'}</button>`;
+document.getElementById(‘labBody’).innerHTML=` <div class="lab-scenario"><strong>Scenario:</strong> ${lab.scenario}</div> <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.1em;text-transform:uppercase;">Data / Context</div> <div class="lab-data">${lab.data}</div> ${lab.tasks.map((t,i)=>`<div class="lab-task-label">Task ${i+1}</div><div class="lab-task-q">${t}</div><textarea class="lab-ta" placeholder="Your analysis..." data-task="${i}" rows="4">${saved[i]||’’}</textarea>`).join('')} ${isDone?'<div class="lab-done-badge">\u2705 Lab marked complete -- answers saved.</div>':''} <div class="lab-hint">\u{1F4A1} Labs are assessed on analytical reasoning, use of evidence, and completeness -- not a single correct answer. Focus on justifying your conclusions.</div> <button class="lab-submit" onclick="submitLab(${num})">${isDone?'Update Answers':'Mark Complete & Save'}</button>`;
 document.getElementById(‘labModal’).classList.add(‘open’);
 }
 
@@ -1004,7 +1107,7 @@ renderModules(currentFilter);
 }
 document.getElementById(‘labModal’).addEventListener(‘click’,e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove(‘open’);});
 
-// ─── GLOSSARY ─────────────────────────────────────────────────────────────────
+// - GLOSSARY -
 function renderGlossary(filter=’’) {
 const grid=document.getElementById(‘glossaryGrid’);
 grid.innerHTML=’’;
@@ -1020,10 +1123,10 @@ grid.appendChild(card);
 }
 document.getElementById(‘glossarySearch’).addEventListener(‘input’,e=>renderGlossary(e.target.value));
 
-// ─── LEADERBOARD ──────────────────────────────────────────────────────────────
+// - LEADERBOARD -
 function renderLeaderboard() {
 const sorted=[…leaderboard].sort((a,b)=>b.mods-a.mods||b.quiz-a.quiz);
-const crowns=[‘👑’,‘🥈’,‘🥉’];
+const crowns=[’\u{1F451}’,’\u{1F948}’,’\u{1F949}’];
 const bl={bg:‘bg’,bs:‘bs’,bb:‘bb’,ba:‘ba’};
 const bn={bg:‘Top Analyst’,bs:‘Expert’,bb:‘Advanced’,ba:‘Analyst’};
 const rankClass=[‘r1’,‘r2’,‘r3’];
@@ -1039,14 +1142,14 @@ document.getElementById(‘lbBody’).innerHTML=sorted.map((a,i)=>`<tr>
   </tr>`).join('');
 }
 
-// ─── BOOKMARKS ────────────────────────────────────────────────────────────────
+// - BOOKMARKS -
 function renderBookmarks() {
 const el=document.getElementById(‘bmList’);
 if (state.bookmarks.size===0) { el.innerHTML=’<div class="bm-empty"><div class="bm-icon">☆</div>No bookmarks yet. Star a module to save it here.</div>’; return; }
 el.innerHTML=’<div class="bm-list">’+[…state.bookmarks].map(num=>{
 const mod=modules.find(m=>m.num===num);
 if (!mod) return ‘’;
-return `<div class="bm-item" onclick="goToModule(${num})"><div style="font-size:20px">📌</div><div class="bm-info"><div class="bm-title">${mod.title}</div><div class="bm-meta">Module ${String(num).padStart(2,'0')} · ${mod.level} · ${mod.duration}</div></div><button class="bm-rm" onclick="rmBm(${num},event)">✕</button></div>`;
+return `<div class="bm-item" onclick="goToModule(${num})"><div style="font-size:20px">\u{1F4CC}</div><div class="bm-info"><div class="bm-title">${mod.title}</div><div class="bm-meta">Module ${String(num).padStart(2,'0')} &middot; ${mod.level} &middot; ${mod.duration}</div></div><button class="bm-rm" onclick="rmBm(${num},event)">&#10005;</button></div>`;
 }).join(’’)+’</div>’;
 }
 
@@ -1074,7 +1177,7 @@ break;
 },100);
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// - INIT -
 renderModules();
 updateProgress();
 renderLeaderboard();
