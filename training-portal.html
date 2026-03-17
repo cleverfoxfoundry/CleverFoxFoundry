@@ -78,7 +78,7 @@ header{position:sticky;top:0;z-index:100;border-bottom:1px solid var(–border);
 .card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
 .bm-btn{background:none;border:none;cursor:pointer;color:var(–dim);font-size:15px;transition:color 0.2s;padding:2px;line-height:1;}
 .bm-btn:hover{color:var(–yellow);}
-.chk{width:20px;height:20px;border-radius:50%;border:2px solid var(–border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:11px;color:transparent;flex-shrink:0;}
+.chk{width:22px;height:22px;border-radius:50%;border:2px solid var(–border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:700;color:transparent;flex-shrink:0;}
 .mod-card.completed .chk{background:var(–green);border-color:var(–green);color:white;}
 
 /* SECTIONS */
@@ -819,9 +819,22 @@ function renderModules(filter) {
     chk.setAttribute('data-num', mod.num);
     chk.addEventListener('click', function(ev) {
       ev.stopPropagation();
-      if (S.done.has(mod.num)) { S.done.delete(mod.num); card.classList.remove('completed'); chk.textContent = ''; }
-      else { S.done.add(mod.num); card.classList.add('completed'); chk.textContent = 'v'; }
-      saveState(); updateProgress();
+      if (S.done.has(mod.num)) {
+        S.done.delete(mod.num);
+        card.classList.remove('completed');
+        chk.textContent = '';
+      } else {
+        S.done.add(mod.num);
+        card.classList.add('completed');
+        chk.textContent = 'v';
+      }
+      saveState();
+      var c = S.done.size;
+      var pct = Math.round(c / MODS.length * 100);
+      var fill = document.getElementById('progFill');
+      var count = document.getElementById('progCount');
+      if (fill) fill.style.width = pct + '%';
+      if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
     });
 
     acts.appendChild(bmBtn);
