@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC Threat Intelligence Training Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #162032;
+    --navy-light: #1E2D40;
+    --blue: #2E75B6;
+    --blue-bright: #3D8FD4;
+    --cyan: #00C9E4;
+    --orange: #E8741A;
+    --green: #2ECC71;
+    --red: #C0392B;
+    --text: #E8EDF2;
+    --text-dim: #8FA3B8;
+    --border: rgba(46,117,182,0.25);
+    --card-bg: rgba(22, 32, 50, 0.8);
+    --glow: 0 0 20px rgba(0,201,228,0.15);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–navy);
+color: var(–text);
+font-family: ‘Instrument Sans’, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Grid background */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image:
+linear-gradient(rgba(46,117,182,0.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(46,117,182,0.04) 1px, transparent 1px);
+background-size: 40px 40px;
+pointer-events: none;
+z-index: 0;
+}
+
+/* Ambient glow */
+body::after {
+content: ‘’;
+position: fixed;
+top: -200px;
+right: -200px;
+width: 600px;
+height: 600px;
+background: radial-gradient(circle, rgba(0,201,228,0.06) 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+position: relative;
+z-index: 10;
+border-bottom: 1px solid var(–border);
+background: rgba(13,27,42,0.95);
+backdrop-filter: blur(12px);
+padding: 0 40px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 64px;
+position: sticky;
+top: 0;
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 12px;
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 15px;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+color: var(–text);
+}
+
+.logo-icon {
+width: 32px;
+height: 32px;
+background: linear-gradient(135deg, var(–cyan), var(–blue));
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+}
+
+.header-badge {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–cyan);
+background: rgba(0,201,228,0.08);
+border: 1px solid rgba(0,201,228,0.2);
+padding: 4px 10px;
+border-radius: 4px;
+letter-spacing: 0.1em;
+}
+
+/* ── HERO ── */
+.hero {
+position: relative;
+z-index: 1;
+padding: 60px 40px 48px;
+max-width: 1200px;
+margin: 0 auto;
+}
+
+.hero-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–cyan);
+letter-spacing: 0.15em;
+text-transform: uppercase;
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.hero-label::before {
+content: ‘’;
+display: inline-block;
+width: 24px;
+height: 1px;
+background: var(–cyan);
+}
+
+.hero h1 {
+font-family: ‘Syne’, sans-serif;
+font-size: clamp(36px, 5vw, 56px);
+font-weight: 800;
+line-height: 1.05;
+margin-bottom: 16px;
+background: linear-gradient(135deg, #E8EDF2 0%, #8FA3B8 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.hero h1 span {
+background: linear-gradient(135deg, var(–cyan), var(–blue-bright));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.hero-sub {
+color: var(–text-dim);
+font-size: 16px;
+max-width: 520px;
+line-height: 1.6;
+margin-bottom: 32px;
+}
+
+.stats-row {
+display: flex;
+gap: 32px;
+flex-wrap: wrap;
+}
+
+.stat {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.stat-num {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+color: var(–cyan);
+line-height: 1;
+}
+
+.stat-label {
+font-size: 12px;
+color: var(–text-dim);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-section {
+position: relative;
+z-index: 1;
+max-width: 1200px;
+margin: 0 auto 40px;
+padding: 0 40px;
+}
+
+.progress-card {
+background: var(–card-bg);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 20px 24px;
+display: flex;
+align-items: center;
+gap: 24px;
+backdrop-filter: blur(8px);
+}
+
+.progress-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+color: var(–text-dim);
+white-space: nowrap;
+}
+
+.progress-bar-wrap {
+flex: 1;
+height: 6px;
+background: rgba(255,255,255,0.06);
+border-radius: 99px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+width: 0%;
+background: linear-gradient(90deg, var(–blue), var(–cyan));
+border-radius: 99px;
+transition: width 0.8s ease;
+}
+
+.progress-count {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 13px;
+color: var(–cyan);
+white-space: nowrap;
+}
+
+/* ── FILTERS ── */
+.filters {
+position: relative;
+z-index: 1;
+max-width: 1200px;
+margin: 0 auto 32px;
+padding: 0 40px;
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.filter-btn {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+padding: 7px 14px;
+border-radius: 6px;
+border: 1px solid var(–border);
+background: transparent;
+color: var(–text-dim);
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+border-color: var(–cyan);
+color: var(–cyan);
+background: rgba(0,201,228,0.08);
+}
+
+/* ── MODULE GRID ── */
+.modules-grid {
+position: relative;
+z-index: 1;
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 40px 80px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 20px;
+}
+
+/* ── MODULE CARD ── */
+.module-card {
+background: var(–card-bg);
+border: 1px solid var(–border);
+border-radius: 14px;
+overflow: hidden;
+backdrop-filter: blur(8px);
+transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+cursor: pointer;
+position: relative;
+}
+
+.module-card:hover {
+transform: translateY(-3px);
+border-color: rgba(46,117,182,0.5);
+box-shadow: 0 12px 40px rgba(0,0,0,0.3), var(–glow);
+}
+
+.module-card.completed {
+border-color: rgba(46,204,113,0.3);
+}
+
+.module-card.completed:hover {
+border-color: rgba(46,204,113,0.5);
+box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 20px rgba(46,204,113,0.1);
+}
+
+.module-card-top {
+padding: 20px 20px 16px;
+border-bottom: 1px solid var(–border);
+}
+
+.module-meta {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+
+.module-num {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–text-dim);
+letter-spacing: 0.1em;
+}
+
+.level-badge {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+font-weight: 500;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+padding: 3px 8px;
+border-radius: 4px;
+}
+
+.level-foundation { background: rgba(46,139,87,0.15); color: #5DD49A; border: 1px solid rgba(46,139,87,0.3); }
+.level-intermediate { background: rgba(46,117,182,0.15); color: #70B0E8; border: 1px solid rgba(46,117,182,0.3); }
+.level-advanced { background: rgba(192,57,43,0.15); color: #E87070; border: 1px solid rgba(192,57,43,0.3); }
+
+.module-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 17px;
+font-weight: 700;
+line-height: 1.25;
+margin-bottom: 10px;
+color: var(–text);
+}
+
+.module-info-row {
+display: flex;
+gap: 16px;
+align-items: center;
+}
+
+.module-duration {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–text-dim);
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.module-duration::before {
+content: ‘◷’;
+color: var(–cyan);
+font-size: 13px;
+}
+
+.complete-check {
+margin-left: auto;
+width: 22px;
+height: 22px;
+border-radius: 50%;
+border: 2px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.2s;
+font-size: 12px;
+color: transparent;
+flex-shrink: 0;
+}
+
+.module-card.completed .complete-check {
+background: var(–green);
+border-color: var(–green);
+color: white;
+}
+
+.complete-check:hover {
+border-color: var(–green);
+}
+
+/* Resources section */
+.module-resources {
+padding: 16px 20px;
+}
+
+.resources-title {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+color: var(–text-dim);
+letter-spacing: 0.12em;
+text-transform: uppercase;
+margin-bottom: 10px;
+}
+
+.resource-link {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+padding: 9px 10px;
+border-radius: 8px;
+text-decoration: none;
+transition: background 0.2s;
+margin-bottom: 4px;
+border: 1px solid transparent;
+}
+
+.resource-link:hover {
+background: rgba(46,117,182,0.1);
+border-color: var(–border);
+}
+
+.resource-icon {
+width: 28px;
+height: 28px;
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+flex-shrink: 0;
+margin-top: 1px;
+}
+
+.icon-free { background: rgba(46,204,113,0.15); }
+.icon-paid { background: rgba(232,116,26,0.15); }
+
+.resource-info { flex: 1; min-width: 0; }
+
+.resource-name {
+font-size: 13px;
+font-weight: 600;
+color: var(–text);
+line-height: 1.3;
+margin-bottom: 2px;
+}
+
+.resource-desc {
+font-size: 11px;
+color: var(–text-dim);
+line-height: 1.4;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.resource-tag {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+padding: 2px 6px;
+border-radius: 3px;
+white-space: nowrap;
+align-self: flex-start;
+margin-top: 3px;
+flex-shrink: 0;
+}
+
+.tag-free { background: rgba(46,204,113,0.12); color: #5DD49A; border: 1px solid rgba(46,204,113,0.25); }
+.tag-paid { background: rgba(232,116,26,0.12); color: #E89050; border: 1px solid rgba(232,116,26,0.25); }
+
+/* Topics section */
+.module-topics {
+padding: 0 20px 16px;
+}
+
+.topics-toggle {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+color: var(–text-dim);
+letter-spacing: 0.12em;
+text-transform: uppercase;
+background: none;
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+padding: 0;
+margin-bottom: 8px;
+transition: color 0.2s;
+}
+
+.topics-toggle:hover { color: var(–cyan); }
+.topics-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+.topics-toggle.open .arrow { transform: rotate(90deg); }
+
+.topics-list {
+display: none;
+flex-direction: column;
+gap: 4px;
+}
+
+.topics-list.open { display: flex; }
+
+.topic-item {
+font-size: 12px;
+color: var(–text-dim);
+padding: 4px 8px;
+background: rgba(255,255,255,0.03);
+border-radius: 4px;
+border-left: 2px solid var(–border);
+line-height: 1.4;
+}
+
+/* ── FOOTER ── */
+footer {
+position: relative;
+z-index: 1;
+text-align: center;
+padding: 24px;
+border-top: 1px solid var(–border);
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–text-dim);
+letter-spacing: 0.05em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideIn {
+from { opacity: 0; transform: translateY(16px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.module-card {
+animation: fadeSlideIn 0.4s ease both;
+}
+
+.module-card:nth-child(1) { animation-delay: 0.05s; }
+.module-card:nth-child(2) { animation-delay: 0.10s; }
+.module-card:nth-child(3) { animation-delay: 0.15s; }
+.module-card:nth-child(4) { animation-delay: 0.20s; }
+.module-card:nth-child(5) { animation-delay: 0.25s; }
+.module-card:nth-child(6) { animation-delay: 0.30s; }
+.module-card:nth-child(7) { animation-delay: 0.35s; }
+.module-card:nth-child(8) { animation-delay: 0.40s; }
+.module-card:nth-child(9) { animation-delay: 0.45s; }
+
+.module-card[data-hidden=“true”] { display: none; }
+
+/* Scan line on hover */
+.module-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(–cyan), transparent);
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.module-card:hover::before { opacity: 1; }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⬡</div>
+    SOC · TI Training Portal
+  </div>
+  <div class="header-badge">INTERNAL USE ONLY</div>
+</header>
+
+<section class="hero">
+  <div class="hero-label">Threat Intelligence Curriculum</div>
+  <h1>Build Your <span>Analyst Skills</span><br>From Ground Up</h1>
+  <p class="hero-sub">9 structured modules covering Threat Intelligence from foundational concepts to advanced strategic analysis. Mixed-level track for your entire team.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-num">~48</div><div class="stat-label">Hours</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Skill Tiers</div></div>
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">Video Resources</div></div>
+  </div>
+</section>
+
+<section class="progress-section">
+  <div class="progress-card">
+    <span class="progress-label">CURRICULUM PROGRESS</span>
+    <div class="progress-bar-wrap">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-count" id="progressCount">0 / 9 complete</span>
+  </div>
+</section>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">All Modules</button>
+  <button class="filter-btn" data-filter="Foundation">Foundation</button>
+  <button class="filter-btn" data-filter="Intermediate">Intermediate</button>
+  <button class="filter-btn" data-filter="Advanced">Advanced</button>
+  <button class="filter-btn" data-filter="completed">Completed</button>
+</div>
+
+<div class="modules-grid" id="modulesGrid"></div>
+
+<footer>SOC Analyst Training Program · Threat Intelligence Track · Internal Use Only</footer>
+
+<script>
+const modules = [
+  {
+    num: 1,
+    title: "Foundations of Threat Intelligence",
+    duration: "4 hours",
+    level: "Foundation",
+    topics: [
+      "What is Threat Intelligence? — definitions and industry context",
+      "Types of Intelligence: strategic, operational, tactical, technical",
+      "The Intelligence Lifecycle: planning, collection, processing, analysis, dissemination",
+      "Key TI concepts: TTPs, IOCs, campaigns, threat actors",
+      "TI within the SOC workflow",
+      "Intro to MITRE ATT&CK, Kill Chain, Diamond Model"
+    ],
+    resources: [
+      { name: "SOCRadar: CTI Fundamentals for SOC Analysts", desc: "Full lifecycle, TI types, frameworks", url: "https://university.socradar.io/course/cti-fundamentals-for-soc-analysts", free: true },
+      { name: "Recorded Future: Intelligence Fundamentals I & II", desc: "Intelligence overview + types/sources (25 min each)", url: "https://university.recordedfuture.com/", free: true },
+      { name: "arcX: Cyber Threat Intelligence 101", desc: "11 videos, 2.5+ hrs, leads to FTIA cert", url: "https://arcx.io/courses/cyber-threat-intelligence-101", free: false }
+    ]
+  },
+  {
+    num: 2,
+    title: "Threat Actor Profiling",
+    duration: "5 hours",
+    level: "Foundation",
+    topics: [
+      "Threat actor taxonomy: nation-states, cybercriminals, hacktivists, insiders",
+      "Understanding motivation: financial, espionage, disruption, ideology",
+      "Capability vs. intent: assessing actor sophistication",
+      "APT naming conventions (Mandiant, CrowdStrike, Microsoft)",
+      "Open source actor resources: MITRE ATT&CK Groups",
+      "Case studies: financially motivated and nation-state actors"
+    ],
+    resources: [
+      { name: "SOCRadar: Mastering CTI for SOC Analysts", desc: "APTs, threat actor categories, motivations & TTPs", url: "https://academy.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts", free: true },
+      { name: "EC-Council CTIA Certification", desc: "Full cert path covering attribution & advanced profiling", url: "https://www.eccouncil.org/train-certify/certified-threat-intelligence-analyst-ctia/", free: false }
+    ]
+  },
+  {
+    num: 3,
+    title: "MITRE ATT&CK Framework",
+    duration: "6 hours",
+    level: "Foundation",
+    topics: [
+      "ATT&CK structure: matrices, tactics, techniques, sub-techniques, procedures",
+      "ATT&CK for Enterprise, Mobile, and ICS",
+      "Navigating ATT&CK: website, API, and Navigator",
+      "Reading technique pages: detection guidance, mitigations",
+      "TTP mapping from threat reports",
+      "Detection coverage mapping and gap analysis"
+    ],
+    resources: [
+      { name: "MITRE ATT&CK Fundamentals Training", desc: "Official training from the ATT&CK team — free", url: "https://attack.mitre.org/resources/learn-more-about-attack/training/attack-fundamentals/", free: true },
+      { name: "MITRE ATT&CK CTI Training", desc: "Official: mapping threat reports to ATT&CK with exercises", url: "https://attack.mitre.org/resources/learn-more-about-attack/training/cti/", free: true },
+      { name: "Picus Purple Academy: Beginner's Guide to ATT&CK", desc: "Red/Blue/Purple use cases, micro-course format", url: "https://academy.picussecurity.com/course/cyber-threat-intelligence", free: true },
+      { name: "Udemy: MITRE ATT&CK Framework (Nett)", desc: "90,000+ enrollments — APT41 case study, Blue/Red/Purple", url: "https://www.udemy.com/course/mitre-attck-framework-from-zero-to-hero/", free: false }
+    ]
+  },
+  {
+    num: 4,
+    title: "Indicator Management & IOCs",
+    duration: "5 hours",
+    level: "Intermediate",
+    topics: [
+      "IOC types: IPs, domains, hashes, URLs, registry keys, mutexes",
+      "Pyramid of Pain: indicator value and adversary cost",
+      "Indicator enrichment: WHOIS, passive DNS, VirusTotal, Shodan",
+      "Threat intelligence platforms (TIPs): ingestion, confidence scoring",
+      "STIX/TAXII fundamentals: structured sharing standards",
+      "Indicator lifecycle: freshness, expiry, false positive management"
+    ],
+    resources: [
+      { name: "SOCRadar: CTI Fundamentals for SOC Analysts", desc: "Covers IOC types, enrichment tools, and TIPs in depth", url: "https://university.socradar.io/course/cti-fundamentals-for-soc-analysts", free: true },
+      { name: "EC-Council Threat Intelligence Essentials (TIE)", desc: "Structured SOC analyst path covering IOC workflows", url: "https://www.eccouncil.org/train-certify/threat-intelligence-essentials-tie/", free: false }
+    ]
+  },
+  {
+    num: 5,
+    title: "Open Source Intelligence (OSINT)",
+    duration: "6 hours",
+    level: "Intermediate",
+    topics: [
+      "OSINT methodology: requirements, collection plan, pivoting",
+      "Key OSINT sources: Shodan, Censys, VirusTotal Graph, URLScan, WHOIS",
+      "Dark web considerations: when and how to engage safely",
+      "Social media and forum intelligence signals",
+      "OPSEC for analysts: sock puppets, VMs, attribution hygiene",
+      "Source reliability and reporting standards"
+    ],
+    resources: [
+      { name: "Class Central: OSINT Training (YouTube)", desc: "Shodan, Recon-ng, domain/IP analysis, dark web OSINT", url: "https://www.classcentral.com/course/youtube-osint-training-65846", free: true },
+      { name: "Udemy: Cyber Security Threat Intelligence Researcher", desc: "Hunting, feature extraction, actor attribution end-to-end", url: "https://www.udemy.com/course/cyber-security-threat-intelligence-researcher-preview/", free: false }
+    ]
+  },
+  {
+    num: 6,
+    title: "Intelligence Analysis Techniques",
+    duration: "5 hours",
+    level: "Intermediate",
+    topics: [
+      "Foundations of intelligence analysis: evidence, inference, judgment",
+      "Structured Analytic Techniques (SATs): ACH, brainstorming, red team",
+      "Analysis of Competing Hypotheses (ACH) — deep dive",
+      "Cognitive biases: anchoring, confirmation bias, groupthink",
+      "Confidence and uncertainty language standards",
+      "The Diamond Model of Intrusion Analysis"
+    ],
+    resources: [
+      { name: "InfSec Train: SOC Analyst Training Masterclass", desc: "Free 70-min YouTube class — SIEM, TI, incident response", url: "https://www.classcentral.com/course/youtube-soc-analyst-training-threat-detection-incident-response-masterclass-441614", free: true },
+      { name: "arcX: Cyber Threat Intelligence 101", desc: "Covers analytical methodology including ACH and structured approaches", url: "https://arcx.io/courses/cyber-threat-intelligence-101", free: false }
+    ]
+  },
+  {
+    num: 7,
+    title: "Intelligence Production & Reporting",
+    duration: "5 hours",
+    level: "Intermediate",
+    topics: [
+      "Types of intelligence products: flash reports, advisories, finished assessments",
+      "Audience analysis: executives vs. operations vs. technical teams",
+      "Intelligence writing standards: BLUF, clear sourcing, confidence caveats",
+      "Avoiding pitfalls: vagueness, over-claiming, unsourced assertions",
+      "Report templates and organizational standards",
+      "Peer review and quality assurance for TI products"
+    ],
+    resources: [
+      { name: "Recorded Future University: Intelligence Fundamentals", desc: "Covers intelligence production standards and report types", url: "https://university.recordedfuture.com/", free: true },
+      { name: "EC-Council CTIA Certification", desc: "Advanced module on intelligence production and dissemination", url: "https://www.eccouncil.org/train-certify/certified-threat-intelligence-analyst-ctia/", free: false }
+    ]
+  },
+  {
+    num: 8,
+    title: "Threat Hunting Fundamentals",
+    duration: "6 hours",
+    level: "Advanced",
+    topics: [
+      "Threat hunting vs. alert triage and incident response",
+      "The hunting loop: hypothesis → investigation → discovery → improvement",
+      "TI-driven hunting: ATT&CK, actor profiles as hunt triggers",
+      "Hunt techniques: frequency analysis, stacking, baseline deviation",
+      "Data sources: EDR, SIEM, network flow, DNS, authentication logs",
+      "Converting hunt findings into detection rules"
+    ],
+    resources: [
+      { name: "OffSec TH-200: Foundational Threat Hunting", desc: "Dedicated hunting course with labs — IOCs, APTs, endpoint/network", url: "https://www.offsec.com/courses/th-200/", free: false },
+      { name: "InfSec Train: SOC Analyst Masterclass", desc: "Free 87-min YouTube — threat patterns, alert triage, careers", url: "https://www.classcentral.com/course/youtube-soc-analyst-masterclass-threat-patterns-response-and-careers-468906", free: true }
+    ]
+  },
+  {
+    num: 9,
+    title: "Strategic & Finished Intelligence",
+    duration: "6 hours",
+    level: "Advanced",
+    topics: [
+      "Strategic vs. operational vs. tactical TI — revisited at depth",
+      "Threat landscape assessments: methodology, data sources, presentation",
+      "Priority Intelligence Requirements (PIRs) and collection planning",
+      "Evaluating external TI: vendor assessment, feed quality",
+      "Translating TI into business risk language",
+      "TI program maturity models and capstone brief"
+    ],
+    resources: [
+      { name: "SOCRadar: Mastering CTI for SOC Analysts", desc: "Covers strategic TI, program maturity, and advanced analysis", url: "https://academy.socradar.io/course/mastering-cyber-threat-intelligence-for-soc-analysts", free: true },
+      { name: "EC-Council Threat Intelligence Essentials (TIE)", desc: "Strategic threat landscape analysis and program development", url: "https://www.eccouncil.org/train-certify/threat-intelligence-essentials-tie/", free: false }
+    ]
+  }
+];
+
+const levelClass = { Foundation: 'level-foundation', Intermediate: 'level-intermediate', Advanced: 'level-advanced' };
+const completedSet = new Set(JSON.parse(localStorage.getItem('tiCompleted') || '[]'));
+
+function saveCompleted() {
+  localStorage.setItem('tiCompleted', JSON.stringify([...completedSet]));
+}
+
+function updateProgress() {
+  const count = completedSet.size;
+  const pct = (count / modules.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = `${count} / ${modules.length} complete`;
+}
+
+function renderModules(filter = 'all') {
+  const grid = document.getElementById('modulesGrid');
+  grid.innerHTML = '';
+
+  modules.forEach((mod, i) => {
+    const isComplete = completedSet.has(mod.num);
+    const levelKey = mod.level.split(' ')[0];
+
+    if (filter === 'completed' && !isComplete) return;
+    if (filter !== 'all' && filter !== 'completed' && !mod.level.includes(filter)) return;
+
+    const card = document.createElement('div');
+    card.className = `module-card${isComplete ? ' completed' : ''}`;
+    card.style.animationDelay = (i * 0.05) + 's';
+
+    const resourcesHtml = mod.resources.map(r => `
+      <a class="resource-link" href="${r.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+        <div class="resource-icon ${r.free ? 'icon-free' : 'icon-paid'}">${r.free ? '▶' : '🎓'}</div>
+        <div class="resource-info">
+          <div class="resource-name">${r.name}</div>
+          <div class="resource-desc">${r.desc}</div>
+        </div>
+        <span class="resource-tag ${r.free ? 'tag-free' : 'tag-paid'}">${r.free ? 'FREE' : 'PAID'}</span>
+      </a>
+    `).join('');
+
+    const topicsHtml = mod.topics.map(t => `<div class="topic-item">${t}</div>`).join('');
+
+    card.innerHTML = `
+      <div class="module-card-top">
+        <div class="module-meta">
+          <span class="module-num">MODULE ${String(mod.num).padStart(2,'0')}</span>
+          <span class="level-badge ${levelClass[levelKey] || 'level-foundation'}">${mod.level}</span>
+        </div>
+        <div class="module-title">${mod.title}</div>
+        <div class="module-info-row">
+          <span class="module-duration">${mod.duration}</span>
+          <div class="complete-check" title="Mark complete" data-num="${mod.num}">${isComplete ? '✓' : ''}</div>
+        </div>
+      </div>
+      <div class="module-topics">
+        <button class="topics-toggle" onclick="toggleTopics(this, event)">
+          <span class="arrow">▶</span> Topics Covered
+        </button>
+        <div class="topics-list">${topicsHtml}</div>
+      </div>
+      <div class="module-resources">
+        <div class="resources-title">📹 Video & Course Resources</div>
+        ${resourcesHtml}
+      </div>
+    `;
+
+    card.querySelector('.complete-check').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const num = mod.num;
+      if (completedSet.has(num)) {
+        completedSet.delete(num);
+        card.classList.remove('completed');
+        e.currentTarget.textContent = '';
+      } else {
+        completedSet.add(num);
+        card.classList.add('completed');
+        e.currentTarget.textContent = '✓';
+      }
+      saveCompleted();
+      updateProgress();
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function toggleTopics(btn, e) {
+  e.stopPropagation();
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderModules(btn.dataset.filter);
+  });
+});
+
+renderModules();
+updateProgress();
+</script>
+
+</body>
+</html>
