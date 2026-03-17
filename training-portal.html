@@ -78,7 +78,7 @@ h1.hero-title span{background:linear-gradient(135deg,var(–cyan),var(–blue-br
 .module-title{font-family:‘Syne’,sans-serif;font-size:16px;font-weight:700;line-height:1.25;margin-bottom:10px;}
 .module-info-row{display:flex;align-items:center;gap:10px;}
 .module-duration{font-family:‘JetBrains Mono’,monospace;font-size:10px;color:var(–text-dim);}
-.module-duration::before{content:’◷ ’;}
+.module-duration::before{content:’o ’;}
 .card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
 .bookmark-btn{background:none;border:none;cursor:pointer;color:var(–text-dim);font-size:14px;transition:color 0.2s;padding:2px;}
 .bookmark-btn:hover{color:var(–yellow);}
@@ -253,115 +253,223 @@ table.lb-table{width:100%;border-collapse:collapse;}
 
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== MOBILE RESPONSIVE ===== */
-@media (max-width: 768px) {
-header {
-padding: 0 16px;
-height: auto;
-min-height: 56px;
-flex-wrap: wrap;
-gap: 8px;
-padding-top: 10px;
-padding-bottom: 10px;
+/* ===================================================
+RESPONSIVE LAYOUT - Mobile First
+=================================================== */
+
+/* — Base improvements for all screens — */
+
+- { -webkit-tap-highlight-color: transparent; }
+  img, video { max-width: 100%; }
+
+/* — Tablet (768px - 1024px) — */
+@media (max-width: 1024px) {
+.modules-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.top3-grid { gap: 10px; }
 }
-.logo { font-size: 12px; }
-.logo-icon { width: 26px; height: 26px; font-size: 12px; }
-.nav-tabs { order: 3; width: 100%; overflow-x: auto; padding-bottom: 2px; gap: 2px; }
-.nav-tab { font-size: 9px; padding: 5px 10px; white-space: nowrap; }
+
+/* — Mobile (max 768px) — */
+@media (max-width: 768px) {
+
+/* HEADER */
+header {
+height: auto;
+min-height: 52px;
+padding: 8px 16px;
+flex-wrap: wrap;
+gap: 6px;
+position: sticky;
+top: 0;
+}
+.logo { font-size: 12px; gap: 8px; flex: 1; }
+.logo-icon { width: 26px; height: 26px; font-size: 12px; flex-shrink: 0; }
+.nav-tabs {
+order: 10;
+width: 100%;
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+padding-bottom: 2px;
+gap: 2px;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab { font-size: 10px; padding: 5px 12px; white-space: nowrap; flex-shrink: 0; }
 .header-right { gap: 8px; }
-.analyst-input { width: 100px; font-size: 10px; }
+.analyst-input { width: 90px; font-size: 10px; padding: 4px 8px; }
 .header-badge { display: none; }
 
-.page { padding: 24px 16px 60px; }
+/* PAGES */
+.page { padding: 20px 14px 60px; }
 
-h1.hero-title { font-size: clamp(26px, 7vw, 38px); }
-.hero-sub { font-size: 14px; }
-.stats-row { gap: 18px; }
+/* HERO */
+h1.hero-title { font-size: clamp(24px, 7vw, 40px); margin-bottom: 12px; }
+.hero-sub { font-size: 14px; margin-bottom: 20px; }
+.stats-row { gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
 .stat-num { font-size: 22px; }
+.stat-label { font-size: 10px; }
+.hero-label { font-size: 10px; }
 
+/* PROGRESS BAR */
 .progress-card {
 flex-direction: column;
-align-items: flex-start;
-gap: 10px;
+align-items: stretch;
+gap: 8px;
 padding: 14px 16px;
 }
-.progress-bar-wrap { width: 100%; }
+.progress-label { font-size: 10px; }
+.progress-count { font-size: 11px; align-self: flex-end; }
 
-.filters { gap: 6px; }
-.filter-btn { font-size: 9px; padding: 5px 10px; }
+/* FILTERS */
+.filters {
+gap: 6px;
+flex-wrap: nowrap;
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+padding-bottom: 4px;
+margin-bottom: 20px;
+}
+.filters::-webkit-scrollbar { display: none; }
+.filter-btn { font-size: 9px; padding: 5px 11px; white-space: nowrap; flex-shrink: 0; }
 
-.modules-grid { grid-template-columns: 1fr; gap: 14px; }
+/* MODULE GRID - single column on mobile */
+.modules-grid { grid-template-columns: 1fr; gap: 12px; }
 
+/* MODULE CARD */
 .module-card-top { padding: 14px 14px 12px; }
-.module-title { font-size: 15px; }
-.resource-section, .topics-section, .notes-section { padding: 0 14px 4px; }
-.action-row { padding: 0 14px 12px; gap: 8px; }
-.quiz-btn, .lab-btn { font-size: 9px; padding: 8px 8px; }
+.module-num { font-size: 9px; }
+.module-title { font-size: 15px; line-height: 1.3; }
+.module-duration { font-size: 10px; }
+.complete-check { width: 22px; height: 22px; font-size: 11px; }
 
-.resource-link { padding: 7px 8px; }
+/* RESOURCE SECTIONS */
+.resource-section,
+.topics-section,
+.notes-section { padding: 0 14px 4px; }
+.action-row { padding: 0 14px 12px; gap: 6px; }
+.resource-section-toggle,
+.topics-toggle,
+.notes-toggle { font-size: 9px; padding: 8px 0 6px; }
+.resource-link { padding: 7px 8px; gap: 8px; }
+.res-icon { width: 24px; height: 24px; flex-shrink: 0; }
 .resource-name { font-size: 12px; }
-.resource-desc { font-size: 10px; }
-.res-icon { width: 24px; height: 24px; font-size: 11px; }
+.resource-desc { font-size: 10px; white-space: normal; }
+.r-level { font-size: 8px; }
+.r-time { font-size: 8px; }
+.topic-item { font-size: 11px; }
 
-/* Glossary */
+/* ACTION BUTTONS */
+.quiz-btn, .lab-btn {
+font-size: 9px;
+padding: 8px 6px;
+flex: 1;
+justify-content: center;
+}
+
+/* NOTES */
+.notes-textarea { font-size: 13px; min-height: 70px; }
+.notes-save { font-size: 10px; padding: 5px 14px; }
+
+/* SECTION TITLES */
+.section-title { font-size: 20px; }
+.section-sub { font-size: 13px; margin-bottom: 16px; }
+
+/* GLOSSARY */
+.glossary-search { font-size: 14px; padding: 9px 14px; margin-bottom: 16px; }
 .glossary-grid { grid-template-columns: 1fr; gap: 10px; }
-.glossary-search { font-size: 14px; padding: 9px 14px; }
+.glossary-card { padding: 14px; }
+.glossary-term { font-size: 14px; }
+.glossary-def { font-size: 12px; }
 
-/* Leaderboard */
-.top3-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.top3-card { padding: 14px 10px; }
-.top3-avatar { width: 40px; height: 40px; font-size: 15px; }
+/* LEADERBOARD */
+.lb-note { font-size: 10px; padding: 8px 12px; }
+.top3-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.top3-card { padding: 14px 8px; }
+.top3-crown { font-size: 18px; margin-bottom: 6px; }
+.top3-avatar { width: 38px; height: 38px; font-size: 14px; }
 .top3-name { font-size: 12px; }
-.top3-score { font-size: 16px; }
-.top3-crown { font-size: 18px; }
-
-/* Hide some table columns on mobile */
-.lb-table th:nth-child(5),
-.lb-table td:nth-child(5),
+.top3-mods { font-size: 9px; }
+.top3-score { font-size: 16px; margin-top: 6px; }
+.lb-header { padding: 12px 14px; }
+.lb-header-title { font-size: 14px; }
+.lb-table th { font-size: 9px; padding: 8px 10px; }
+.lb-table td { padding: 10px 10px; font-size: 12px; }
 .lb-table th:nth-child(4),
-.lb-table td:nth-child(4) { display: none; }
+.lb-table td:nth-child(4),
+.lb-table th:nth-child(5),
+.lb-table td:nth-child(5) { display: none; }
 .lb-av { width: 28px; height: 28px; font-size: 11px; }
 .lb-role { display: none; }
-.lb-table td, .lb-table th { padding: 10px 10px; font-size: 12px; }
+.lb-rank { font-size: 15px; }
 
-/* Modal */
-.modal { padding: 22px 18px; width: 95%; max-height: 92vh; }
-.modal-title { font-size: 17px; }
-.quiz-q-text { font-size: 13px; }
-.quiz-opt { font-size: 12px; padding: 9px 12px; }
-
-/* Bookmarks */
+/* BOOKMARKS */
 .bm-list { grid-template-columns: 1fr; }
+.bm-item { padding: 12px; }
+.bm-title { font-size: 13px; }
+.bm-meta { font-size: 10px; }
 
-/* Section title */
-.section-title { font-size: 20px; }
+/* MODALS */
+.modal-overlay { align-items: flex-end; }
+.modal {
+width: 100%;
+max-width: 100%;
+border-radius: 16px 16px 0 0;
+padding: 24px 18px;
+max-height: 88vh;
+}
+.modal-title { font-size: 17px; margin-bottom: 4px; }
+.modal-sub { font-size: 9px; margin-bottom: 16px; }
+.quiz-pb { margin-bottom: 16px; }
+.quiz-q-text { font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
+.quiz-opt { font-size: 12px; padding: 9px 12px; }
+.quiz-explain { font-size: 11px; }
+.quiz-result-score { font-size: 44px; }
+.quiz-result-label { font-size: 13px; }
+.quiz-result-msg { font-size: 12px; }
+.lab-scenario { font-size: 12px; padding: 12px; }
+.lab-data { font-size: 10px; padding: 12px; }
+.lab-task-q { font-size: 12px; }
+.lab-ta { font-size: 12px; min-height: 65px; }
+.lab-hint { font-size: 10px; }
 }
 
+/* — Small mobile (max 480px) — */
 @media (max-width: 480px) {
-header { padding: 8px 12px; }
-.page { padding: 20px 12px 60px; }
-h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
+header { padding: 6px 12px; }
+.page { padding: 16px 12px 60px; }
+h1.hero-title { font-size: clamp(20px, 8vw, 28px); }
+.nav-tab { font-size: 9px; padding: 4px 10px; }
 .stats-row { gap: 12px; }
 .stat-num { font-size: 20px; }
-.nav-tab { font-size: 8px; padding: 4px 8px; }
-
-.top3-grid { gap: 6px; }
-.top3-card { padding: 12px 8px; }
+.top3-grid { gap: 5px; }
+.top3-card { padding: 10px 6px; }
 .top3-name { font-size: 11px; }
-.top3-avatar { width: 36px; height: 36px; font-size: 13px; }
-.top3-crown { font-size: 16px; }
-
-/* Stack action buttons on very small screens */
-.action-row { flex-direction: column; }
-.quiz-btn, .lab-btn { justify-content: center; }
+.top3-avatar { width: 32px; height: 32px; font-size: 12px; }
+.top3-crown { font-size: 14px; }
+.top3-score { font-size: 14px; }
 }
-</style>
 
+/* — Desktop enhancements (min 1024px) — */
+@media (min-width: 1024px) {
+.modules-grid { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+.module-card:hover { transform: translateY(-4px); }
+.glossary-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.top3-grid { gap: 16px; }
+.top3-card { padding: 24px 20px; }
+}
+
+/* — Wide desktop (min 1400px) — */
+@media (min-width: 1400px) {
+.page { max-width: 1300px; }
+.modules-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+</style>
 </head>
 <body>
 
 <header>
-  <div class="logo"><div class="logo-icon">⬡</div>SOC · TI Training Portal</div>
+  <div class="logo"><div class="logo-icon">&#x2B21;</div>SOC &middot; TI Training Portal</div>
   <nav class="nav-tabs">
     <button class="nav-tab active" data-page="modules">Modules</button>
     <button class="nav-tab" data-page="glossary">Glossary</button>
@@ -375,9 +483,9 @@ h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
 </header>
 
 <div class="page active" id="page-modules">
-  <div class="hero-label">Threat Intelligence Curriculum — All Free Resources</div>
+  <div class="hero-label">Threat Intelligence Curriculum &mdash; All Free Resources</div>
   <h1 class="hero-title">Your <span>Complete TI</span><br>Learning Hub</h1>
-  <p class="hero-sub">9 structured modules. Every resource is free — videos, whitepapers, academic papers, interactive labs, and official training. From beginner to advanced, learn everything here.</p>
+  <p class="hero-sub">9 structured modules. Every resource is free &mdash; videos, whitepapers, academic papers, interactive labs, and official training. From beginner to advanced, learn everything here.</p>
   <div class="stats-row">
     <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
     <div class="stat"><div class="stat-num">~48</div><div class="stat-label">Hours</div></div>
@@ -410,7 +518,7 @@ h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
 <div class="page" id="page-leaderboard">
   <div class="section-title">Team Leaderboard</div>
   <div class="section-sub">Track your team's progress through the TI curriculum.</div>
-  <div class="lb-note">⚠ MOCK DATA — Preview only. Connect a backend to enable live tracking.</div>
+  <div class="lb-note">! MOCK DATA &mdash; Preview only. Connect a backend to enable live tracking.</div>
   <div class="top3-grid" id="top3Grid"></div>
   <div class="lb-card">
     <div class="lb-header"><div class="lb-header-title">Full Rankings</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">MOCK DATA</div></div>
@@ -428,7 +536,7 @@ h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
 
 <div class="modal-overlay" id="quizModal">
   <div class="modal">
-    <button class="modal-close" onclick="document.getElementById('quizModal').classList.remove('open')">✕</button>
+    <button class="modal-close" onclick="document.getElementById('quizModal').classList.remove('open')">x</button>
     <div class="modal-title" id="quizTitle"></div>
     <div class="modal-sub" id="quizSub"></div>
     <div class="quiz-pb"><div class="quiz-pb-fill" id="quizPBFill"></div></div>
@@ -440,7 +548,7 @@ h1.hero-title { font-size: clamp(22px, 8vw, 32px); }
 
 <div class="modal-overlay" id="labModal">
   <div class="modal">
-    <button class="modal-close" onclick="document.getElementById('labModal').classList.remove('open')">✕</button>
+    <button class="modal-close" onclick="document.getElementById('labModal').classList.remove('open')">x</button>
     <div class="modal-title" id="labTitle"></div>
     <div class="modal-sub">Hands-On Lab Exercise</div>
     <div id="labBody"></div>
