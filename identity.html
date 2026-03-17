@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity and Access Management Training Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0D1B2A;color:#E8EDF2;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,117,182,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(46,117,182,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(46,117,182,0.25);background:rgba(13,27,42,0.97);backdrop-filter:blur(12px);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;min-width:0;}
+.logo-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;flex-shrink:0;}
+.nav-tab{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;border:none;background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover,.nav-tab.active{background:rgba(0,201,228,0.1);color:#00C9E4;}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.name-input{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:5px 10px;border-radius:6px;width:130px;}
+.name-input:focus{outline:none;border-color:#00C9E4;}
+.hdr-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#00C9E4;background:rgba(0,201,228,0.08);border:1px solid rgba(0,201,228,0.2);padding:4px 10px;border-radius:4px;letter-spacing:0.1em;white-space:nowrap;}
+.page{display:none;position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 32px 80px;}
+.page.active{display:block;}
+.hero-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#00C9E4;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Syne',-apple-system,sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:800;line-height:1.05;margin-bottom:14px;color:#E8EDF2;}
+.hero-title span{color:#00C9E4;}
+.hero-sub{color:#8FA3B8;font-size:15px;max-width:560px;line-height:1.6;margin-bottom:28px;}
+.stats-row{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:32px;}
+.stat-num{font-family:'Syne',-apple-system,sans-serif;font-size:26px;font-weight:800;color:#00C9E4;line-height:1;}
+.stat-label{font-size:11px;color:#8FA3B8;text-transform:uppercase;letter-spacing:0.08em;}
+.prog-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+.prog-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#8FA3B8;white-space:nowrap;}
+.prog-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,#2E75B6,#2ECC71);border-radius:99px;transition:width 0.8s ease;}
+.prog-count{font-family:'JetBrains Mono','Consolas',monospace;font-size:12px;color:#00C9E4;white-space:nowrap;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.filter-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 13px;border-radius:6px;border:1px solid rgba(46,117,182,0.25);background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{border-color:#00C9E4;color:#00C9E4;background:rgba(0,201,228,0.08);}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
+.mod-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.mod-card:hover{transform:translateY(-3px);border-color:rgba(46,117,182,0.5);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.mod-card.completed{border-color:rgba(46,204,113,0.3);}
+.card-top{padding:18px 18px 14px;border-bottom:1px solid rgba(46,117,182,0.25);}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.card-num{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;}
+.lvl-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;}
+.lvl-Foundation{background:rgba(46,139,87,0.15);color:#5DD49A;border:1px solid rgba(46,139,87,0.3);}
+.lvl-Intermediate{background:rgba(46,117,182,0.15);color:#70B0E8;border:1px solid rgba(46,117,182,0.3);}
+.lvl-Advanced{background:rgba(192,57,43,0.15);color:#E87070;border:1px solid rgba(192,57,43,0.3);}
+.card-title{font-family:'Syne',-apple-system,sans-serif;font-size:16px;font-weight:700;line-height:1.25;margin-bottom:10px;}
+.card-info{display:flex;align-items:center;gap:10px;}
+.card-dur{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.bm-btn{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:20px;transition:color 0.2s,transform 0.15s;padding:2px 4px;line-height:1;}
+.bm-btn:hover{color:#F1C40F;transform:scale(1.2);}
+.mod-card.bookmarked .bm-btn{color:#F1C40F;}
+.chk{width:22px;height:22px;border-radius:5px;border:2px solid rgba(46,117,182,0.25);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:14px;font-weight:700;color:transparent;flex-shrink:0;background:transparent;}
+.chk:hover{border-color:#2ECC71;background:rgba(46,204,113,0.1);}
+.mod-card.completed .chk{background:#2ECC71;border-color:#2ECC71;color:white;}
+.sec{padding:0 18px 4px;}
+.sec-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:8px 0 6px;transition:color 0.2s;width:100%;text-align:left;}
+.sec-toggle:hover{color:#00C9E4;}
+.sec-toggle .arr{transition:transform 0.2s;display:inline-block;}
+.sec-toggle.open .arr{transform:rotate(90deg);}
+.sec-body{display:none;padding-bottom:8px;}
+.sec-body.open{display:block;}
+.topic-item{font-size:11px;color:#8FA3B8;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;border-left:2px solid rgba(46,117,182,0.25);line-height:1.4;margin-bottom:3px;}
+.res-link{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:7px;text-decoration:none;transition:background 0.2s;border:1px solid transparent;margin-bottom:3px;}
+.res-link:hover{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.25);}
+.res-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.ri-v{background:rgba(46,117,182,0.15);color:#3D8FD4;}
+.ri-r{background:rgba(232,116,26,0.15);color:#E8741A;}
+.ri-p{background:rgba(155,89,182,0.15);color:#C39BD3;}
+.res-info{flex:1;min-width:0;}
+.res-name{font-size:12px;font-weight:600;color:#E8EDF2;line-height:1.3;margin-bottom:1px;}
+.res-desc{font-size:10px;color:#8FA3B8;line-height:1.4;white-space:normal;}
+.res-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.rl{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;padding:1px 5px;border-radius:3px;}
+.rl-b{background:rgba(46,139,87,0.12);color:#5DD49A;border:1px solid rgba(46,139,87,0.25);}
+.rl-i{background:rgba(46,117,182,0.12);color:#70B0E8;border:1px solid rgba(46,117,182,0.25);}
+.rl-a{background:rgba(192,57,43,0.12);color:#E87070;border:1px solid rgba(192,57,43,0.25);}
+.rt{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;color:#8FA3B8;}
+.act-row{display:flex;gap:8px;padding:0 18px 12px;}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:1px solid;}
+.quiz-act{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.3);color:#3D8FD4;}
+.quiz-act:hover{background:rgba(46,117,182,0.2);}
+.lab-act{background:rgba(155,89,182,0.1);border-color:rgba(155,89,182,0.3);color:#C39BD3;}
+.lab-act:hover{background:rgba(155,89,182,0.2);}
+.notes-sec{padding:0 18px 14px;}
+.notes-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0 8px;width:100%;text-align:left;}
+.notes-body{display:none;}
+.notes-body.open{display:block;}
+.notes-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:80px;line-height:1.5;}
+.notes-ta:focus{outline:none;border-color:rgba(232,116,26,0.5);}
+.notes-save{margin-top:6px;font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;padding:5px 12px;background:rgba(232,116,26,0.15);border:1px solid rgba(232,116,26,0.3);color:#E8741A;border-radius:5px;cursor:pointer;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:#162032;border:1px solid rgba(46,117,182,0.25);border-radius:16px;width:90%;max-width:640px;max-height:88vh;overflow-y:auto;padding:32px;position:relative;}
+.modal-x{position:absolute;top:16px;right:16px;background:none;border:none;color:#8FA3B8;font-size:20px;cursor:pointer;line-height:1;}
+.modal-x:hover{color:#E8EDF2;}
+.modal-title{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;}
+.q-pb{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-bottom:20px;overflow:hidden;}
+.q-pb-fill{height:100%;background:linear-gradient(90deg,#2E75B6,#2ECC71);border-radius:99px;transition:width 0.4s;}
+.q-text{font-size:14px;font-weight:600;line-height:1.5;margin-bottom:12px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{padding:10px 14px;border-radius:8px;border:1px solid rgba(46,117,182,0.25);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;color:#8FA3B8;transition:all 0.2s;text-align:left;}
+.q-opt:hover:not(.locked){border-color:#2E75B6;color:#E8EDF2;background:rgba(46,117,182,0.1);}
+.q-opt.correct{border-color:#2ECC71;background:rgba(46,204,113,0.1);color:#2ECC71;}
+.q-opt.wrong{border-color:#E74C3C;background:rgba(231,76,60,0.1);color:#E74C3C;}
+.q-opt.reveal{border-color:#2ECC71;background:rgba(46,204,113,0.05);color:#5DD49A;}
+.q-explain{margin-top:10px;font-size:12px;color:#8FA3B8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:6px;border-left:3px solid #00C9E4;line-height:1.5;display:none;}
+.q-next{margin-top:14px;text-align:right;}
+.q-next-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;display:none;}
+.q-result{text-align:center;padding:20px 0;}
+.q-score{font-family:'Syne',-apple-system,sans-serif;font-size:52px;font-weight:800;color:#00C9E4;}
+.q-score-lbl{font-size:14px;color:#8FA3B8;margin:4px 0 12px;}
+.q-msg{font-size:13px;color:#E8EDF2;margin-bottom:16px;line-height:1.5;}
+.q-retry{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;}
+.lab-scene{font-size:13px;color:#8FA3B8;line-height:1.6;padding:14px;background:rgba(46,204,113,0.07);border:1px solid rgba(46,204,113,0.2);border-radius:8px;margin-bottom:16px;}
+.lab-data{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;margin-bottom:16px;line-height:1.7;color:#A8D8A8;overflow-x:auto;white-space:pre-wrap;}
+.lab-tl{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#2ECC71;letter-spacing:0.1em;text-transform:uppercase;margin:12px 0 5px;}
+.lab-tq{font-size:13px;color:#E8EDF2;margin-bottom:7px;line-height:1.5;}
+.lab-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:75px;line-height:1.5;}
+.lab-ta:focus{outline:none;border-color:rgba(46,204,113,0.5);}
+.lab-hint{font-size:11px;color:#8FA3B8;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #2ECC71;line-height:1.5;}
+.lab-submit{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(46,204,113,0.15);border:1px solid rgba(46,204,113,0.35);color:#2ECC71;border-radius:7px;cursor:pointer;margin-top:10px;}
+.sec-title{font-family:'Syne',-apple-system,sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.sec-sub{font-size:13px;color:#8FA3B8;margin-bottom:24px;}
+.gls-search{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:10px 16px;border-radius:9px;font-size:14px;margin-bottom:20px;font-family:'Inter',-apple-system,sans-serif;}
+.gls-search:focus{outline:none;border-color:#00C9E4;}
+.gls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.gls-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;transition:border-color 0.2s;}
+.gls-card:hover{border-color:rgba(46,117,182,0.4);}
+.gls-card.hidden{display:none;}
+.gls-term{font-family:'Syne',-apple-system,sans-serif;font-size:14px;font-weight:700;color:#00C9E4;margin-bottom:3px;}
+.gls-abbr{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;margin-bottom:8px;}
+.gls-def{font-size:12px;color:#8FA3B8;line-height:1.55;}
+.gls-tag{display:inline-block;margin-top:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(46,117,182,0.12);color:#3D8FD4;border:1px solid rgba(46,117,182,0.25);}
+.lb-note{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;background:rgba(241,196,15,0.06);border:1px solid rgba(241,196,15,0.15);padding:8px 14px;border-radius:7px;margin-bottom:24px;}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.t3-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:20px 16px;text-align:center;}
+.t3-card.first{border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.03);}
+.t3-crown{font-size:22px;margin-bottom:6px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.t3-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:18px;margin:0 auto 8px;}
+.t3-name{font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+.t3-mods{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.t3-score{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:800;color:#00C9E4;margin-top:6px;}
+.lb-wrap{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;}
+.lb-hdr{padding:14px 20px;border-bottom:1px solid rgba(46,117,182,0.25);display:flex;justify-content:space-between;align-items:center;}
+.lb-hdr-t{font-family:'Syne',-apple-system,sans-serif;font-size:15px;font-weight:700;}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table th{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8FA3B8;padding:10px 16px;text-align:left;border-bottom:1px solid rgba(46,117,182,0.25);}
+.lb-table td{padding:12px 16px;border-bottom:1px solid rgba(46,117,182,0.1);font-size:13px;}
+.lb-table tr:last-child td{border-bottom:none;}
+.lb-table tr:hover td{background:rgba(46,117,182,0.04);}
+.lb-rank{font-family:'Syne',-apple-system,sans-serif;font-size:18px;font-weight:800;}
+.r1{color:#FFD700;}.r2{color:#C0C0C0;}.r3{color:#CD7F32;}.rn{color:#8FA3B8;}
+.lb-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:12px;flex-shrink:0;}
+.lb-nc{display:flex;align-items:center;gap:10px;}
+.lb-role{font-size:11px;color:#8FA3B8;}
+.lb-bar-w{width:80px;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.lb-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#2E75B6,#2ECC71);}
+.lb-bdg{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid;}
+.bdg-g{background:rgba(255,215,0,0.1);color:#FFD700;border-color:rgba(255,215,0,0.3);}
+.bdg-s{background:rgba(192,192,192,0.1);color:#C0C0C0;border-color:rgba(192,192,192,0.3);}
+.bdg-b{background:rgba(205,127,50,0.1);color:#CD7F32;border-color:rgba(205,127,50,0.3);}
+.bdg-a{background:rgba(46,117,182,0.1);color:#3D8FD4;border-color:rgba(46,117,182,0.3);}
+.bm-empty{text-align:center;padding:60px 20px;color:#8FA3B8;font-size:14px;}
+.bm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.bm-item{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;}
+.bm-item:hover{border-color:rgba(241,196,15,0.3);}
+.bm-info{flex:1;}
+.bm-title{font-weight:600;font-size:13px;margin-bottom:2px;}
+.bm-meta{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.bm-rm{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:18px;transition:color 0.2s;line-height:1;}
+.bm-rm:hover{color:#E74C3C;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{animation:fadeUp 0.35s ease both;}
+@media(max-width:1024px){.mod-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}}
+@media(max-width:768px){
+  header{height:auto;min-height:52px;padding:8px 16px;flex-wrap:wrap;gap:6px;}
+  .logo{font-size:11px;flex:1;min-width:0;}
+  .nav-tabs{order:10;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{font-size:10px;padding:5px 12px;white-space:nowrap;flex-shrink:0;}
+  .hdr-right{gap:8px;}.name-input{width:90px;font-size:10px;}.hdr-badge{display:none;}
+  .page{padding:20px 14px 60px;}
+  .hero-title{font-size:clamp(22px,7vw,38px);}
+  .hero-sub{font-size:14px;margin-bottom:20px;}
+  .stats-row{gap:16px;margin-bottom:24px;}.stat-num{font-size:20px;}
+  .prog-card{flex-direction:column;align-items:stretch;gap:8px;padding:14px 16px;}
+  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin-bottom:20px;}
+  .filters::-webkit-scrollbar{display:none;}
+  .filter-btn{font-size:9px;padding:5px 11px;white-space:nowrap;flex-shrink:0;}
+  .mod-grid{grid-template-columns:1fr;gap:12px;}
+  .card-top{padding:14px 14px 12px;}.card-title{font-size:15px;}
+  .sec,.notes-sec{padding-left:14px;padding-right:14px;}
+  .act-row{padding-left:14px;padding-right:14px;}
+  .gls-grid{grid-template-columns:1fr;}
+  .top3{gap:8px;}.t3-card{padding:14px 8px;}.t3-av{width:38px;height:38px;font-size:14px;}
+  .t3-name{font-size:12px;}.t3-score{font-size:16px;}
+  .lb-table th:nth-child(4),.lb-table td:nth-child(4),.lb-table th:nth-child(5),.lb-table td:nth-child(5){display:none;}
+  .lb-role{display:none;}.lb-table td,.lb-table th{padding:10px;font-size:12px;}
+  .bm-list{grid-template-columns:1fr;}
+  .overlay{align-items:flex-end;}
+  .modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;padding:24px 18px;max-height:88vh;}
+  .q-text{font-size:13px;}.q-opt{font-size:12px;padding:9px 12px;}
+}
+@media(max-width:480px){
+  header{padding:6px 12px;}.page{padding:16px 12px 60px;}
+  .hero-title{font-size:clamp(20px,8vw,28px);}
+  .nav-tab{font-size:9px;padding:4px 10px;}
+  .act-row{flex-direction:column;}
+}
+@media(min-width:1400px){.page{max-width:1300px;}.mod-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span class="logo-text">Identity and Access Management</span></div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-page="modules">Modules</button>
+    <button class="nav-tab" data-page="glossary">Glossary</button>
+    <button class="nav-tab" data-page="leaderboard">Leaderboard</button>
+    <button class="nav-tab" data-page="bookmarks">Bookmarks</button>
+  </nav>
+  <div class="hdr-right">
+    <input class="name-input" type="text" id="analystName" placeholder="Your name..." />
+    <div class="hdr-badge">INTERNAL USE ONLY</div>
+  </div>
+</header>
+
+<div class="page active" id="page-modules">
+  <div class="hero-label">Security Engineering Curriculum &mdash; All Free Resources</div>
+  <h1 class="hero-title">Identity and <span>Access Management</span></h1>
+  <p class="hero-sub">9 structured modules covering IAM fundamentals through advanced privileged access, federation, and zero trust identity. From directory services to modern cloud identity architecture.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-num">48+</div><div class="stat-label">Hours</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free</div></div>
+    <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Resources</div></div>
+  </div>
+  <div class="prog-card">
+    <span class="prog-label">YOUR PROGRESS</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <span class="prog-count" id="progCount">0 / 9 complete</span>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Foundation">Foundation</button>
+    <button class="filter-btn" data-filter="Intermediate">Intermediate</button>
+    <button class="filter-btn" data-filter="Advanced">Advanced</button>
+    <button class="filter-btn" data-filter="bookmarked">Bookmarked</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+  </div>
+  <div class="mod-grid" id="modGrid"></div>
+</div>
+
+<div class="page" id="page-glossary">
+  <div class="sec-title">Glossary</div>
+  <div class="sec-sub">Core terms for IAM practitioners across security engineering and operations.</div>
+  <input class="gls-search" id="glsSearch" type="text" placeholder="Search terms..." />
+  <div class="gls-grid" id="glsGrid"></div>
+</div>
+
+<div class="page" id="page-leaderboard">
+  <div class="sec-title">Team Leaderboard</div>
+  <div class="sec-sub">Track your team's progress through the curriculum.</div>
+  <div class="lb-note">MOCK DATA &mdash; Connect a backend to enable live tracking.</div>
+  <div class="top3" id="top3"></div>
+  <div class="lb-wrap">
+    <div class="lb-hdr"><div class="lb-hdr-t">Full Rankings</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8FA3B8;">MOCK DATA</div></div>
+    <table class="lb-table"><thead><tr><th>Rank</th><th>Analyst</th><th>Modules</th><th>Progress</th><th>Quiz Avg</th><th>Badge</th></tr></thead><tbody id="lbBody"></tbody></table>
+  </div>
+</div>
+
+<div class="page" id="page-bookmarks">
+  <div class="sec-title">Bookmarked Modules</div>
+  <div class="sec-sub">Modules you have saved for quick access.</div>
+  <div id="bmContent"></div>
+</div>
+
+<div class="overlay" id="quizOverlay">
+  <div class="modal">
+    <button class="modal-x" id="quizClose">x</button>
+    <div class="modal-title" id="quizTitle"></div>
+    <div class="modal-sub" id="quizSub"></div>
+    <div class="q-pb"><div class="q-pb-fill" id="qPBFill"></div></div>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<div class="overlay" id="labOverlay">
+  <div class="modal">
+    <button class="modal-x" id="labClose">x</button>
+    <div class="modal-title" id="labTitle"></div>
+    <div class="modal-sub">Hands-On Lab Exercise</div>
+    <div id="labBody"></div>
+  </div>
+</div>
+
+<script>
+var MODS = [
+{num:1,title:"IAM Fundamentals",dur:"4 hours",level:"Foundation",
+topics:["Identity defined: users, service accounts, devices, workloads","Authentication vs authorisation vs accounting (AAA)","The identity lifecycle: provisioning, maintenance, deprovisioning","Directory services: Active Directory, LDAP, Azure AD fundamentals","Roles, groups, permissions: building blocks of access control","Why identity is the primary attack surface in modern environments"],
+videos:[
+{n:"Microsoft: Identity and Access Management Fundamentals",d:"Free Microsoft Learn course on IAM core concepts - authentication, authorisation, and identity governance",u:"https://learn.microsoft.com/en-us/training/paths/describe-identity-access-management/",l:"b",t:"~3 hrs"},
+{n:"SANS: Identity Security Fundamentals",d:"SANS overview of identity as a security domain and primary attack surface",u:"https://www.sans.org/",l:"b",t:"~1 hr"},
+{n:"IBM: IAM Explained",d:"Clear overview of IAM components, lifecycle, and security implications",u:"https://www.youtube.com/watch?v=placeholder_ibm_iam",l:"b",t:"~20 min"}
+],
+reading:[
+{n:"NIST SP 800-63 Digital Identity Guidelines (Free)",d:"The definitive NIST guidance on digital identity, authentication, and lifecycle management",u:"https://pages.nist.gov/800-63-3/",l:"b",t:"Standard"},
+{n:"CISA: Identity and Access Management Guidance",d:"CISA practical guidance on IAM as a foundational security control",u:"https://www.cisa.gov/identity-and-access-management",l:"b",t:"Guide"},
+{n:"Microsoft: Active Directory Security Best Practices",d:"Comprehensive free guidance on securing Active Directory - the most common enterprise identity store",u:"https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory",l:"b",t:"Guide"},
+{n:"NIST SP 800-207: Zero Trust Architecture",d:"NIST zero trust framework with identity as the primary control plane",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf",l:"b",t:"PDF"}
+],
+practice:[
+{n:"TryHackMe: Active Directory Basics",d:"Free hands-on introduction to Active Directory structure and security",u:"https://tryhackme.com/room/activedirectorybasics",l:"b",t:"~1.5 hrs"},
+{n:"Microsoft Learn: Azure Active Directory Free Labs",d:"Free Azure AD sandbox environment for practicing identity management",u:"https://learn.microsoft.com/en-us/training/",l:"b",t:"Labs"}
+],
+quiz:[
+{q:"What is the difference between authentication and authorisation?",o:["They are the same thing","Authentication verifies who you are; authorisation determines what you are allowed to do","Authentication is for humans; authorisation is for machines","Authorisation happens before authentication"],a:1,e:"Authentication answers 'who are you?' - verifying identity through credentials. Authorisation answers 'what can you do?' - enforcing permissions after identity is confirmed. Both must work correctly for secure access control."},
+{q:"Why is identity considered the primary attack surface in modern cloud environments?",o:["Because passwords are always weak","Network perimeters no longer contain all resources - identity is the only consistent control point across cloud, SaaS, and on-premises systems, making compromised credentials the most effective attack path","Because identity systems are poorly maintained","Because multi-factor authentication is not widely deployed"],a:1,e:"In cloud environments there is no traditional perimeter. An attacker with valid credentials can access resources from anywhere. This makes credential theft and identity compromise the dominant attack technique - more effective than network exploitation."},
+{q:"What is an orphaned account and why is it a security risk?",o:["An account with a very complex password","An account belonging to a user who has left the organisation - still active but no longer monitored, creating a persistent access path that may go undetected","An account with no assigned role","A service account with no owner"],a:1,e:"Orphaned accounts represent access that should not exist. Attackers actively seek accounts belonging to former employees - they often retain legitimate permissions, have no active owner to notice anomalous logins, and may persist for years undetected."},
+{q:"What is the principle of least privilege applied to identity?",o:["All users should share a single account","Users and service accounts should be granted only the minimum permissions required to perform their specific function, with nothing extra","Privileged accounts should have all permissions","Least privilege only applies to service accounts"],a:1,e:"Least privilege limits blast radius: if an account is compromised, the attacker gains only the permissions that account held. Broad permissions amplify every credential compromise into a major incident."},
+{q:"What distinguishes a service account from a user account in terms of security risk?",o:["Service accounts are always less risky","Service accounts often have elevated permissions, run continuously without interactive sessions, rarely get rotated or audited, and frequently have their passwords embedded in scripts and configs","Service accounts cannot be compromised","User accounts are always higher risk"],a:1,e:"Service accounts are attractive targets: they often have elevated privileges, run 24/7, are poorly monitored, and frequently have credentials stored in plain text in scripts, configuration files, or deployment pipelines - creating persistent high-value targets."}
+],
+lab:{title:"Module 1 Lab: Identity Security Audit",scene:"Conduct a baseline identity security audit of a simulated environment and identify the highest-risk findings.",data:"ENVIRONMENT: Mid-size professional services firm\n500 user accounts in Active Directory\n\nAUDIT FINDINGS:\n  - 47 accounts have not logged in for over 180 days\n  - 12 accounts belong to employees who left in the last 6 months\n     (confirmed via HR comparison)\n  - 8 service accounts have passwords set to never expire\n  - 3 service accounts have Domain Admin membership\n  - 156 users are members of more than 5 security groups\n  - Admin accounts: 23 users with local admin on all workstations\n  - 4 shared accounts used by the helpdesk team (no individual accountability)\n  - Password policy: minimum 8 chars, no MFA enforced\n  - Last access review: never conducted",tasks:["Rank these findings by risk. Justify your top 3 as critical.","For the 12 accounts of departed employees: what is your immediate action and what process failure caused this?","The 3 service accounts with Domain Admin - what is the attack scenario this enables and how do you remediate?","Design an identity hygiene programme that prevents these findings recurring."]}
+},
+{num:2,title:"Authentication - Passwords, MFA and Passwordless",dur:"5 hours",level:"Foundation",
+topics:["Password security: entropy, hashing, salting, credential stuffing attacks","Multi-factor authentication: types (OTP, FIDO2, push, SMS) and their relative strength","Phishing-resistant MFA: FIDO2/WebAuthn and hardware security keys","Passwordless authentication: Windows Hello, passkeys, certificate-based auth","Adaptive authentication: risk-based step-up and context-aware policies","Common authentication attacks: pass-the-hash, pass-the-ticket, MFA fatigue, SIM swap"],
+videos:[
+{n:"CISA: More Than a Password - MFA Guidance",d:"CISA official guidance on implementing effective multi-factor authentication",u:"https://www.cisa.gov/MFA",l:"b",t:"~30 min"},
+{n:"FIDO Alliance: FIDO2 and Passkeys Explained",d:"Official FIDO Alliance explanation of phishing-resistant FIDO2 and passkey standards",u:"https://fidoalliance.org/fido2/",l:"b",t:"~45 min"},
+{n:"Microsoft: Password Spray and Credential Attacks",d:"Technical explanation of modern credential attacks and authentication defences",u:"https://learn.microsoft.com/en-us/security/operations/",l:"b",t:"~30 min"}
+],
+reading:[
+{n:"NIST SP 800-63B: Authentication and Lifecycle Management (Free)",d:"NIST digital identity guidelines for authentication - definitive reference for AAL levels",u:"https://pages.nist.gov/800-63-3/sp800-63b.html",l:"b",t:"Standard"},
+{n:"CISA: Implementing Phishing-Resistant MFA (Free Guide)",d:"CISA step-by-step guidance on deploying FIDO2 and phishing-resistant authentication",u:"https://www.cisa.gov/sites/default/files/publications/fact-sheet-implementing-phishing-resistant-mfa-508c.pdf",l:"b",t:"Guide"},
+{n:"Microsoft: Password Guidance (Free)",d:"Microsoft research-backed password guidance - why complexity rules fail and what works",u:"https://www.microsoft.com/en-us/research/publication/password-guidance/",l:"b",t:"Research"},
+{n:"SANS: Defeating Pass-the-Hash and Credential Theft",d:"SANS technical guidance on defending against credential theft attacks",u:"https://www.sans.org/reading-room/",l:"i",t:"White Paper"}
+],
+practice:[
+{n:"TryHackMe: MFA and Authentication Attacks",d:"Hands-on exercises on MFA bypass techniques and defences",u:"https://tryhackme.com/room/mfa",l:"b",t:"~1.5 hrs"},
+{n:"Have I Been Pwned: API and Dataset (Free)",d:"Free credential breach database - practice assessing exposure from password breaches",u:"https://haveibeenpwned.com/",l:"b",t:"Tool"}
+],
+quiz:[
+{q:"Why is SMS-based MFA considered weaker than FIDO2 hardware keys?",o:["SMS MFA requires a phone","SMS is vulnerable to SIM swapping and SS7 interception attacks; FIDO2 keys are phishing-resistant and cryptographically bound to the specific website","FIDO2 keys are free; SMS costs money","SMS MFA requires internet access"],a:1,e:"SMS MFA can be bypassed through SIM swapping (social engineering the mobile carrier), SS7 protocol attacks (intercepting SMS at the network level), and real-time phishing proxies. FIDO2 keys cryptographically verify the origin site, making them immune to phishing."},
+{q:"What is MFA fatigue and how does it enable account compromise?",o:["Users forgetting their MFA device","An attack where the adversary repeatedly sends push notification requests to the victim until they approve one out of confusion or annoyance","MFA systems becoming overloaded","Users choosing weak second factors"],a:1,e:"MFA fatigue (push bombing) exploits the human tendency to approve unexpected prompts to make them stop. Microsoft and Cisco were compromised via this technique. Defences include number matching, additional context in push notifications, and limiting push attempts."},
+{q:"What makes FIDO2/passkeys phishing-resistant?",o:["They use very long passwords","The cryptographic challenge-response is bound to the specific origin domain - a fake phishing site cannot receive the authentication response even if the user is deceived","They require hardware tokens","They use biometrics exclusively"],a:1,e:"FIDO2 authentication is origin-bound: the private key only signs challenges from the exact registered domain. A phishing site at fake-bank.com cannot receive the authentication for bank.com - the protocol prevents credential relay regardless of user deception."},
+{q:"Pass-the-hash attacks exploit which weakness in Windows authentication?",o:["Weak passwords","NTLM authentication allows the password hash itself to be used as authentication credential - an attacker who steals the hash can authenticate without knowing the plaintext password","Windows does not support MFA","Kerberos is vulnerable to dictionary attacks"],a:1,e:"NTLM uses the password hash as a proof of identity. An attacker who extracts NTLM hashes from memory (via Mimikatz or similar) can replay them to authenticate to other systems without ever cracking the password. Mitigation requires moving to Kerberos and Protected Users groups."},
+{q:"What is the NIST SP 800-63B Authentication Assurance Level (AAL) framework?",o:["A password complexity scoring system","A three-tier framework defining authentication strength requirements: AAL1 (single factor), AAL2 (multi-factor), AAL3 (hardware-bound phishing-resistant MFA)","A certification for MFA products","A network authentication protocol"],a:1,e:"AALs allow organisations to match authentication strength to the sensitivity of the resource. High-value systems (financial, admin access) require AAL3 - hardware-bound phishing-resistant authentication. Understanding AALs enables risk-proportionate authentication policy."}
+],
+lab:{title:"Module 2 Lab: Authentication Risk Assessment",scene:"Assess the authentication posture of an organisation and design an improvement roadmap.",data:"CURRENT AUTHENTICATION STATE:\n\n  Application inventory and current auth:\n    - Corporate VPN: Username + password only\n    - Email (M365): Password + SMS MFA (80% enrolled)\n    - HR system (cloud): Password only - 'vendor does not support MFA'\n    - Finance ERP: Password + TOTP app (60% enrolled)\n    - Admin portal (Azure): Password + push notification MFA\n    - Customer portal: Password only\n    - Internal wiki: SSO via corporate AD (no MFA)\n\n  Recent incidents:\n    - 3 accounts compromised via phishing in past 6 months\n    - All 3 bypassed SMS MFA via real-time phishing proxy\n    - 1 VPN account compromised via credential stuffing\n\n  Workforce: 800 employees, 25 IT admins, 50 remote workers",tasks:["Rate each application's authentication strength and identify the highest-risk gaps.","The 3 phishing incidents bypassed SMS MFA. What does this tell you about your MFA strategy and what is the fix?","The HR vendor claims MFA is not supported. What options do you have and what contractual or procurement lever applies?","Design a phased MFA improvement roadmap prioritised by risk."]}
+},
+{num:3,title:"Active Directory Security",dur:"6 hours",level:"Foundation",
+topics:["Active Directory architecture: domains, forests, trusts, OUs, GPOs","AD attack paths: Kerberoasting, AS-REP roasting, DCSync, Golden Ticket","Privileged accounts in AD: Domain Admins, Enterprise Admins, Schema Admins","Tier model for AD administration: protecting Tier 0 assets","AD hardening: Protected Users group, Credential Guard, LAPS","BloodHound: understanding and using attack path analysis for defence"],
+videos:[
+{n:"TryHackMe: Active Directory Attacks and Defence (Free)",d:"Comprehensive video walkthrough of AD attack techniques and defensive mitigations",u:"https://tryhackme.com/room/activedirectorybasics",l:"b",t:"~2 hrs"},
+{n:"SANS: Active Directory Kill Chain and Defence",d:"SANS technical deep dive on AD attack paths from initial access to Domain Admin",u:"https://www.sans.org/",l:"b",t:"~1.5 hrs"},
+{n:"Microsoft: Securing Active Directory - Official Guidance",d:"Microsoft official video series on hardening Active Directory environments",u:"https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory",l:"b",t:"~2 hrs"}
+],
+reading:[
+{n:"Microsoft: Active Directory Best Practices for Securing AD (Free)",d:"Comprehensive Microsoft guidance on hardening Active Directory against modern attacks",u:"https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory",l:"b",t:"Guide"},
+{n:"SANS: Securing Windows and Active Directory",d:"SANS whitepaper on hardening Windows and AD environments against credential attacks",u:"https://www.sans.org/reading-room/",l:"b",t:"White Paper"},
+{n:"BloodHound: Attack Path Analysis Documentation (Free)",d:"Official BloodHound documentation for using attack path analysis defensively",u:"https://bloodhound.readthedocs.io/",l:"b",t:"Reference"},
+{n:"Specterops: Certified Pre-Owned - AD CS Attack Paths (Free)",d:"Research paper on Active Directory Certificate Services attack paths - essential reading",u:"https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf",l:"i",t:"Paper"}
+],
+practice:[
+{n:"TryHackMe: Attacking Active Directory (Free Rooms)",d:"Hands-on AD attack and defence rooms including Kerberoasting and BloodHound",u:"https://tryhackme.com/room/attackingkerberos",l:"b",t:"~3 hrs"},
+{n:"BloodHound Community Edition (Free)",d:"Free open source attack path analysis tool - essential for AD defence",u:"https://github.com/BloodHoundAD/BloodHound",l:"b",t:"Tool"}
+],
+quiz:[
+{q:"What is Kerberoasting and what makes it effective against Active Directory?",o:["An attack that brute forces domain controller passwords","Requesting Kerberos service tickets for accounts with SPNs, then cracking the tickets offline - effective because any domain user can request tickets for any service account","A denial of service attack against Kerberos","An attack requiring domain admin privileges"],a:1,e:"Any authenticated domain user can request a Kerberos TGS ticket for any service account with an SPN. That ticket is encrypted with the service account's password hash and can be taken offline for cracking. Service accounts with weak passwords are immediately vulnerable."},
+{q:"What is a Golden Ticket attack and why is it so severe?",o:["Stealing an admin's credentials","Forging Kerberos TGTs using the KRBTGT account hash - creating tickets that grant access to any resource in the domain for 10+ years, persisting even through password resets","A credential phishing attack","An attack requiring physical access to the domain controller"],a:1,e:"Golden Tickets are forged by anyone with the KRBTGT hash (obtained via DCSync or DC compromise). They bypass normal authentication - the forged ticket is valid even if the target account's password changes. Remediation requires resetting KRBTGT twice, which disrupts all domain authentication."},
+{q:"What is the Active Directory Tiering Model and what problem does it solve?",o:["A backup strategy for domain controllers","A three-tier administration model separating Tier 0 (domain controllers, AD), Tier 1 (servers), and Tier 2 (workstations) - preventing credential theft from lower tiers from reaching higher-value systems","A network segmentation model","A password policy framework"],a:1,e:"Without tiering, an admin who manages workstations (Tier 2) and also logs into domain controllers (Tier 0) exposes DC credentials to workstation-level compromise. Tiering enforces that admin accounts only operate at their designated tier, preventing lateral movement up the privilege hierarchy."},
+{q:"What does BloodHound reveal that traditional access reviews miss?",o:["Password hashes","Attack paths: chains of permissions, group memberships, and ACL configurations that allow a low-privilege account to reach high-value targets through multiple hops","Network topology","Log data"],a:1,e:"BloodHound graphs relationships between all AD objects and finds multi-hop attack paths. A user may not directly have Domain Admin but may have WriteDACL on a group that contains a user with GenericAll over another user who is Domain Admin. Manual review cannot find these chains."},
+{q:"What is LAPS and what security problem does it solve?",o:["A Kerberos hardening feature","Local Administrator Password Solution - automatically manages unique, rotating local admin passwords per machine, preventing lateral movement via shared local admin credentials","A group policy tool","A certificate management system"],a:1,e:"Without LAPS, local admin passwords are often identical across all workstations (set during imaging). Compromising one machine's local admin credential gives the same access to every machine. LAPS breaks this by enforcing unique randomised passwords per device."}
+],
+lab:{title:"Module 3 Lab: Active Directory Security Review",scene:"Analyse AD configuration data and identify the highest-risk attack paths.",data:"AD ENVIRONMENT DATA:\n\n  Domain: corp.example.com (single domain, single forest)\n  Total users: 1,200  |  Total computers: 900  |  Total groups: 340\n\n  PRIVILEGED ACCOUNT FINDINGS:\n    - Domain Admins group: 34 members (industry avg: 3-5)\n    - 12 Domain Admin accounts used for daily work tasks\n    - 8 Domain Admin accounts have not logged in for 90+ days\n    - Service accounts with Domain Admin: 4\n    - KRBTGT password last reset: never (domain created 2009)\n\n  ATTACK PATH FINDINGS (from BloodHound):\n    - 847 users have a path to Domain Admin in 5 or fewer hops\n    - 12 computers have unconstrained delegation enabled\n    - 6 service accounts are Kerberoastable with weak passwords\n    - AD CS installed: 3 certificate templates vulnerable to ESC1\n\n  HARDENING STATUS:\n    - Protected Users group: 0 members\n    - Credential Guard: not deployed\n    - LAPS: deployed on 60% of workstations\n    - Tiering model: not implemented",tasks:["Prioritise the top 5 findings by exploitability and impact. What can an attacker achieve with each?","The KRBTGT has never been reset. What is the risk and what is the remediation process?","34 Domain Admin accounts is drastically over-provisioned. Design the remediation approach including how you safely reduce this number.","BloodHound shows 847 users can reach Domain Admin in 5 hops. What are the first 3 structural changes you would make to reduce this attack surface?"]}
+},
+{num:4,title:"Privileged Access Management",dur:"5 hours",level:"Intermediate",
+topics:["What is PAM: privileged accounts, standing access vs just-in-time access","PAM solutions: CyberArk, BeyondTrust, Delinea, and open source alternatives","Privileged access workstations (PAWs) and secure admin hosts","Session recording and audit trails for privileged access","Just-in-time (JIT) and just-enough-access (JEA) models","Break-glass accounts: emergency access procedures and controls"],
+videos:[
+{n:"Microsoft: Privileged Access Strategy",d:"Microsoft's comprehensive privileged access strategy guidance including PAW and JIT design",u:"https://learn.microsoft.com/en-us/security/privileged-access-workstations/privileged-access-strategy",l:"i",t:"~1.5 hrs"},
+{n:"SANS: Privileged Account Management Deep Dive",d:"SANS technical guidance on PAM architecture, deployment, and operations",u:"https://www.sans.org/",l:"i",t:"~1 hr"},
+{n:"CyberArk: PAM Fundamentals (Free)",d:"Free CyberArk training on privileged access management concepts and architecture",u:"https://training.cyberark.com/",l:"i",t:"~2 hrs"}
+],
+reading:[
+{n:"NIST SP 800-53: Privileged Account Controls (AC-6)",d:"NIST control guidance for privileged account management in the security control catalogue",u:"https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",l:"i",t:"Reference"},
+{n:"Microsoft: Securing Privileged Access (Full Guide)",d:"Microsoft end-to-end guide on privileged access strategy, PAWs, and JIT access",u:"https://learn.microsoft.com/en-us/security/privileged-access-workstations/overview",l:"i",t:"Guide"},
+{n:"CISA: Implementing PAM for Critical Infrastructure",d:"CISA guidance on PAM implementation for protecting critical systems",u:"https://www.cisa.gov/identity-and-access-management",l:"i",t:"Guide"},
+{n:"Center for Internet Security: Privileged Access Controls (CIS Control 5)",d:"CIS Controls guidance on privileged access management - practical implementation",u:"https://www.cisecurity.org/controls/",l:"b",t:"Reference"}
+],
+practice:[
+{n:"TryHackMe: Privilege Escalation Rooms",d:"Understand PAM gaps by practicing privilege escalation techniques defenders must know",u:"https://tryhackme.com/room/linprivesc",l:"i",t:"~2 hrs"},
+{n:"Microsoft: Just-in-Time Access Lab (Azure PIM Free Tier)",d:"Practice JIT privileged access using Azure Privileged Identity Management free tier",u:"https://learn.microsoft.com/en-us/azure/active-directory/privileged-identity-management/",l:"i",t:"Lab"}
+],
+quiz:[
+{q:"What is the key security benefit of just-in-time (JIT) privileged access over standing privilege?",o:["JIT is faster to use","JIT eliminates standing privileged access - accounts only have elevated permissions for the duration needed, dramatically reducing the window of opportunity for an attacker who compromises the account","JIT is cheaper to implement","JIT removes the need for privileged accounts entirely"],a:1,e:"Standing privilege means a compromised account grants immediate high-value access 24/7. JIT access means even a stolen admin credential has no elevated permissions until activated through an approval workflow - fundamentally reducing the value of credential theft."},
+{q:"What is a Privileged Access Workstation (PAW) and why is it required for Tier 0 administration?",o:["A workstation with antivirus installed","A dedicated, hardened workstation used exclusively for privileged administrative tasks - isolated from email, web browsing, and user applications that are the most common compromise vectors","A workstation with a strong password","A virtual machine for admin tasks"],a:1,e:"Admins who perform privileged tasks from their everyday workstation expose domain controller credentials to phishing, malware, and browser exploits. PAWs are purpose-built admin stations with no internet access, no email, and hardened configurations - protecting high-value credentials from common attack vectors."},
+{q:"What is session recording in PAM and what compliance and security value does it provide?",o:["Recording the duration of admin sessions only","Capturing a full record of all privileged session activity - commands executed, screens viewed, data accessed - providing forensic evidence, deterring abuse, and meeting compliance requirements","Video recording the admin's physical environment","Logging login and logout times only"],a:1,e:"Session recording creates an irrefutable audit trail of privileged actions. For compliance (PCI DSS, SOX, HIPAA), it demonstrates control. For security investigations, it enables precise forensic reconstruction of what a compromised or malicious admin did during a session."},
+{q:"What is a break-glass account and when should it be used?",o:["An account with no password","An emergency access account with broad permissions, stored in a physically secured location, used only when normal administrative access is unavailable - with full audit trail and post-use review","A standard admin account used after hours","An account for testing system recovery"],a:1,e:"Break-glass accounts exist for genuine emergencies (IdP outage, locked out of all admin accounts). They must be: stored securely (sealed envelope, safe), monitored for any use, have their passwords immediately rotated after use, and trigger a mandatory post-incident review of why normal access failed."},
+{q:"What is just-enough-access (JEA) and how does it differ from traditional admin roles?",o:["Giving admins the least amount of time to complete tasks","Constraining privileged sessions to only the specific commands and operations needed for a defined task - a DBA can restart the database service but cannot add domain admin accounts","Removing all admin rights","Giving admins read-only access"],a:1,e:"Traditional admin roles are broad (Domain Admin, root). JEA implements role-constrained endpoints where even a privileged session can only execute pre-approved commands. A compromised JEA session has extremely limited capability compared to a full admin session."}
+],
+lab:{title:"Module 4 Lab: PAM Architecture Design",scene:"Design a privileged access management programme for an organisation with significant gaps.",data:"ORGANISATION: Financial services firm, 1,500 employees\n\nCURRENT PRIVILEGED ACCESS STATE:\n  - 45 staff have Domain Admin (all used for daily tasks)\n  - No PAM solution deployed\n  - Admin tasks performed from standard workstations\n  - Shared admin credentials for some legacy systems\n  - No session recording for any privileged access\n  - Break-glass procedure: not documented\n  - Remote admin: direct RDP to servers, no MFA\n  - Service account passwords: set 5+ years ago, never rotated\n  - Compliance requirement: PCI DSS (card data environment admins)\n\n  RECENT INCIDENT:\n    A Domain Admin account was compromised via phishing.\n    Attacker had 6 hours of undetected access before detection.\n    Full scope of access unknown - no session recording.",tasks:["Design the PAM target architecture. What are the core components and their priority order?","The recent incident highlighted a detection gap. What PAM controls would have detected or limited the 6-hour undetected access?","PCI DSS requires privileged access controls for the card data environment. Which specific PAM capabilities satisfy this requirement?","Write the break-glass procedure for this organisation. Include storage, access process, and post-use requirements."]}
+},
+{num:5,title:"Identity Federation and Single Sign-On",dur:"5 hours",level:"Intermediate",
+topics:["Federation fundamentals: identity providers, service providers, trust relationships","SAML 2.0: assertions, bindings, and how SSO works technically","OAuth 2.0 and OpenID Connect: modern identity federation for APIs and apps","Common SSO attacks: SAML injection, token theft, OAuth misconfigurations","SSO security benefits and risks: the double-edged sword of centralised identity","Evaluating and hardening your IdP: Okta, Azure AD, Ping, and open source options"],
+videos:[
+{n:"Okta: SAML and OAuth Explained (Free)",d:"Clear technical explanation of SAML 2.0 and OAuth 2.0 from a leading identity vendor",u:"https://developer.okta.com/",l:"i",t:"~45 min"},
+{n:"SANS: Identity Federation Attack and Defence",d:"SANS technical analysis of SSO and federation attack techniques and mitigations",u:"https://www.sans.org/",l:"i",t:"~1 hr"},
+{n:"PortSwigger: OAuth and SAML Vulnerabilities",d:"Technical walkthrough of OAuth and SAML implementation vulnerabilities",u:"https://portswigger.net/web-security/oauth",l:"i",t:"~1 hr"}
+],
+reading:[
+{n:"NIST SP 800-63C: Federation and Assertions (Free)",d:"NIST digital identity guidelines for federation, SSO, and assertion-based authentication",u:"https://pages.nist.gov/800-63-3/sp800-63c.html",l:"i",t:"Standard"},
+{n:"CISA: Identity Provider Security Hardening Guide",d:"CISA guidance on securing identity providers from the most common attack techniques",u:"https://www.cisa.gov/identity-and-access-management",l:"i",t:"Guide"},
+{n:"Microsoft: Golden SAML Attack Explained",d:"Technical explanation of Golden SAML attacks against federated identity environments",u:"https://www.microsoft.com/en-us/security/blog/",l:"i",t:"Blog"},
+{n:"OAuth 2.0 Security Best Current Practice (IETF RFC)",d:"Official IETF guidance on OAuth 2.0 security best practices for implementers",u:"https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics",l:"a",t:"RFC"}
+],
+practice:[
+{n:"PortSwigger: OAuth Lab Exercises (Free)",d:"Free hands-on labs for testing OAuth and SAML vulnerability classes",u:"https://portswigger.net/web-security/oauth",l:"i",t:"Labs"},
+{n:"TryHackMe: SAML Authentication Attacks",d:"Hands-on SAML attack and defence exercises in a free lab environment",u:"https://tryhackme.com/",l:"i",t:"~1.5 hrs"}
+],
+quiz:[
+{q:"What is a Golden SAML attack and why is it comparable to a Golden Ticket in Active Directory?",o:["A phishing attack targeting SAML users","Forging SAML assertions using stolen IdP signing certificates, granting access to any service provider in the federation - persisting even through password resets, analogous to forging Kerberos tickets","A brute force attack against SAML","An attack requiring MFA bypass"],a:1,e:"If an attacker steals the IdP's SAML signing key (as in the SolarWinds breach), they can forge assertions for any user to any service. Like Golden Tickets, they bypass authentication entirely and persist until the signing certificate is rotated."},
+{q:"What is the security risk of SSO from a 'blast radius' perspective?",o:["SSO reduces security","A compromised IdP account or IdP itself can grant access to all federated services simultaneously - SSO centralises convenience but also centralises risk","SSO has no security implications","SSO only affects external services"],a:1,e:"SSO means one credential can unlock dozens of applications. This is efficient but means IdP compromise has maximum blast radius. Strong IdP security (phishing-resistant MFA, privileged access controls, signing key protection) is essential precisely because failure is so consequential."},
+{q:"In OAuth 2.0, what is the purpose of the state parameter?",o:["To track user preferences","A CSRF protection mechanism - a random value the client generates and includes in the authorization request, then verifies in the callback to ensure the response corresponds to a request it initiated","To store access tokens","To identify the resource server"],a:1,e:"Without the state parameter, an attacker can craft a malicious OAuth callback URL and trick a victim's browser into completing an OAuth flow that the attacker initiated, linking the victim's account to the attacker's authorization code (OAuth CSRF)."},
+{q:"What distinguishes SAML 2.0 from OpenID Connect for modern application integration?",o:["They are identical protocols","SAML is XML-based and designed for enterprise web SSO. OIDC is JSON/REST-based, built on OAuth 2.0, and designed for modern APIs, mobile apps, and cloud services - making OIDC the preferred choice for new development","SAML is more secure","OIDC is only for consumer applications"],a:1,e:"SAML's XML complexity creates implementation vulnerabilities. OIDC's simpler JSON/JWT format and REST-based flows suit modern cloud-native architectures. New applications should use OIDC; SAML remains necessary for legacy enterprise integration."},
+{q:"What is token theft in SSO environments and what is the primary defence?",o:["Stealing the IdP server","Stealing session tokens or access tokens from browser storage, memory, or network traffic - allowing account impersonation without credentials. Primary defence: short token lifetimes, token binding, and continuous access evaluation","Brute forcing JWTs","Stealing SAML metadata"],a:1,e:"Token theft (as in the 2023 Microsoft Exchange breach via stolen MSA signing key) allows attackers to impersonate users without credentials. Short token lifetimes limit the window; continuous access evaluation (CAE) revokes tokens on anomalous signals even before expiry."}
+],
+lab:{title:"Module 5 Lab: SSO Security Assessment",scene:"Assess the security posture of an organisation's SSO implementation and identify vulnerabilities.",data:"SSO ENVIRONMENT:\n  IdP: Okta (cloud-hosted)\n  Integrated applications: 47 (mix of SaaS and internal)\n\nCONFIGURATION FINDINGS:\n  - IdP admin accounts: 8 with persistent admin access, no MFA required\n  - SAML signing certificate: 5 years old, never rotated\n  - Session lifetime: 30 days (no idle timeout)\n  - Token refresh: infinite refresh tokens for 12 applications\n  - Conditional access: not configured (no IP, device, or risk checks)\n  - Break-glass IdP account: exists, password known to 4 people\n  - SCIM provisioning: only 20 of 47 apps use automated provisioning\n    (27 apps use manual account creation)\n  - Phishing-resistant MFA: not enforced (TOTP and push available)\n\nRECENT INCIDENT:\n  An admin's Okta account was compromised via MFA fatigue.\n  Attacker added a new MFA device and maintained access for 3 days.",tasks:["Identify the top 5 configuration risks. Which directly enabled the recent incident?","Design the session and token lifetime policy. What should each value be and why?","The SAML signing certificate has never been rotated. What is the risk and what is the rotation process?","Write the IdP hardening checklist covering admin accounts, MFA policy, session management, and monitoring."]}
+},
+{num:6,title:"Identity Governance and Access Reviews",dur:"5 hours",level:"Intermediate",
+topics:["Identity governance defined: who has access to what, is it appropriate, is it used","Access certification campaigns: design, execution, and remediation","Role-based access control vs attribute-based access control vs policy-based","Segregation of duties: conflicts, compensating controls, and enforcement","Identity governance platforms: SailPoint, Saviynt, Microsoft IGP","Detecting and investigating access anomalies: unused, excessive, and impossible access"],
+videos:[
+{n:"Microsoft: Identity Governance Overview",d:"Microsoft overview of identity governance capabilities including access reviews and entitlement management",u:"https://learn.microsoft.com/en-us/azure/active-directory/governance/",l:"i",t:"~1 hr"},
+{n:"SANS: Identity Governance and Administration",d:"SANS guidance on building effective identity governance programmes",u:"https://www.sans.org/",l:"i",t:"~1 hr"},
+{n:"ISACA: Access Control and Identity Governance",d:"ISACA webinar on identity governance frameworks and audit requirements",u:"https://www.isaca.org/resources/webinars",l:"i",t:"~1 hr"}
+],
+reading:[
+{n:"NIST SP 800-53: Access Control Family (AC Controls)",d:"NIST security control catalogue for access control including access reviews and least privilege",u:"https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",l:"i",t:"Reference"},
+{n:"CIS Controls: Account Management (Control 5 and 6)",d:"CIS practical implementation guidance for account and access control management",u:"https://www.cisecurity.org/controls/",l:"b",t:"Reference"},
+{n:"CISA: Access Management Recommended Practices",d:"CISA guidance on access management and identity governance for critical infrastructure",u:"https://www.cisa.gov/identity-and-access-management",l:"i",t:"Guide"},
+{n:"Gartner: Identity Governance and Administration (Free Summary)",d:"Overview of IGA market, use cases, and implementation considerations",u:"https://www.gartner.com/en/information-technology/glossary/identity-governance-and-administration-iga",l:"i",t:"Reference"}
+],
+practice:[
+{n:"Microsoft: Azure AD Access Reviews Lab (Free Tier)",d:"Practice access review campaigns using Azure AD Identity Governance free features",u:"https://learn.microsoft.com/en-us/azure/active-directory/governance/access-reviews-overview",l:"i",t:"Lab"},
+{n:"ISACA: Access Control Audit Programme Template",d:"Free ISACA template for auditing access controls and identity governance",u:"https://www.isaca.org/resources/isaca-journal",l:"i",t:"Template"}
+],
+quiz:[
+{q:"What is a segregation of duties (SoD) conflict and why is it a fraud risk?",o:["Having too many duties for one person","A situation where one person holds permissions to perform both parts of a sensitive two-person process (e.g., raise AND approve a payment) - enabling fraud without requiring collusion","Having access to too many systems","A conflict between two security policies"],a:1,e:"SoD controls require that no single person can complete a sensitive end-to-end process alone. A user who can both create vendors and approve payments can make fraudulent payments to themselves. SoD violations are a primary audit finding in financial systems."},
+{q:"What is an access certification campaign and what governance problem does it solve?",o:["A certification exam for access control professionals","A formal periodic process where system owners review and attest to the appropriateness of user access entitlements - solving the problem of access accumulation over time","A penetration test of access controls","A software licence review"],a:1,e:"Users accumulate access over time (role changes, project needs, forgotten permissions). Without periodic certification, access never gets removed. Certification campaigns force explicit ownership decisions - each entitlement is either confirmed appropriate or revoked."},
+{q:"What is 'access creep' and how does it lead to security risk over time?",o:["Slow performance of access control systems","The gradual accumulation of permissions beyond what a user's current role requires, typically from job role changes, project assignments, and ad-hoc access grants that are never revoked","Excessive access request processing time","Access control policy drift"],a:1,e:"Access creep means users retain permissions from previous roles indefinitely. A finance analyst who moved to marketing three years ago may still have access to financial systems. This violates least privilege and creates a large blast radius if the account is compromised."},
+{q:"What distinguishes role-based access control (RBAC) from attribute-based access control (ABAC)?",o:["They are identical","RBAC grants access based on assigned roles (fixed permission sets). ABAC makes dynamic access decisions based on multiple attributes of the user, resource, and environment simultaneously - enabling finer-grained, context-aware policies","RBAC is more secure than ABAC","ABAC is only for cloud environments"],a:1,e:"RBAC is simpler but inflexible - a role either has access or does not. ABAC can express policies like 'allow access if user is in finance department AND resource sensitivity is low AND request is from a managed device during business hours' - far more expressive for zero trust architectures."},
+{q:"What is the primary challenge in running effective access certification campaigns?",o:["Technical complexity of the process","Reviewer fatigue and rubber-stamping: managers faced with hundreds of entitlements to review often approve all of them to complete the task, undermining the entire governance exercise","Lack of identity governance tools","Scheduling the review period"],a:1,e:"Rubber-stamping is the most common failure mode. When managers receive 200 access certification requests, they approve all without meaningful review. Effective certification requires: manageable review scope, risk-based prioritisation, consequences for non-review, and anomaly highlighting to focus attention."}
+],
+lab:{title:"Module 6 Lab: Access Review and Governance",scene:"Design and execute a risk-based access certification campaign for a high-risk application.",data:"APPLICATION: Financial Reporting System (SOX in scope)\nTotal user accounts: 847\nLast access review: 18 months ago\n\nACCESS ANALYSIS:\n  Role breakdown:\n    - Read-only access: 612 users\n    - Data entry: 180 users\n    - Report approval: 38 users\n    - System admin: 17 users (expected: 4)\n\n  Risk indicators:\n    - 94 users have not logged in for 90+ days\n    - 23 users changed roles in the past 12 months (still have old access)\n    - 6 users have both data entry AND approval access (SoD violation)\n    - 3 system admin accounts belong to contractors\n    - 11 accounts have no identified manager in HR system\n\n  Compliance context:\n    SOX requires quarterly access reviews for financial systems\n    External auditor will review evidence of access controls",tasks:["Design a risk-based review campaign. Which accounts require immediate action vs quarterly review vs annual review?","The 6 SoD violations are a critical finding. What is the immediate remediation and what compensating control applies in the short term?","Write the certification campaign instructions for business managers. How do you prevent rubber-stamping?","What evidence package do you prepare for the SOX auditor to demonstrate adequate access controls?"]}
+},
+{num:7,title:"Cloud Identity and Zero Trust",dur:"6 hours",level:"Advanced",
+topics:["Cloud identity architecture: Azure AD, AWS IAM, GCP IAM - key differences","Workload identity: managed identities, service principals, IAM roles for services","Zero trust identity principles: verify explicitly, use least privilege, assume breach","Conditional access and continuous access evaluation","Identity as the control plane: CASB, SASE, and identity-centric security","Cloud IAM misconfigurations: the most common findings in cloud breaches"],
+videos:[
+{n:"Microsoft: Zero Trust Identity with Azure AD",d:"Microsoft technical guidance on implementing zero trust identity principles with Azure AD",u:"https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/zero-trust/",l:"a",t:"~2 hrs"},
+{n:"SANS: Cloud IAM Security",d:"SANS technical deep dive on IAM misconfigurations across AWS, Azure, and GCP",u:"https://www.sans.org/",l:"a",t:"~1.5 hrs"},
+{n:"AWS: IAM Security Best Practices (Official)",d:"Official AWS guidance on securing IAM in cloud environments",u:"https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",l:"a",t:"~1 hr"}
+],
+reading:[
+{n:"NIST SP 800-207: Zero Trust Architecture (Free PDF)",d:"The definitive NIST zero trust framework with identity as the primary control plane",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf",l:"a",t:"PDF"},
+{n:"CIS: AWS Foundations Benchmark (Free)",d:"CIS benchmark for AWS IAM hardening - most widely used cloud security standard",u:"https://www.cisecurity.org/benchmark/amazon_web_services",l:"a",t:"Benchmark"},
+{n:"CISA: Cloud Security Technical Reference Architecture",d:"CISA guidance on zero trust and identity-centric cloud security architecture",u:"https://www.cisa.gov/resources-tools/resources/cloud-security-technical-reference-architecture",l:"a",t:"Guide"},
+{n:"Microsoft: Identity Secure Score and Recommendations",d:"Microsoft guidance on measuring and improving cloud identity security posture",u:"https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/identity-secure-score",l:"a",t:"Guide"}
+],
+practice:[
+{n:"AWS: IAM Policy Simulator (Free)",d:"Free AWS tool to test and validate IAM policies before deployment",u:"https://policysim.aws.amazon.com/",l:"a",t:"Tool"},
+{n:"TryHackMe: Cloud IAM Security Rooms",d:"Hands-on cloud IAM misconfiguration attack and defence exercises",u:"https://tryhackme.com/",l:"a",t:"Labs"},
+{n:"CloudSploit: Free Cloud Security Scanner",d:"Free open source cloud security scanner for detecting IAM misconfigurations",u:"https://github.com/aquasecurity/cloudsploit",l:"a",t:"Tool"}
+],
+quiz:[
+{q:"What is a managed identity in Azure and why is it preferable to service principals with secrets?",o:["A manually managed service account","An automatically managed identity for Azure services that eliminates the need to store credentials in code or configuration - Azure manages the lifecycle and credential rotation automatically","A user account for managed services","An identity with all permissions pre-configured"],a:1,e:"Managed identities eliminate the most common cloud credential exposure pattern: secrets stored in code, config files, or environment variables. The identity is bound to the service, credentials are never exposed to developers, and rotation is automatic - removing a major attack surface."},
+{q:"What is the most common IAM misconfiguration leading to cloud breaches?",o:["Using MFA on all accounts","Overly permissive policies: granting AdministratorAccess or wildcard permissions (Action: '*') when narrow specific permissions would suffice, combined with unused access that is never reviewed","Using service accounts","Enabling CloudTrail logging"],a:1,e:"Cloud IAM breaches consistently involve overly permissive policies. Developers grant broad permissions for convenience and never revisit them. An attacker who compromises any account or credential with wildcard permissions can access all resources. Regular permission right-sizing is essential."},
+{q:"What is conditional access and how does it implement zero trust principles?",o:["Access that depends on system load","A policy engine that makes real-time access decisions based on signals including user identity, device compliance, location, and risk score - granting, blocking, or requiring step-up authentication dynamically","A scheduled access review","A network access control system"],a:1,e:"Conditional access implements 'verify explicitly' by checking multiple signals before every access request. A sign-in from a new country on an unmanaged device triggers MFA or blocks access entirely - regardless of whether credentials are valid. This is the operational heart of zero trust."},
+{q:"What is continuous access evaluation (CAE) and what attack does it mitigate?",o:["Evaluating access requests continuously in a performance context","A mechanism allowing relying parties to receive real-time signals from the IdP (account disabled, password changed, risk detected) and revoke existing sessions immediately rather than waiting for token expiry","An access review methodology","A compliance assessment technique"],a:1,e:"Standard OAuth tokens are valid until expiry (often 1 hour) regardless of account changes. CAE enables immediate revocation: when an account is disabled or a high-risk signal fires, sessions are terminated in near-real-time rather than 60 minutes later - critical when responding to account compromise."},
+{q:"What does 'assume breach' mean as a zero trust identity principle?",o:["Always assume all users are malicious","Design identity controls assuming that some identities are already compromised - implementing monitoring, minimising lateral movement opportunities, and enforcing re-verification for sensitive actions rather than trusting authenticated sessions implicitly","Assume the perimeter is already breached only","Never trust any user authentication"],a:1,e:"Assume breach drives defence-in-depth for identity: even valid authenticated sessions get continuous re-evaluation, anomalous behaviour triggers re-authentication, privileged actions require fresh verification, and access is scoped narrowly so a compromised session causes limited damage."}
+],
+lab:{title:"Module 7 Lab: Cloud IAM Security Review",scene:"Review cloud IAM configuration across a multi-cloud environment and identify critical misconfigurations.",data:"CLOUD IAM FINDINGS:\n\n  AWS Environment:\n    - 12 IAM users with AdministratorAccess policy attached\n    - 8 IAM users have access keys older than 90 days (3 never used)\n    - Root account: MFA enabled, 2 active access keys exist\n    - 34 IAM roles have wildcard resource permissions (Action: '*')\n    - S3 bucket policy: one bucket publicly accessible containing 'internal-hr-data'\n\n  Azure Environment:\n    - Global Administrator: 9 members (recommended: 2-4)\n    - Privileged Identity Management: not configured\n    - Conditional access: basic policies only, no device compliance check\n    - Guest accounts: 147 (last review: unknown)\n    - Service principals with owner permissions: 8\n\n  GCP Environment:\n    - Default service account used by 23 compute instances\n    - Primitive roles (Owner/Editor) assigned to 15 user accounts\n    - Audit logging: disabled for some projects",tasks:["Rank the top 5 findings by criticality across all three clouds. What is exploitable today?","The AWS root account has active access keys. Why is this critical and what is the immediate remediation?","Design the cloud IAM governance programme: how do you prevent these findings from recurring across all three platforms?","Map these findings to the MITRE ATT&CK cloud tactics they would enable if exploited."]}
+},
+{num:8,title:"IAM for DevOps and Non-Human Identities",dur:"5 hours",level:"Advanced",
+topics:["Non-human identities: service accounts, API keys, tokens, certificates, and secrets","Secrets management: HashiCorp Vault, AWS Secrets Manager, Azure Key Vault","CI/CD pipeline identity: securing GitHub Actions, GitLab CI, and deployment credentials","Container and Kubernetes identity: service accounts, RBAC, workload identity","Secrets sprawl: finding and remediating hardcoded credentials","Machine identity management at scale: certificate lifecycle and rotation"],
+videos:[
+{n:"HashiCorp: Vault Fundamentals (Free)",d:"Official HashiCorp training on secrets management and dynamic credentials",u:"https://developer.hashicorp.com/vault/tutorials",l:"a",t:"~2 hrs"},
+{n:"SANS: Securing CI/CD Pipelines and Non-Human Identities",d:"SANS guidance on machine identity and secrets management in DevOps environments",u:"https://www.sans.org/",l:"a",t:"~1 hr"},
+{n:"GitHub: Securing GitHub Actions and Supply Chain",d:"Official GitHub guidance on securing CI/CD identity and workflow permissions",u:"https://docs.github.com/en/actions/security-guides/",l:"a",t:"~45 min"}
+],
+reading:[
+{n:"OWASP: Secrets Management Cheat Sheet (Free)",d:"OWASP guidance on implementing secrets management correctly in application development",u:"https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",l:"a",t:"Reference"},
+{n:"CISA: Software Supply Chain Security - Credentials",d:"CISA guidance on protecting credentials and secrets in software supply chains",u:"https://www.cisa.gov/software-supply-chain-security",l:"a",t:"Guide"},
+{n:"Google: Workload Identity Federation (Free)",d:"Technical guidance on workload identity and eliminating service account keys",u:"https://cloud.google.com/iam/docs/workload-identity-federation",l:"a",t:"Guide"},
+{n:"NIST SP 800-204B: Attribute-Based Access Control for Microservices",d:"NIST guidance on identity and access control for microservices and container environments",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-204B.pdf",l:"a",t:"PDF"}
+],
+practice:[
+{n:"TruffleHog: Free Secret Scanning Tool",d:"Free open source tool for finding hardcoded secrets in code repositories",u:"https://github.com/trufflesecurity/trufflehog",l:"a",t:"Tool"},
+{n:"HashiCorp: Vault Getting Started Lab (Free)",d:"Free hands-on Vault tutorial for implementing secrets management",u:"https://developer.hashicorp.com/vault/tutorials/getting-started",l:"a",t:"Lab"},
+{n:"Kubernetes: RBAC Configuration Practice",d:"Practice configuring least-privilege Kubernetes RBAC using free local clusters",u:"https://kubernetes.io/docs/reference/access-authn-authz/rbac/",l:"a",t:"Lab"}
+],
+quiz:[
+{q:"What is 'secrets sprawl' and why is it a persistent problem in DevOps environments?",o:["Too many secrets management tools","The uncontrolled proliferation of credentials across codebases, configuration files, CI/CD variables, container images, and cloud storage - often hardcoded by developers under time pressure and never removed","Having too many development secrets","Poorly named secret variables"],a:1,e:"Secrets sprawl occurs when credentials spread beyond controlled secret stores. Git history, Docker images, S3 buckets, and Slack messages frequently contain credentials committed and forgotten. Each exposed secret represents a persistent access path until discovered and rotated."},
+{q:"What security principle does dynamic secret generation in HashiCorp Vault implement?",o:["Password complexity requirements","Just-in-time credential generation: secrets are created on demand with short TTLs and automatically revoked after use - meaning stolen credentials expire rapidly and there is no long-lived secret to steal","Centralised secret storage only","Encrypted secret storage"],a:1,e:"Dynamic secrets are generated per-request with short lifetimes. A database credential generated for a 1-hour deployment job expires automatically. Even if stolen, the window for exploitation is minimal - fundamentally different from long-lived static credentials."},
+{q:"What is the OIDC-based approach to CI/CD authentication and why is it superior to long-lived tokens?",o:["OIDC tokens last longer than static tokens","CI/CD providers like GitHub Actions can present OIDC tokens to cloud providers - establishing identity without storing any long-lived secrets in the pipeline. The token is short-lived and tied to the specific workflow run","OIDC requires more configuration","Long-lived tokens are equally secure"],a:1,e:"OIDC federation eliminates the biggest CI/CD security problem: long-lived API keys stored as secrets. The pipeline proves its identity through the OIDC token exchange - no credential is stored, nothing can be stolen, and access is bounded to the specific job."},
+{q:"In Kubernetes RBAC, what principle should guide the design of service account permissions?",o:["All service accounts should share a ClusterAdmin role for simplicity","Each workload should have a dedicated service account with only the specific API permissions it needs - no workload should use the default service account","Only administrators need RBAC","All namespaces should share service accounts"],a:1,e:"Kubernetes RBAC is granular - a service account should only have the exact verbs and resources it needs (e.g., get/list Pods in its own namespace). Default service accounts often get broad permissions by default. Namespace isolation combined with minimal RBAC limits blast radius from compromised workloads."},
+{q:"What is certificate-based authentication for machine identities and what attack does it prevent?",o:["Using TLS for web servers only","Authenticating services using X.509 certificates managed by a PKI - preventing credential stuffing and password spray attacks against service-to-service communication that cannot happen against certificate-based auth","Encrypting API communications","A type of MFA for services"],a:1,e:"Machine identity through mutual TLS (mTLS) means services authenticate each other cryptographically. There are no passwords to spray or steal. Combined with short certificate lifetimes and automated rotation, this is the most robust form of service-to-service authentication available."}
+],
+lab:{title:"Module 8 Lab: Secrets and Non-Human Identity Audit",scene:"Audit the non-human identity and secrets management posture of a DevOps environment.",data:"ENVIRONMENT: E-commerce company, cloud-native on AWS\n200 engineers, 150 microservices, GitHub for source control\n\nFINDINGS FROM AUDIT:\n\n  Source code scan (TruffleHog):\n    - 47 secrets found in Git history (various repos)\n    - 12 AWS access keys (6 still active per IAM check)\n    - 8 database passwords\n    - 15 API keys for third-party services\n    - 6 private keys (TLS certificates)\n\n  CI/CD (GitHub Actions):\n    - 34 long-lived AWS access keys stored as GitHub secrets\n    - No OIDC federation configured\n    - 12 workflows with write permissions to all resources\n    - 3 workflows trigger on pull_request from forks\n\n  Container images:\n    - Scan of 50 images: secrets found in 8 images\n    - 3 images running as root\n\n  Kubernetes:\n    - Default service account used by 80% of workloads\n    - 15 service accounts with cluster-admin binding",tasks:["For the 12 active AWS access keys in Git: what are the immediate response steps in the correct order?","Design the secrets management target architecture. What replaces long-lived static credentials in each context?","The 3 GitHub workflows that trigger on PRs from forks are a supply chain risk. Explain the attack and the fix.","Write the non-human identity policy: what is required for all new services before they go to production?"]}
+},
+{num:9,title:"IAM Detection, Response and Programme Maturity",dur:"5 hours",level:"Advanced",
+topics:["Detecting identity-based attacks: impossible travel, token anomalies, privilege escalation","SIEM use cases for IAM: the most valuable identity detection rules","Identity threat detection and response (ITDR): the emerging discipline","Building an identity security programme: maturity model and roadmap","IAM metrics and KPIs: what to measure and how to present to leadership","Integrating IAM with the broader security programme: SOC, GRC, and DevSecOps"],
+videos:[
+{n:"Microsoft: Identity Threat Detection and Response",d:"Microsoft guidance on ITDR - detecting and responding to identity-based attacks",u:"https://learn.microsoft.com/en-us/azure/active-directory/identity-protection/",l:"a",t:"~1.5 hrs"},
+{n:"SANS: Detecting Identity Attacks in the SIEM",d:"SANS guidance on building detection rules for identity-based attack techniques",u:"https://www.sans.org/",l:"a",t:"~1 hr"},
+{n:"Okta: Identity Threat Intelligence and Response",d:"Okta guidance on detecting threats through identity telemetry and signals",u:"https://www.okta.com/resources/",l:"a",t:"~45 min"}
+],
+reading:[
+{n:"CISA: Identity and Access Management Recommended Practices",d:"CISA comprehensive guidance on IAM as a security programme discipline",u:"https://www.cisa.gov/identity-and-access-management",l:"a",t:"Guide"},
+{n:"MITRE ATT&CK: Credential Access and Privilege Escalation Techniques",d:"ATT&CK technique pages for identity-based attack detection and hunting",u:"https://attack.mitre.org/tactics/TA0006/",l:"a",t:"Reference"},
+{n:"Crowdstrike: Identity Threat Report (Free Annual)",d:"Annual report on identity-based threat trends and detection patterns",u:"https://www.crowdstrike.com/resources/",l:"a",t:"Report"},
+{n:"Microsoft: Identity Secure Score Documentation",d:"Microsoft guidance on measuring identity security posture via Secure Score",u:"https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/identity-secure-score",l:"a",t:"Guide"}
+],
+practice:[
+{n:"Microsoft Sentinel: Identity Detection Rules (Free Templates)",d:"Free Microsoft Sentinel detection rule templates for identity attack techniques",u:"https://github.com/Azure/Azure-Sentinel/tree/master/Detections",l:"a",t:"Detection Rules"},
+{n:"MITRE ATT&CK Navigator: Identity Attack Coverage Mapping",d:"Map your identity detection coverage against ATT&CK credential access techniques",u:"https://mitre-attack.github.io/attack-navigator/",l:"a",t:"Tool"}
+],
+quiz:[
+{q:"What is 'impossible travel' as an identity detection signal and what are its limitations?",o:["A user traveling internationally","An authentication from two geographically distant locations within a timeframe physically impossible for travel - indicating credential sharing or theft. Limitation: VPNs, proxies, and legitimate remote desktop use generate false positives","A detection for account sharing only","A network-based detection technique"],a:1,e:"Impossible travel is a high-signal anomaly - simultaneous logins from London and Sydney are physically impossible. But VPNs, cloud desktops, and MFA relay attacks create false positives. Context (is the user known to use VPN? do they normally work across time zones?) is essential for accurate triage."},
+{q:"What is Identity Threat Detection and Response (ITDR) and how does it differ from traditional UEBA?",o:["They are identical","ITDR is a specialised security discipline focused on detecting, investigating, and responding to identity-specific threats across hybrid environments - combining IdP signals, directory telemetry, and endpoint data more holistically than UEBA's statistical baseline approach","ITDR only applies to cloud environments","UEBA is more advanced than ITDR"],a:1,e:"UEBA focuses on behavioural baselines and statistical anomalies. ITDR adds identity-specific threat intelligence, attack path analysis, and cross-environment correlation (on-prem AD, cloud IdP, SaaS) to detect known attack patterns like Golden Ticket usage, MFA bypass, and token theft."},
+{q:"Which SIEM detection use case provides the highest-fidelity signal for detecting Golden Ticket attacks?",o:["Failed login attempts","Kerberos TGT tickets with anomalous attributes: missing PAC data, unusually long lifetimes (10+ years), or account IDs inconsistent with domain records","Network traffic anomalies","Password changes"],a:1,e:"Golden Tickets contain forensically detectable artifacts: they often lack the Privilege Attribute Certificate (PAC) present in legitimate tickets, and attackers frequently set ticket lifetimes to 10 years for persistence. Monitoring for these Kerberos anomalies in SIEM/EDR is a reliable detection technique."},
+{q:"What is the most valuable IAM metric for demonstrating programme effectiveness to executive leadership?",o:["Total number of IAM policies written","Mean time to deprovision (MTTD) combined with percentage of privileged accounts under PAM control and MFA coverage rate - metrics that directly measure risk reduction in the highest-impact identity areas","Number of access reviews completed","Headcount of the IAM team"],a:1,e:"Leadership cares about risk reduction. MTTD measures how quickly access is removed when employees leave (a direct orphaned account risk metric). PAM coverage and MFA rates measure protection of the highest-value targets. Together they tell a risk reduction story that budget and policy decisions depend on."},
+{q:"How should an IAM programme integrate with the SOC for effective identity incident response?",o:["IAM and SOC should operate completely independently","IAM provides identity context (account history, privilege level, normal behaviour) to SOC investigations; SOC provides alert triage and threat correlation that triggers IAM response actions (account suspension, access revocation, forced re-authentication)","The SOC should own all IAM functions","IAM teams should handle all identity incidents independently"],a:1,e:"Effective identity incident response requires both teams: IAM has the tools and permissions to act on identity (disable accounts, revoke tokens, reset credentials) while SOC has the threat detection and investigation context to know when and why to act. Playbooks must define clear handoff and escalation points."}
+],
+lab:{title:"Module 9 Lab: Build an IAM Security Programme Roadmap",scene:"Assess IAM security maturity and design a 12-month improvement programme.",data:"ORGANISATION: Healthcare technology company\n  3,000 employees, 200 in engineering\n  Regulatory: HIPAA, SOC 2 Type II audit upcoming\n\nCURRENT IAM STATE:\n\n  Directory: Active Directory on-premises + Azure AD (hybrid)\n  MFA: Enforced for Office 365 only (push notifications)\n  PAM: No solution deployed\n  SSO: Okta for 30 of 120 applications\n  Governance: Annual access review (manual spreadsheet)\n  Privileged accounts: 67 Domain Admins\n  Non-human identity: No secrets management platform\n  Detection: No identity-specific detection rules in SIEM\n  Deprovisioning: Manual, average 14 days after HR termination\n\n  KNOWN GAPS:\n    - 3 identity incidents in past year (credential compromise)\n    - HIPAA audit finding: incomplete access reviews\n    - SOC 2 control gap: privileged access not documented\n    - 23 former employee accounts still active (discovered last week)",tasks:["Assess current IAM maturity level across 6 domains (Authentication, PAM, Governance, Federation, Non-Human Identity, Detection). Use 1-5 scale.","Prioritise the 23 active former employee accounts. What is the immediate response and what process prevents recurrence?","Design the 12-month roadmap with quarterly milestones. What must be complete before the SOC 2 audit?","Write the executive summary for the CISO presenting the IAM programme investment case, including the 3 incidents as quantified risk evidence."]}
+}
+];
+
+var GLOSSARY = [
+{t:"Identity and Access Management",a:"IAM",d:"The discipline and set of technologies ensuring the right people have the right access to the right resources at the right time, with full auditability.",g:"Core Concepts"},
+{t:"Authentication",a:"AuthN",d:"The process of verifying the identity of a user, device, or service. Answers the question: who are you?",g:"Core Concepts"},
+{t:"Authorisation",a:"AuthZ",d:"The process of determining what an authenticated identity is permitted to do. Answers the question: what are you allowed to do?",g:"Core Concepts"},
+{t:"Least Privilege",a:"",d:"The principle that identities should be granted only the minimum permissions required for their specific function - nothing more.",g:"Principles"},
+{t:"Multi-Factor Authentication",a:"MFA",d:"Authentication requiring two or more verification factors from different categories: something you know, have, or are.",g:"Authentication"},
+{t:"FIDO2",a:"",d:"An open authentication standard providing phishing-resistant authentication through public key cryptography bound to the specific origin domain.",g:"Authentication"},
+{t:"Passkey",a:"",d:"A FIDO2 credential stored on a device or password manager, providing passwordless phishing-resistant authentication using biometrics or device PIN.",g:"Authentication"},
+{t:"Single Sign-On",a:"SSO",d:"Authentication mechanism allowing users to log in once to an identity provider and access multiple applications without re-authenticating.",g:"Federation"},
+{t:"SAML 2.0",a:"",d:"Security Assertion Markup Language - an XML-based federation standard for exchanging authentication and authorisation data between identity providers and service providers.",g:"Federation"},
+{t:"OAuth 2.0",a:"",d:"An authorisation framework enabling third-party applications to obtain limited access to user accounts without exposing credentials.",g:"Federation"},
+{t:"OpenID Connect",a:"OIDC",d:"An identity layer built on OAuth 2.0 providing authentication in addition to authorisation, using JSON Web Tokens to convey identity claims.",g:"Federation"},
+{t:"Privileged Access Management",a:"PAM",d:"Controls, processes, and technology governing how privileged accounts and credentials are managed, monitored, and protected.",g:"Privileged Access"},
+{t:"Just-in-Time Access",a:"JIT",d:"A PAM model where elevated privileges are granted only for the duration required for a specific task, eliminating standing privilege.",g:"Privileged Access"},
+{t:"Privileged Access Workstation",a:"PAW",d:"A dedicated hardened workstation used exclusively for administrative tasks, isolated from email and browsing to protect high-value credentials.",g:"Privileged Access"},
+{t:"Kerberoasting",a:"",d:"An Active Directory attack requesting Kerberos service tickets for accounts with SPNs, then cracking them offline to obtain service account passwords.",g:"Attacks"},
+{t:"Golden Ticket",a:"",d:"A forged Kerberos TGT created using the KRBTGT account hash, granting access to any domain resource and persisting through password resets.",g:"Attacks"},
+{t:"Pass-the-Hash",a:"PtH",d:"An attack replaying NTLM password hashes to authenticate to systems without knowing the plaintext password.",g:"Attacks"},
+{t:"MFA Fatigue",a:"",d:"An attack bombarding a user with push notification MFA requests until they approve one out of confusion or annoyance, bypassing MFA protection.",g:"Attacks"},
+{t:"Golden SAML",a:"",d:"Forging SAML assertions using stolen IdP signing certificates, granting access to any federated service without valid credentials.",g:"Attacks"},
+{t:"BloodHound",a:"",d:"An open source tool that maps Active Directory relationships and identifies attack paths from low-privilege accounts to high-value targets.",g:"Tools"},
+{t:"LAPS",a:"",d:"Local Administrator Password Solution - automatically manages unique rotating local admin passwords per machine, preventing lateral movement via shared credentials.",g:"Tools"},
+{t:"Conditional Access",a:"",d:"A policy engine making real-time access decisions based on user identity, device compliance, location, and risk signals.",g:"Zero Trust"},
+{t:"Continuous Access Evaluation",a:"CAE",d:"A mechanism enabling real-time session revocation when IdP detects account changes or risk signals, rather than waiting for token expiry.",g:"Zero Trust"},
+{t:"Segregation of Duties",a:"SoD",d:"The principle that no single person should have permissions to perform both parts of a sensitive two-person process, preventing fraud without collusion.",g:"Governance"},
+{t:"Access Certification",a:"",d:"A formal periodic process where system owners review and attest to the appropriateness of user access entitlements.",g:"Governance"},
+{t:"Access Creep",a:"",d:"The gradual accumulation of permissions beyond what a user's current role requires, from role changes and ad-hoc grants never revoked.",g:"Governance"},
+{t:"Secrets Management",a:"",d:"The systematic control of non-human credentials including API keys, tokens, certificates, and passwords used by applications and services.",g:"Non-Human Identity"},
+{t:"Dynamic Secrets",a:"",d:"Credentials generated on demand with short TTLs that expire automatically after use, eliminating long-lived static credentials.",g:"Non-Human Identity"},
+{t:"ITDR",a:"",d:"Identity Threat Detection and Response - a security discipline focused on detecting, investigating, and responding to identity-based attacks across hybrid environments.",g:"Detection"},
+{t:"Orphaned Account",a:"",d:"An account belonging to a user who has left the organisation that remains active - a persistent access path with no active owner.",g:"Governance"}
+];
+
+var LB = [
+{name:"Johansson",role:"IAM Engineer",av:"J",color:"#2ECC71",mods:9,quiz:95,bdg:"bdg-g",bdgt:"Top Analyst"},
+{name:"Obi",role:"Identity Architect",av:"O",color:"#00C9E4",mods:8,quiz:91,bdg:"bdg-s",bdgt:"Expert"},
+{name:"Patel",role:"Security Engineer",av:"P",color:"#3D8FD4",mods:7,quiz:87,bdg:"bdg-b",bdgt:"Advanced"},
+{name:"Reyes",role:"IAM Analyst",av:"R",color:"#9B59B6",mods:6,quiz:82,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Nkosi",role:"Cloud Engineer",av:"N",color:"#E8741A",mods:5,quiz:78,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Kowalski",role:"GRC Analyst",av:"K",color:"#F1C40F",mods:4,quiz:73,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Walsh",role:"SOC Analyst",av:"W",color:"#E74C3C",mods:3,quiz:68,bdg:"bdg-a",bdgt:"Analyst"}
+];
+
+var S = {
+  done: new Set(JSON.parse(localStorage.getItem('iamDone') || '[]')),
+  bm: new Set(JSON.parse(localStorage.getItem('iamBm') || '[]')),
+  notes: JSON.parse(localStorage.getItem('iamNotes') || '{}'),
+  scores: JSON.parse(localStorage.getItem('iamScores') || '{}'),
+  labs: new Set(JSON.parse(localStorage.getItem('iamLabs') || '[]'))
+};
+var labAnswers = {};
+var curFilter = 'all';
+var quizState = {};
+
+function saveState() {
+  localStorage.setItem('iamDone', JSON.stringify(Array.from(S.done)));
+  localStorage.setItem('iamBm', JSON.stringify(Array.from(S.bm)));
+  localStorage.setItem('iamNotes', JSON.stringify(S.notes));
+  localStorage.setItem('iamScores', JSON.stringify(S.scores));
+  localStorage.setItem('iamLabs', JSON.stringify(Array.from(S.labs)));
+}
+
+document.querySelectorAll('.nav-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+    if (btn.dataset.page === 'bookmarks') renderBookmarks();
+    if (btn.dataset.page === 'leaderboard') renderLeaderboard();
+    if (btn.dataset.page === 'glossary') renderGlossary('');
+  });
+});
+
+var nameEl = document.getElementById('analystName');
+nameEl.value = localStorage.getItem('iamName') || '';
+nameEl.addEventListener('change', function() { localStorage.setItem('iamName', nameEl.value); });
+
+function el(tag, cls, txt) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined) e.textContent = txt;
+  return e;
+}
+function alink(href, cls) {
+  var e = document.createElement('a');
+  e.href = href; e.target = '_blank'; e.rel = 'noopener noreferrer';
+  if (cls) e.className = cls;
+  e.addEventListener('click', function(ev) { ev.stopPropagation(); });
+  return e;
+}
+function btn(cls, txt, handler) {
+  var b = document.createElement('button');
+  b.className = cls; b.textContent = txt;
+  if (handler) b.addEventListener('click', handler);
+  return b;
+}
+function rlClass(l) { return l === 'b' ? 'rl rl-b' : l === 'i' ? 'rl rl-i' : 'rl rl-a'; }
+function rlLabel(l) { return l === 'b' ? 'Beginner' : l === 'i' ? 'Intermediate' : 'Advanced'; }
+function levelClass(level) {
+  if (level === 'Foundation') return 'lvl-Foundation';
+  if (level === 'Intermediate') return 'lvl-Intermediate';
+  return 'lvl-Advanced';
+}
+
+function buildResLink(r, iconCls, iconTxt) {
+  var link = alink(r.u, 'res-link');
+  var icon = el('div', 'res-icon ' + iconCls, iconTxt);
+  var info = el('div', 'res-info');
+  info.appendChild(el('div', 'res-name', r.n));
+  info.appendChild(el('div', 'res-desc', r.d));
+  var meta = el('div', 'res-meta');
+  meta.appendChild(el('span', rlClass(r.l), rlLabel(r.l)));
+  if (r.t) meta.appendChild(el('span', 'rt', r.t));
+  info.appendChild(meta);
+  link.appendChild(icon);
+  link.appendChild(info);
+  return link;
+}
+
+function buildSection(label, bodyEls) {
+  var wrap = el('div', 'sec');
+  var tog = el('button', 'sec-toggle');
+  var arr = el('span', 'arr', '>');
+  tog.appendChild(arr);
+  tog.appendChild(el('span', '', ' ' + label));
+  var body = el('div', 'sec-body');
+  bodyEls.forEach(function(c) { body.appendChild(c); });
+  tog.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    tog.classList.toggle('open');
+    body.classList.toggle('open');
+  });
+  wrap.appendChild(tog);
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function renderModules(filter) {
+  if (filter !== undefined) curFilter = filter;
+  var grid = document.getElementById('modGrid');
+  grid.innerHTML = '';
+  var shown = 0;
+  MODS.forEach(function(mod) {
+    var isDone = S.done.has(mod.num);
+    var isBm = S.bm.has(mod.num);
+    if (curFilter === 'completed' && !isDone) return;
+    if (curFilter === 'bookmarked' && !isBm) return;
+    if (curFilter !== 'all' && curFilter !== 'completed' && curFilter !== 'bookmarked' && mod.level !== curFilter) return;
+    shown++;
+    var card = el('div', 'mod-card' + (isDone ? ' completed' : '') + (isBm ? ' bookmarked' : ''));
+    card.style.animationDelay = (shown * 0.04) + 's';
+    var top = el('div', 'card-top');
+    var meta = el('div', 'card-meta');
+    meta.appendChild(el('span', 'card-num', 'MODULE ' + String(mod.num).padStart(2, '0')));
+    meta.appendChild(el('span', 'lvl-badge ' + levelClass(mod.level), mod.level));
+    top.appendChild(meta);
+    top.appendChild(el('div', 'card-title', mod.title));
+    var info = el('div', 'card-info');
+    info.appendChild(el('span', 'card-dur', mod.dur));
+    var acts = el('div', 'card-actions');
+    var bmBtn = el('button', 'bm-btn');
+    bmBtn.innerHTML = isBm ? '&#9733;' : '&#9734;';
+    bmBtn.title = 'Bookmark';
+    bmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.bm.has(mod.num)) { S.bm.delete(mod.num); card.classList.remove('bookmarked'); bmBtn.innerHTML = '&#9734;'; }
+      else { S.bm.add(mod.num); card.classList.add('bookmarked'); bmBtn.innerHTML = '&#9733;'; }
+      saveState();
+    });
+    var chk = el('div', 'chk');
+    chk.innerHTML = isDone ? '&#10003;' : '';
+    chk.title = 'Mark complete';
+    chk.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.done.has(mod.num)) {
+        S.done.delete(mod.num); card.classList.remove('completed'); chk.innerHTML = '';
+      } else {
+        S.done.add(mod.num); card.classList.add('completed'); chk.innerHTML = '&#10003;';
+      }
+      saveState();
+      var c = S.done.size;
+      var pct = Math.round(c / MODS.length * 100);
+      var fill = document.getElementById('progFill');
+      var count = document.getElementById('progCount');
+      if (fill) fill.style.width = pct + '%';
+      if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+    });
+    acts.appendChild(bmBtn);
+    acts.appendChild(chk);
+    info.appendChild(acts);
+    top.appendChild(info);
+    card.appendChild(top);
+    card.appendChild(buildSection('Topics Covered', mod.topics.map(function(t) { return el('div', 'topic-item', t); })));
+    card.appendChild(buildSection('Video and Course Training (' + mod.videos.length + ')', mod.videos.map(function(r) { return buildResLink(r, 'ri-v', 'VID'); })));
+    card.appendChild(buildSection('Papers, Whitepapers and Reading (' + mod.reading.length + ')', mod.reading.map(function(r) { return buildResLink(r, 'ri-r', 'DOC'); })));
+    card.appendChild(buildSection('Hands-On Practice and Labs (' + mod.practice.length + ')', mod.practice.map(function(r) { return buildResLink(r, 'ri-p', 'LAB'); })));
+    var actRow = el('div', 'act-row');
+    var score = S.scores[mod.num];
+    var qBtn = btn('act-btn quiz-act', score !== undefined ? 'Quiz - ' + score + '%' : 'Quiz');
+    qBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openQuiz(mod.num); });
+    var lBtn = btn('act-btn lab-act', S.labs.has(mod.num) ? 'Lab - Done' : 'Lab');
+    lBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openLab(mod.num); });
+    actRow.appendChild(qBtn);
+    actRow.appendChild(lBtn);
+    card.appendChild(actRow);
+    var noteWrap = el('div', 'notes-sec');
+    var noteTog = el('button', 'notes-toggle');
+    var noteArr = el('span', 'arr', '>');
+    noteTog.appendChild(noteArr);
+    var savedNote = S.notes[mod.num] || '';
+    noteTog.appendChild(el('span', '', ' Analyst Notes' + (savedNote ? ' (saved)' : '')));
+    var noteBody = el('div', 'notes-body');
+    var ta = el('textarea', 'notes-ta');
+    ta.placeholder = 'Add your notes and key takeaways...';
+    ta.value = savedNote;
+    var saveBtn = btn('notes-save', 'Save Note');
+    saveBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      S.notes[mod.num] = ta.value;
+      saveState();
+      saveBtn.textContent = 'Saved!';
+      setTimeout(function() { saveBtn.textContent = 'Save Note'; }, 1500);
+    });
+    noteTog.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      noteTog.classList.toggle('open');
+      noteBody.classList.toggle('open');
+    });
+    noteBody.appendChild(ta);
+    noteBody.appendChild(saveBtn);
+    noteWrap.appendChild(noteTog);
+    noteWrap.appendChild(noteBody);
+    card.appendChild(noteWrap);
+    grid.appendChild(card);
+  });
+  if (shown === 0) {
+    var msg = el('div', '');
+    msg.style.cssText = 'grid-column:1/-1;text-align:center;padding:60px;color:#8FA3B8;font-size:14px;';
+    msg.textContent = 'No modules match this filter.';
+    grid.appendChild(msg);
+  }
+}
+
+function updateProgress() {
+  var c = S.done.size;
+  var pct = Math.round(c / MODS.length * 100);
+  var fill = document.getElementById('progFill');
+  var count = document.getElementById('progCount');
+  if (fill) fill.style.width = pct + '%';
+  if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
+    b.classList.add('active');
+    renderModules(b.dataset.filter);
+  });
+});
+
+function openQuiz(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod) return;
+  quizState = { num: num, qs: mod.quiz, cur: 0, correct: 0 };
+  document.getElementById('quizTitle').textContent = mod.title;
+  document.getElementById('quizSub').textContent = 'MODULE ' + String(num).padStart(2,'0') + ' - ' + mod.quiz.length + ' QUESTIONS';
+  renderQuizQ();
+  document.getElementById('quizOverlay').classList.add('open');
+}
+
+function renderQuizQ() {
+  var qs = quizState.qs;
+  var cur = quizState.cur;
+  document.getElementById('qPBFill').style.width = Math.round(cur / qs.length * 100) + '%';
+  var body = document.getElementById('quizBody');
+  body.innerHTML = '';
+  if (cur >= qs.length) {
+    var sc = Math.round(quizState.correct / qs.length * 100);
+    S.scores[quizState.num] = sc;
+    saveState();
+    var msg = sc >= 80 ? 'Great work - ready to move on.' : sc >= 60 ? 'Good effort - review the explanations and retry.' : 'Review this module before retaking.';
+    var res = el('div', 'q-result');
+    res.appendChild(el('div', 'q-score', sc + '%'));
+    res.appendChild(el('div', 'q-score-lbl', quizState.correct + ' of ' + qs.length + ' correct'));
+    res.appendChild(el('div', 'q-msg', msg));
+    res.appendChild(btn('q-retry', 'Retake Quiz', function() { openQuiz(quizState.num); }));
+    body.appendChild(res);
+    renderModules();
+    return;
+  }
+  var q = qs[cur];
+  body.appendChild(el('div', 'q-text', 'Q' + (cur + 1) + '. ' + q.q));
+  var opts = el('div', 'q-opts');
+  q.o.forEach(function(opt, i) {
+    var ob = btn('q-opt', opt, function() {
+      if (document.querySelector('.q-opt.correct, .q-opt.wrong')) return;
+      document.querySelectorAll('.q-opt').forEach(function(x) { x.classList.add('locked'); });
+      if (i === q.a) { ob.classList.add('correct'); quizState.correct++; }
+      else { ob.classList.add('wrong'); document.querySelectorAll('.q-opt')[q.a].classList.add('reveal'); }
+      explain.style.display = 'block';
+      nextBtn.style.display = 'inline-block';
+    });
+    opts.appendChild(ob);
+  });
+  body.appendChild(opts);
+  var explain = el('div', 'q-explain', q.e);
+  body.appendChild(explain);
+  var nextRow = el('div', 'q-next');
+  var nextBtn = btn('q-next-btn', cur + 1 < qs.length ? 'Next ->' : 'See Results', function() {
+    quizState.cur++;
+    renderQuizQ();
+  });
+  nextRow.appendChild(nextBtn);
+  body.appendChild(nextRow);
+}
+
+document.getElementById('quizClose').addEventListener('click', function() { document.getElementById('quizOverlay').classList.remove('open'); });
+document.getElementById('quizOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function openLab(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod || !mod.lab) return;
+  var lab = mod.lab;
+  var saved = labAnswers[num] || {};
+  document.getElementById('labTitle').textContent = lab.title;
+  var body = document.getElementById('labBody');
+  body.innerHTML = '';
+  var scene = el('div', 'lab-scene');
+  scene.innerHTML = '<strong>Scenario:</strong> ' + lab.scene;
+  body.appendChild(scene);
+  body.appendChild(el('div', 'lab-data', lab.data));
+  var textareas = [];
+  lab.tasks.forEach(function(task, i) {
+    body.appendChild(el('div', 'lab-tl', 'Task ' + (i + 1)));
+    body.appendChild(el('div', 'lab-tq', task));
+    var ta = el('textarea', 'lab-ta');
+    ta.placeholder = 'Your analysis...';
+    ta.rows = 4;
+    ta.value = saved[i] || '';
+    textareas.push(ta);
+    body.appendChild(ta);
+  });
+  body.appendChild(el('div', 'lab-hint', 'Tip: Labs assess analytical reasoning and use of evidence - there is no single correct answer.'));
+  var subBtn = btn('lab-submit', S.labs.has(num) ? 'Update Answers' : 'Mark Complete and Save', function() {
+    if (!labAnswers[num]) labAnswers[num] = {};
+    textareas.forEach(function(ta, i) { labAnswers[num][i] = ta.value; });
+    S.labs.add(num);
+    saveState();
+    document.getElementById('labOverlay').classList.remove('open');
+    renderModules();
+  });
+  body.appendChild(subBtn);
+  document.getElementById('labOverlay').classList.add('open');
+}
+
+document.getElementById('labClose').addEventListener('click', function() { document.getElementById('labOverlay').classList.remove('open'); });
+document.getElementById('labOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function renderGlossary(query) {
+  var grid = document.getElementById('glsGrid');
+  grid.innerHTML = '';
+  var q = (query || '').toLowerCase();
+  GLOSSARY.forEach(function(g) {
+    var match = !q || g.t.toLowerCase().includes(q) || (g.a||'').toLowerCase().includes(q) || g.d.toLowerCase().includes(q);
+    var card = el('div', 'gls-card' + (match ? '' : ' hidden'));
+    card.appendChild(el('div', 'gls-term', g.t));
+    if (g.a) card.appendChild(el('div', 'gls-abbr', g.a));
+    card.appendChild(el('div', 'gls-def', g.d));
+    if (g.g) card.appendChild(el('span', 'gls-tag', g.g));
+    grid.appendChild(card);
+  });
+}
+document.getElementById('glsSearch').addEventListener('input', function(ev) { renderGlossary(ev.target.value); });
+
+function renderLeaderboard() {
+  var sorted = LB.slice().sort(function(a, b) { return b.mods - a.mods || b.quiz - a.quiz; });
+  var crowns = ['#1', '#2', '#3'];
+  var rankCls = ['r1', 'r2', 'r3'];
+  var top3 = document.getElementById('top3');
+  top3.innerHTML = '';
+  sorted.slice(0, 3).forEach(function(p, i) {
+    var card = el('div', 't3-card' + (i === 0 ? ' first' : ''));
+    card.appendChild(el('div', 't3-crown', crowns[i]));
+    var av = el('div', 't3-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    card.appendChild(av);
+    card.appendChild(el('div', 't3-name', p.name));
+    card.appendChild(el('div', 't3-mods', p.mods + '/9 modules'));
+    card.appendChild(el('div', 't3-score', p.quiz + '%'));
+    top3.appendChild(card);
+  });
+  var tbody = document.getElementById('lbBody');
+  tbody.innerHTML = '';
+  sorted.forEach(function(p, i) {
+    var tr = document.createElement('tr');
+    var tdR = document.createElement('td');
+    tdR.appendChild(el('span', 'lb-rank ' + (rankCls[i] || 'rn'), String(i + 1)));
+    tr.appendChild(tdR);
+    var tdN = document.createElement('td');
+    var nc = el('div', 'lb-nc');
+    var av = el('div', 'lb-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    nc.appendChild(av);
+    var nd = el('div', '');
+    var nm = el('div', '', p.name); nm.style.fontWeight = '600';
+    nd.appendChild(nm);
+    nd.appendChild(el('div', 'lb-role', p.role));
+    nc.appendChild(nd); tdN.appendChild(nc); tr.appendChild(tdN);
+    var tdM = document.createElement('td');
+    tdM.style.cssText = "font-family:'JetBrains Mono',monospace;color:#00C9E4";
+    tdM.textContent = p.mods + '/9'; tr.appendChild(tdM);
+    var tdP = document.createElement('td');
+    var bw = el('div', 'lb-bar-w'); var bar = el('div', 'lb-bar');
+    bar.style.width = Math.round(p.mods / 9 * 100) + '%';
+    bw.appendChild(bar); tdP.appendChild(bw); tr.appendChild(tdP);
+    var tdQ = document.createElement('td');
+    tdQ.style.cssText = "font-family:'JetBrains Mono',monospace;font-weight:600;color:" + (p.quiz >= 90 ? '#2ECC71' : p.quiz >= 75 ? '#00C9E4' : '#8FA3B8');
+    tdQ.textContent = p.quiz + '%'; tr.appendChild(tdQ);
+    var tdB = document.createElement('td');
+    tdB.appendChild(el('span', 'lb-bdg ' + p.bdg, p.bdgt)); tr.appendChild(tdB);
+    tbody.appendChild(tr);
+  });
+}
+
+function renderBookmarks() {
+  var content = document.getElementById('bmContent');
+  content.innerHTML = '';
+  if (S.bm.size === 0) {
+    content.appendChild(el('div', 'bm-empty', 'No bookmarks yet. Click the star on any module to save it here.'));
+    return;
+  }
+  var list = el('div', 'bm-list');
+  Array.from(S.bm).forEach(function(num) {
+    var mod = MODS.find(function(m) { return m.num === num; });
+    if (!mod) return;
+    var item = el('div', 'bm-item');
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelector('[data-page="modules"]').classList.add('active');
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('page-modules').classList.add('active');
+      renderModules('all');
+    });
+    var pin = el('div', ''); pin.innerHTML = '&#9733;';
+    pin.style.cssText = 'font-size:20px;flex-shrink:0;color:#F1C40F;';
+    var info = el('div', 'bm-info');
+    info.appendChild(el('div', 'bm-title', mod.title));
+    info.appendChild(el('div', 'bm-meta', 'Module ' + String(num).padStart(2,'0') + ' - ' + mod.level + ' - ' + mod.dur));
+    var rmBtn = el('button', 'bm-rm'); rmBtn.innerHTML = '&#215;';
+    rmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation(); S.bm.delete(num); saveState(); renderBookmarks();
+    });
+    item.appendChild(pin); item.appendChild(info); item.appendChild(rmBtn);
+    list.appendChild(item);
+  });
+  content.appendChild(list);
+}
+
+renderModules('all');
+updateProgress();
+renderGlossary('');
+renderLeaderboard();
+</script>
+
+</body>
+</html>
