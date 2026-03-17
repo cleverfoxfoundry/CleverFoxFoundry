@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOC Threat Intelligence Training Portal</title>
+<title>Threat Intelligence Training Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@ body::before{content:’’;position:fixed;inset:0;background-image:linear-gradi
 /* HEADER */
 header{position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(46,117,182,0.25);background:rgba(13,27,42,0.97);backdrop-filter:blur(12px);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px;}
 .logo{display:flex;align-items:center;gap:10px;font-family:‘Syne’, -apple-system, BlinkMacSystemFont, ‘Segoe UI’, Arial, sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
-.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,#00C9E4,#2E75B6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,#00C9E4,#2E75B6);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:800;color:white;font-family:‘Syne’,sans-serif;}
 .nav-tabs{display:flex;gap:2px;flex-shrink:0;}
 .nav-tab{font-family:‘JetBrains Mono’, ‘Consolas’, ‘Courier New’, monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;border:none;background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .nav-tab:hover,.nav-tab.active{background:rgba(0,201,228,0.1);color:#00C9E4;}
@@ -289,7 +289,7 @@ header{padding:6px 12px;}
 <body>
 
 <header>
-  <div class="logo"><div class="logo-icon">*</div>SOC &middot; TI Training Portal</div>
+  <div class="logo"><div class="logo-icon">TI</div>Threat Intelligence</div>
   <nav class="nav-tabs">
     <button class="nav-tab active" data-page="modules">Modules</button>
     <button class="nav-tab" data-page="glossary">Glossary</button>
@@ -303,9 +303,9 @@ header{padding:6px 12px;}
 </header>
 
 <div class="page active" id="page-modules">
-  <div class="hero-label">Threat Intelligence Curriculum &mdash; All Free Resources</div>
-  <h1 class="hero-title">Your <span>Complete TI</span> Learning Hub</h1>
-  <p class="hero-sub">9 structured modules. Every resource is free &mdash; videos, whitepapers, academic papers, interactive labs, and official training. From beginner to advanced.</p>
+  <div class="hero-label">Cyber Exposure &amp; Threat Intelligence Curriculum &mdash; All Free Resources</div>
+  <h1 class="hero-title">Threat <span>Intelligence</span> Training</h1>
+  <p class="hero-sub">9 structured modules covering the full threat intelligence lifecycle. Every resource is free &mdash; videos, whitepapers, papers, interactive labs, and official training. Foundation to advanced.</p>
   <div class="stats-row">
     <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
     <div class="stat"><div class="stat-num">~48</div><div class="stat-label">Hours</div></div>
@@ -375,7 +375,7 @@ header{padding:6px 12px;}
 // All data uses only plain ASCII strings - no unicode escapes, no emojis
 var MODS = [
 {num:1,title:"Foundations of Threat Intelligence",dur:"4 hours",level:"Foundation",
-topics:["What is CTI - data vs information vs intelligence","Types of TI: strategic, operational, tactical, technical","Intelligence Lifecycle: planning, collection, processing, analysis, dissemination","Key concepts: TTPs, IOCs, campaigns, threat actors","TI in the SOC workflow","Intro to ATT&CK, Kill Chain, Diamond Model"],
+topics:["What is CTI - data vs information vs intelligence","Types of TI: strategic, operational, tactical, technical","Intelligence Lifecycle: planning, collection, processing, analysis, dissemination","Key concepts: TTPs, IOCs, campaigns, threat actors","TI in the security operations workflow","Intro to ATT&CK, Kill Chain, Diamond Model"],
 videos:[
 {n:"SOCRadar: CTI Fundamentals for SOC Analysts",d:"Full lifecycle, TI types, tools, frameworks - on-demand",u:"https://university.socradar.io/course/cti-fundamentals-for-soc-analysts",l:"b",t:"~3 hrs"},
 {n:"Recorded Future: Intelligence Fundamentals I",d:"Intelligence overview - 25 min, earns CPE credit, free",u:"https://university.recordedfuture.com/",l:"b",t:"25 min"},
@@ -427,7 +427,7 @@ quiz:[
 {q:"Why is an insider threat particularly dangerous?",o:["They use advanced malware","They have legitimate access and know internal systems","They always work with nation-states","They are impossible to detect"],a:1,e:"Insiders bypass perimeter controls by design - they have authorized access and know where sensitive data lives."},
 {q:"What is the key difference between capability and intent in threat assessment?",o:["Capability is what they can do; intent is whether they will target you","Intent is always higher than capability","Capability only applies to nation-states","They mean the same thing"],a:0,e:"A capable actor with no intent to target you is less risky than a motivated but less capable actor. Both dimensions matter."}
 ],
-lab:{title:"Module 2 Lab: Build a Threat Actor Profile",scene:"Your SOC observed indicators suggesting targeting by a known financially motivated group. Using only free public sources, build a profile for FIN7.",data:"Known aliases: Carbon Spider (CrowdStrike), Sangria Tempest (Microsoft), FIN7 (Mandiant)\nSuspected origin: Eastern Europe\nPrimary motivation: Financial gain\nKnown targets: Retail, hospitality, financial services\nCommon entry vector: Spearphishing with malicious attachments\nFree sources: attack.mitre.org/groups/G0046, Malpedia, public vendor reports",tasks:["Summarize motivation, capability level (Low/Medium/High), and primary target profile.","List 3 TTPs this actor uses and map each to a MITRE ATT&CK tactic.","What defensive controls would you recommend to your SOC based on known behavior?","Rate your confidence in this profile and explain what additional information would strengthen it."]}
+lab:{title:"Module 2 Lab: Build a Threat Actor Profile",scene:"Your team observed indicators suggesting targeting by a known financially motivated group. Using only free public sources, build a profile for FIN7.",data:"Known aliases: Carbon Spider (CrowdStrike), Sangria Tempest (Microsoft), FIN7 (Mandiant)\nSuspected origin: Eastern Europe\nPrimary motivation: Financial gain\nKnown targets: Retail, hospitality, financial services\nCommon entry vector: Spearphishing with malicious attachments\nFree sources: attack.mitre.org/groups/G0046, Malpedia, public vendor reports",tasks:["Summarize motivation, capability level (Low/Medium/High), and primary target profile.","List 3 TTPs this actor uses and map each to a MITRE ATT&CK tactic.","What defensive controls would you recommend to your SOC based on known behavior?","Rate your confidence in this profile and explain what additional information would strengthen it."]}
 },
 {num:3,title:"MITRE ATT&CK Framework",dur:"6 hours",level:"Foundation",
 topics:["ATT&CK structure: matrices, tactics, techniques, sub-techniques, procedures","ATT&CK for Enterprise, Mobile, and ICS","Navigating the ATT&CK website, API, and Navigator","Reading a technique page: detection guidance, mitigations, data sources","TTP mapping from threat reports","Detection coverage mapping and gap analysis"],
@@ -515,7 +515,7 @@ quiz:[
 {q:"What is the primary ethical constraint when conducting OSINT?",o:["Only use paid tools","Never search more than 10 indicators at once","Collect only publicly available information without unauthorized access","Always share findings publicly"],a:2,e:"OSINT uses publicly available data. Accessing systems without authorization is illegal regardless of intent."},
 {q:"Which free tool finds internet-exposed devices by banner data and port?",o:["Maltego","Shodan","PassiveTotal","URLScan"],a:1,e:"Shodan indexes internet-exposed services by banner data - invaluable for identifying C2 infrastructure."}
 ],
-lab:{title:"Module 5 Lab: OSINT Pivot Investigation",scene:"Your SOC flagged outbound connections to an IP from three workstations. Conduct a full OSINT pivot to assess the indicator.",data:"Starting indicator: 91.108.4.179\n\nRecommended free tools:\n  - VirusTotal (virustotal.com) - reputation and related samples\n  - Shodan (shodan.io) - port, service, banner data\n  - URLScan.io - URL and domain scanning\n  - WHOIS / RDAP lookup (who.is)\n  - AbuseIPDB (abuseipdb.com) - community abuse reports\n  - Censys (censys.io) - certificate and host data\n\nOPSEC: Use a browser profile isolated from corporate accounts.",tasks:["Document your pivot chain: from the IP, what related domains, certs, or infrastructure did you find?","What is your assessment: malicious, suspicious, or benign? Justify with specific evidence.","Which OSINT sources provided the most actionable intelligence?","List any additional indicators discovered during pivoting that should be added to your watchlist.","What OPSEC precautions did or should you take during this investigation?"]}
+lab:{title:"Module 5 Lab: OSINT Pivot Investigation",scene:"Your team flagged outbound connections to an IP from three workstations. Conduct a full OSINT pivot to assess the indicator.",data:"Starting indicator: 91.108.4.179\n\nRecommended free tools:\n  - VirusTotal (virustotal.com) - reputation and related samples\n  - Shodan (shodan.io) - port, service, banner data\n  - URLScan.io - URL and domain scanning\n  - WHOIS / RDAP lookup (who.is)\n  - AbuseIPDB (abuseipdb.com) - community abuse reports\n  - Censys (censys.io) - certificate and host data\n\nOPSEC: Use a browser profile isolated from corporate accounts.",tasks:["Document your pivot chain: from the IP, what related domains, certs, or infrastructure did you find?","What is your assessment: malicious, suspicious, or benign? Justify with specific evidence.","Which OSINT sources provided the most actionable intelligence?","List any additional indicators discovered during pivoting that should be added to your watchlist.","What OPSEC precautions did or should you take during this investigation?"]}
 },
 {num:6,title:"Intelligence Analysis Techniques",dur:"5 hours",level:"Intermediate",
 topics:["Foundations: evidence vs inference vs judgment","Structured Analytic Techniques (SATs): overview","Analysis of Competing Hypotheses (ACH) - deep dive","Cognitive biases: anchoring, confirmation bias, mirror imaging, groupthink","Confidence language: high/medium/low standards (ICD 203)","The Diamond Model applied to structured case analysis"],
@@ -640,7 +640,7 @@ var GLOSSARY = [
 {t:"Traffic Light Protocol",a:"TLP",d:"A system for labeling intelligence sharing. TLP:RED (recipient only), TLP:AMBER (recipient org), TLP:GREEN (community), TLP:CLEAR (public).",g:"Sharing"},
 {t:"Analysis of Competing Hypotheses",a:"ACH",d:"A structured analytic technique that evaluates evidence against multiple hypotheses simultaneously to reduce cognitive bias.",g:"Analysis"},
 {t:"Threat Intelligence Platform",a:"TIP",d:"Software that aggregates, correlates, enriches, and manages threat intelligence. Open-source options: MISP, OpenCTI. Commercial: ThreatConnect, Anomali.",g:"Tools"},
-{t:"Command and Control",a:"C2 / C&C",d:"Infrastructure adversaries use to communicate with compromised systems. Detecting C2 is a key SOC priority.",g:"Adversary Ops"},
+{t:"Command and Control",a:"C2 / C&C",d:"Infrastructure adversaries use to communicate with compromised systems. Detecting C2 is a primary objective for threat intelligence and detection teams.",g:"Adversary Ops"},
 {t:"Living off the Land",a:"LotL",d:"Adversary technique using legitimate OS tools (PowerShell, WMI, certutil) rather than custom malware to blend in and evade detection.",g:"Adversary Ops"},
 {t:"Pass-the-Hash",a:"PtH",d:"An attack technique where an adversary captures an NTLM hash and authenticates with it without knowing the plaintext password.",g:"ATT&CK"},
 {t:"Lateral Movement",a:"",d:"ATT&CK tactic covering techniques adversaries use to move through a network after initial access to reach additional systems.",g:"ATT&CK"},
@@ -659,33 +659,33 @@ var GLOSSARY = [
 ];
 
 var LB = [
-{name:"Alice",role:"L2 TI Analyst",av:"A",color:"#3D8FD4",mods:9,quiz:94,bdg:"bdg-g",bdgt:"Top Analyst"},
-{name:"Eva",role:"Senior Analyst",av:"E",color:"#9B59B6",mods:8,quiz:91,bdg:"bdg-s",bdgt:"Expert"},
-{name:"Marcus",role:"L1 SOC Analyst",av:"M",color:"#E8741A",mods:7,quiz:87,bdg:"bdg-b",bdgt:"Advanced"},
-{name:"Bob",role:"L2 SOC Analyst",av:"B",color:"#2ECC71",mods:6,quiz:82,bdg:"bdg-a",bdgt:"Analyst"},
-{name:"Priya",role:"TI Intern",av:"P",color:"#E74C3C",mods:5,quiz:79,bdg:"bdg-a",bdgt:"Analyst"},
-{name:"Jordan",role:"L1 SOC Analyst",av:"J",color:"#00C9E4",mods:4,quiz:74,bdg:"bdg-a",bdgt:"Analyst"},
-{name:"Sam",role:"Network Analyst",av:"S",color:"#F1C40F",mods:3,quiz:68,bdg:"bdg-a",bdgt:"Analyst"}
+{name:"Alice",role:"Senior TI Analyst",av:"A",color:"#3D8FD4",mods:9,quiz:94,bdg:"bdg-g",bdgt:"Top Analyst"},
+{name:"Eva",role:"CTI Lead",av:"E",color:"#9B59B6",mods:8,quiz:91,bdg:"bdg-s",bdgt:"Expert"},
+{name:"Marcus",role:"Threat Hunter",av:"M",color:"#E8741A",mods:7,quiz:87,bdg:"bdg-b",bdgt:"Advanced"},
+{name:"Bob",role:"Intelligence Analyst",av:"B",color:"#2ECC71",mods:6,quiz:82,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Priya",role:"Junior CTI Analyst",av:"P",color:"#E74C3C",mods:5,quiz:79,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Jordan",role:"OSINT Specialist",av:"J",color:"#00C9E4",mods:4,quiz:74,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Sam",role:"Malware Analyst",av:"S",color:"#F1C40F",mods:3,quiz:68,bdg:"bdg-a",bdgt:"Analyst"}
 ];
 
 // STATE
 var S = {
-  done: new Set(JSON.parse(localStorage.getItem('tiDone') || '[]')),
-  bm: new Set(JSON.parse(localStorage.getItem('tiBm') || '[]')),
-  notes: JSON.parse(localStorage.getItem('tiNotes') || '{}'),
-  scores: JSON.parse(localStorage.getItem('tiScores') || '{}'),
-  labs: new Set(JSON.parse(localStorage.getItem('tiLabs') || '[]'))
+  done: new Set(JSON.parse(localStorage.getItem('ctiDone') || '[]')),
+  bm: new Set(JSON.parse(localStorage.getItem('ctiBm') || '[]')),
+  notes: JSON.parse(localStorage.getItem('ctiNotes') || '{}'),
+  scores: JSON.parse(localStorage.getItem('ctiScores') || '{}'),
+  labs: new Set(JSON.parse(localStorage.getItem('ctiLabs') || '[]'))
 };
 var labAnswers = {};
 var curFilter = 'all';
 var quizState = {};
 
 function saveState() {
-  localStorage.setItem('tiDone', JSON.stringify(Array.from(S.done)));
-  localStorage.setItem('tiBm', JSON.stringify(Array.from(S.bm)));
-  localStorage.setItem('tiNotes', JSON.stringify(S.notes));
-  localStorage.setItem('tiScores', JSON.stringify(S.scores));
-  localStorage.setItem('tiLabs', JSON.stringify(Array.from(S.labs)));
+  localStorage.setItem('ctiDone', JSON.stringify(Array.from(S.done)));
+  localStorage.setItem('ctiBm', JSON.stringify(Array.from(S.bm)));
+  localStorage.setItem('ctiNotes', JSON.stringify(S.notes));
+  localStorage.setItem('ctiScores', JSON.stringify(S.scores));
+  localStorage.setItem('ctiLabs', JSON.stringify(Array.from(S.labs)));
 }
 
 // NAV
@@ -702,8 +702,8 @@ document.querySelectorAll('.nav-tab').forEach(function(btn) {
 });
 
 var nameEl = document.getElementById('analystName');
-nameEl.value = localStorage.getItem('tiName') || '';
-nameEl.addEventListener('change', function() { localStorage.setItem('tiName', nameEl.value); });
+nameEl.value = localStorage.getItem('ctiName') || '';
+nameEl.addEventListener('change', function() { localStorage.setItem('ctiName', nameEl.value); });
 
 // HELPERS
 function el(tag, cls, txt) {
