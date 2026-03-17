@@ -76,9 +76,11 @@ header{position:sticky;top:0;z-index:100;border-bottom:1px solid var(–border);
 .card-info{display:flex;align-items:center;gap:10px;}
 .card-dur{font-family:‘JetBrains Mono’,monospace;font-size:10px;color:var(–dim);}
 .card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
-.bm-btn{background:none;border:none;cursor:pointer;color:var(–dim);font-size:15px;transition:color 0.2s;padding:2px;line-height:1;}
-.bm-btn:hover{color:var(–yellow);}
-.chk{width:22px;height:22px;border-radius:50%;border:2px solid var(–border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:700;color:transparent;flex-shrink:0;}
+.bm-btn{background:none;border:none;cursor:pointer;color:var(–dim);font-size:20px;transition:color 0.2s,transform 0.15s;padding:2px 4px;line-height:1;}
+.bm-btn:hover{color:var(–yellow);transform:scale(1.2);}
+.mod-card.bookmarked .bm-btn{color:var(–yellow);}
+.chk{width:22px;height:22px;border-radius:5px;border:2px solid var(–border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:14px;font-weight:700;color:transparent;flex-shrink:0;background:transparent;}
+.chk:hover{border-color:var(–green);background:rgba(46,204,113,0.1);}
 .mod-card.completed .chk{background:var(–green);border-color:var(–green);color:white;}
 
 /* SECTIONS */
@@ -804,29 +806,31 @@ function renderModules(filter) {
     info.appendChild(el('span', 'card-dur', mod.dur));
     var acts = el('div', 'card-actions');
 
-    var bmBtn = btn('bm-btn', isBm ? '*' : 'o');
-    bmBtn.title = 'Bookmark';
+    var bmBtn = btn('bm-btn', '');
+    bmBtn.innerHTML = isBm ? '&#9733;' : '&#9734;';
+    bmBtn.title = 'Bookmark this module';
     bmBtn.setAttribute('data-num', mod.num);
     bmBtn.addEventListener('click', function(ev) {
       ev.stopPropagation();
-      if (S.bm.has(mod.num)) { S.bm.delete(mod.num); card.classList.remove('bookmarked'); bmBtn.textContent = 'o'; }
-      else { S.bm.add(mod.num); card.classList.add('bookmarked'); bmBtn.textContent = '*'; }
+      if (S.bm.has(mod.num)) { S.bm.delete(mod.num); card.classList.remove('bookmarked'); bmBtn.innerHTML = '&#9734;'; }
+      else { S.bm.add(mod.num); card.classList.add('bookmarked'); bmBtn.innerHTML = '&#9733;'; }
       saveState();
     });
 
-    var chk = el('div', 'chk', isDone ? 'v' : '');
-    chk.title = 'Mark complete';
+    var chk = el('div', 'chk', '');
+    chk.innerHTML = isDone ? '&#10003;' : '';
+    chk.title = 'Mark as complete';
     chk.setAttribute('data-num', mod.num);
     chk.addEventListener('click', function(ev) {
       ev.stopPropagation();
       if (S.done.has(mod.num)) {
         S.done.delete(mod.num);
         card.classList.remove('completed');
-        chk.textContent = '';
+        chk.innerHTML = '';
       } else {
         S.done.add(mod.num);
         card.classList.add('completed');
-        chk.textContent = 'v';
+        chk.innerHTML = '&#10003;';
       }
       saveState();
       var c = S.done.size;
@@ -1161,17 +1165,19 @@ function renderBookmarks() {
     if (!mod) return;
     var item = el('div', 'bm-item');
     item.addEventListener('click', function() { goToModule(num); });
-    var pin = el('div', '', '[*]');
-    pin.style.cssText = 'font-size:18px;flex-shrink:0;';
+    var pin = el('div', '', '');
+    pin.innerHTML = '&#9733;';
+    pin.style.cssText = 'font-size:20px;flex-shrink:0;color:var(--yellow);';
     var info = el('div', 'bm-info');
     info.appendChild(el('div', 'bm-title', mod.title));
     info.appendChild(el('div', 'bm-meta', 'Module ' + String(num).padStart(2,'0') + ' - ' + mod.level + ' - ' + mod.dur));
-    var rmBtn = btn('bm-rm', 'x', function(ev) {
+    var rmBtn = btn('bm-rm', '', function(ev) {
       ev.stopPropagation();
       S.bm.delete(num);
       saveState();
       renderBookmarks();
     });
+    rmBtn.innerHTML = '&#215;';
     item.appendChild(pin);
     item.appendChild(info);
     item.appendChild(rmBtn);
