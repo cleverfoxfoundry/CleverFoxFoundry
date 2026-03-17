@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OT/ICS Security Training Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0D1B2A;color:#E8EDF2;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,117,182,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(46,117,182,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(46,117,182,0.25);background:rgba(13,27,42,0.97);backdrop-filter:blur(12px);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;min-width:0;}
+.logo-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;flex-shrink:0;}
+.nav-tab{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;border:none;background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover,.nav-tab.active{background:rgba(0,201,228,0.1);color:#00C9E4;}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.name-input{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:5px 10px;border-radius:6px;width:130px;}
+.name-input:focus{outline:none;border-color:#00C9E4;}
+.hdr-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#00C9E4;background:rgba(0,201,228,0.08);border:1px solid rgba(0,201,228,0.2);padding:4px 10px;border-radius:4px;letter-spacing:0.1em;white-space:nowrap;}
+.page{display:none;position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 32px 80px;}
+.page.active{display:block;}
+.hero-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#00C9E4;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Syne',-apple-system,sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:800;line-height:1.05;margin-bottom:14px;color:#E8EDF2;}
+.hero-title span{color:#00C9E4;}
+.hero-sub{color:#8FA3B8;font-size:15px;max-width:560px;line-height:1.6;margin-bottom:28px;}
+.stats-row{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:32px;}
+.stat-num{font-family:'Syne',-apple-system,sans-serif;font-size:26px;font-weight:800;color:#00C9E4;line-height:1;}
+.stat-label{font-size:11px;color:#8FA3B8;text-transform:uppercase;letter-spacing:0.08em;}
+.prog-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+.prog-label{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;color:#8FA3B8;white-space:nowrap;}
+.prog-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,#E8741A,#00C9E4);border-radius:99px;transition:width 0.8s ease;}
+.prog-count{font-family:'JetBrains Mono','Consolas',monospace;font-size:12px;color:#00C9E4;white-space:nowrap;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.filter-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 13px;border-radius:6px;border:1px solid rgba(46,117,182,0.25);background:transparent;color:#8FA3B8;cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{border-color:#00C9E4;color:#00C9E4;background:rgba(0,201,228,0.08);}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
+.mod-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;}
+.mod-card:hover{transform:translateY(-3px);border-color:rgba(46,117,182,0.5);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.mod-card.completed{border-color:rgba(46,204,113,0.3);}
+.card-top{padding:18px 18px 14px;border-bottom:1px solid rgba(46,117,182,0.25);}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.card-num{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;}
+.lvl-badge{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;}
+.lvl-Foundation{background:rgba(46,139,87,0.15);color:#5DD49A;border:1px solid rgba(46,139,87,0.3);}
+.lvl-Intermediate{background:rgba(46,117,182,0.15);color:#70B0E8;border:1px solid rgba(46,117,182,0.3);}
+.lvl-Advanced{background:rgba(192,57,43,0.15);color:#E87070;border:1px solid rgba(192,57,43,0.3);}
+.card-title{font-family:'Syne',-apple-system,sans-serif;font-size:16px;font-weight:700;line-height:1.25;margin-bottom:10px;}
+.card-info{display:flex;align-items:center;gap:10px;}
+.card-dur{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.card-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.bm-btn{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:20px;transition:color 0.2s,transform 0.15s;padding:2px 4px;line-height:1;}
+.bm-btn:hover{color:#F1C40F;transform:scale(1.2);}
+.mod-card.bookmarked .bm-btn{color:#F1C40F;}
+.chk{width:22px;height:22px;border-radius:5px;border:2px solid rgba(46,117,182,0.25);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:14px;font-weight:700;color:transparent;flex-shrink:0;background:transparent;}
+.chk:hover{border-color:#2ECC71;background:rgba(46,204,113,0.1);}
+.mod-card.completed .chk{background:#2ECC71;border-color:#2ECC71;color:white;}
+.sec{padding:0 18px 4px;}
+.sec-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:8px 0 6px;transition:color 0.2s;width:100%;text-align:left;}
+.sec-toggle:hover{color:#00C9E4;}
+.sec-toggle .arr{transition:transform 0.2s;display:inline-block;}
+.sec-toggle.open .arr{transform:rotate(90deg);}
+.sec-body{display:none;padding-bottom:8px;}
+.sec-body.open{display:block;}
+.topic-item{font-size:11px;color:#8FA3B8;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;border-left:2px solid rgba(46,117,182,0.25);line-height:1.4;margin-bottom:3px;}
+.res-link{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:7px;text-decoration:none;transition:background 0.2s;border:1px solid transparent;margin-bottom:3px;}
+.res-link:hover{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.25);}
+.res-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.ri-v{background:rgba(46,117,182,0.15);color:#3D8FD4;}
+.ri-r{background:rgba(232,116,26,0.15);color:#E8741A;}
+.ri-p{background:rgba(155,89,182,0.15);color:#C39BD3;}
+.res-info{flex:1;min-width:0;}
+.res-name{font-size:12px;font-weight:600;color:#E8EDF2;line-height:1.3;margin-bottom:1px;}
+.res-desc{font-size:10px;color:#8FA3B8;line-height:1.4;white-space:normal;}
+.res-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.rl{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;padding:1px 5px;border-radius:3px;}
+.rl-b{background:rgba(46,139,87,0.12);color:#5DD49A;border:1px solid rgba(46,139,87,0.25);}
+.rl-i{background:rgba(46,117,182,0.12);color:#70B0E8;border:1px solid rgba(46,117,182,0.25);}
+.rl-a{background:rgba(192,57,43,0.12);color:#E87070;border:1px solid rgba(192,57,43,0.25);}
+.rt{font-family:'JetBrains Mono','Consolas',monospace;font-size:8px;color:#8FA3B8;}
+.act-row{display:flex;gap:8px;padding:0 18px 12px;}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:1px solid;}
+.quiz-act{background:rgba(46,117,182,0.1);border-color:rgba(46,117,182,0.3);color:#3D8FD4;}
+.quiz-act:hover{background:rgba(46,117,182,0.2);}
+.lab-act{background:rgba(155,89,182,0.1);border-color:rgba(155,89,182,0.3);color:#C39BD3;}
+.lab-act:hover{background:rgba(155,89,182,0.2);}
+.notes-sec{padding:0 18px 14px;}
+.notes-toggle{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0 8px;width:100%;text-align:left;}
+.notes-body{display:none;}
+.notes-body.open{display:block;}
+.notes-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:80px;line-height:1.5;}
+.notes-ta:focus{outline:none;border-color:rgba(232,116,26,0.5);}
+.notes-save{margin-top:6px;font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;padding:5px 12px;background:rgba(232,116,26,0.15);border:1px solid rgba(232,116,26,0.3);color:#E8741A;border-radius:5px;cursor:pointer;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:#162032;border:1px solid rgba(46,117,182,0.25);border-radius:16px;width:90%;max-width:640px;max-height:88vh;overflow-y:auto;padding:32px;position:relative;}
+.modal-x{position:absolute;top:16px;right:16px;background:none;border:none;color:#8FA3B8;font-size:20px;cursor:pointer;line-height:1;}
+.modal-x:hover{color:#E8EDF2;}
+.modal-title{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;}
+.q-pb{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-bottom:20px;overflow:hidden;}
+.q-pb-fill{height:100%;background:linear-gradient(90deg,#E8741A,#00C9E4);border-radius:99px;transition:width 0.4s;}
+.q-text{font-size:14px;font-weight:600;line-height:1.5;margin-bottom:12px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.q-opt{padding:10px 14px;border-radius:8px;border:1px solid rgba(46,117,182,0.25);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;color:#8FA3B8;transition:all 0.2s;text-align:left;}
+.q-opt:hover:not(.locked){border-color:#2E75B6;color:#E8EDF2;background:rgba(46,117,182,0.1);}
+.q-opt.correct{border-color:#2ECC71;background:rgba(46,204,113,0.1);color:#2ECC71;}
+.q-opt.wrong{border-color:#E74C3C;background:rgba(231,76,60,0.1);color:#E74C3C;}
+.q-opt.reveal{border-color:#2ECC71;background:rgba(46,204,113,0.05);color:#5DD49A;}
+.q-explain{margin-top:10px;font-size:12px;color:#8FA3B8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:6px;border-left:3px solid #00C9E4;line-height:1.5;display:none;}
+.q-next{margin-top:14px;text-align:right;}
+.q-next-btn{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;display:none;}
+.q-result{text-align:center;padding:20px 0;}
+.q-score{font-family:'Syne',-apple-system,sans-serif;font-size:52px;font-weight:800;color:#00C9E4;}
+.q-score-lbl{font-size:14px;color:#8FA3B8;margin:4px 0 12px;}
+.q-msg{font-size:13px;color:#E8EDF2;margin-bottom:16px;line-height:1.5;}
+.q-retry{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(0,201,228,0.1);border:1px solid rgba(0,201,228,0.3);color:#00C9E4;border-radius:7px;cursor:pointer;}
+.lab-scene{font-size:13px;color:#8FA3B8;line-height:1.6;padding:14px;background:rgba(232,116,26,0.07);border:1px solid rgba(232,116,26,0.2);border-radius:8px;margin-bottom:16px;}
+.lab-data{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;margin-bottom:16px;line-height:1.7;color:#A8D8A8;overflow-x:auto;white-space:pre-wrap;}
+.lab-tl{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;color:#E8741A;letter-spacing:0.1em;text-transform:uppercase;margin:12px 0 5px;}
+.lab-tq{font-size:13px;color:#E8EDF2;margin-bottom:7px;line-height:1.5;}
+.lab-ta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(46,117,182,0.25);border-radius:7px;color:#E8EDF2;font-family:'Inter',-apple-system,sans-serif;font-size:12px;padding:10px;resize:vertical;min-height:75px;line-height:1.5;}
+.lab-ta:focus{outline:none;border-color:rgba(232,116,26,0.5);}
+.lab-hint{font-size:11px;color:#8FA3B8;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #E8741A;line-height:1.5;}
+.lab-submit{font-family:'JetBrains Mono','Consolas',monospace;font-size:11px;padding:8px 20px;background:rgba(232,116,26,0.15);border:1px solid rgba(232,116,26,0.35);color:#E8741A;border-radius:7px;cursor:pointer;margin-top:10px;}
+.sec-title{font-family:'Syne',-apple-system,sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.sec-sub{font-size:13px;color:#8FA3B8;margin-bottom:24px;}
+.gls-search{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(46,117,182,0.25);color:#E8EDF2;padding:10px 16px;border-radius:9px;font-size:14px;margin-bottom:20px;font-family:'Inter',-apple-system,sans-serif;}
+.gls-search:focus{outline:none;border-color:#00C9E4;}
+.gls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.gls-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;transition:border-color 0.2s;}
+.gls-card:hover{border-color:rgba(46,117,182,0.4);}
+.gls-card.hidden{display:none;}
+.gls-term{font-family:'Syne',-apple-system,sans-serif;font-size:14px;font-weight:700;color:#00C9E4;margin-bottom:3px;}
+.gls-abbr{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;margin-bottom:8px;}
+.gls-def{font-size:12px;color:#8FA3B8;line-height:1.55;}
+.gls-tag{display:inline-block;margin-top:8px;font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(46,117,182,0.12);color:#3D8FD4;border:1px solid rgba(46,117,182,0.25);}
+.lb-note{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;background:rgba(241,196,15,0.06);border:1px solid rgba(241,196,15,0.15);padding:8px 14px;border-radius:7px;margin-bottom:24px;}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.t3-card{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:12px;padding:20px 16px;text-align:center;}
+.t3-card.first{border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.03);}
+.t3-crown{font-size:22px;margin-bottom:6px;font-family:'JetBrains Mono','Consolas',monospace;font-weight:700;}
+.t3-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:800;font-size:18px;margin:0 auto 8px;}
+.t3-name{font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+.t3-mods{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.t3-score{font-family:'Syne',-apple-system,sans-serif;font-size:20px;font-weight:800;color:#00C9E4;margin-top:6px;}
+.lb-wrap{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:14px;overflow:hidden;}
+.lb-hdr{padding:14px 20px;border-bottom:1px solid rgba(46,117,182,0.25);display:flex;justify-content:space-between;align-items:center;}
+.lb-hdr-t{font-family:'Syne',-apple-system,sans-serif;font-size:15px;font-weight:700;}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table th{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8FA3B8;padding:10px 16px;text-align:left;border-bottom:1px solid rgba(46,117,182,0.25);}
+.lb-table td{padding:12px 16px;border-bottom:1px solid rgba(46,117,182,0.1);font-size:13px;}
+.lb-table tr:last-child td{border-bottom:none;}
+.lb-table tr:hover td{background:rgba(46,117,182,0.04);}
+.lb-rank{font-family:'Syne',-apple-system,sans-serif;font-size:18px;font-weight:800;}
+.r1{color:#FFD700;}.r2{color:#C0C0C0;}.r3{color:#CD7F32;}.rn{color:#8FA3B8;}
+.lb-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',-apple-system,sans-serif;font-weight:700;font-size:12px;flex-shrink:0;}
+.lb-nc{display:flex;align-items:center;gap:10px;}
+.lb-role{font-size:11px;color:#8FA3B8;}
+.lb-bar-w{width:80px;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.lb-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#E8741A,#00C9E4);}
+.lb-bdg{font-family:'JetBrains Mono','Consolas',monospace;font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid;}
+.bdg-g{background:rgba(255,215,0,0.1);color:#FFD700;border-color:rgba(255,215,0,0.3);}
+.bdg-s{background:rgba(192,192,192,0.1);color:#C0C0C0;border-color:rgba(192,192,192,0.3);}
+.bdg-b{background:rgba(205,127,50,0.1);color:#CD7F32;border-color:rgba(205,127,50,0.3);}
+.bdg-a{background:rgba(46,117,182,0.1);color:#3D8FD4;border-color:rgba(46,117,182,0.3);}
+.bm-empty{text-align:center;padding:60px 20px;color:#8FA3B8;font-size:14px;}
+.bm-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.bm-item{background:rgba(22,32,50,0.85);border:1px solid rgba(46,117,182,0.25);border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;}
+.bm-item:hover{border-color:rgba(241,196,15,0.3);}
+.bm-info{flex:1;}
+.bm-title{font-weight:600;font-size:13px;margin-bottom:2px;}
+.bm-meta{font-family:'JetBrains Mono','Consolas',monospace;font-size:10px;color:#8FA3B8;}
+.bm-rm{background:none;border:none;cursor:pointer;color:#8FA3B8;font-size:18px;transition:color 0.2s;line-height:1;}
+.bm-rm:hover{color:#E74C3C;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{animation:fadeUp 0.35s ease both;}
+@media(max-width:1024px){.mod-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}}
+@media(max-width:768px){
+  header{height:auto;min-height:52px;padding:8px 16px;flex-wrap:wrap;gap:6px;}
+  .logo{font-size:11px;flex:1;min-width:0;}
+  .nav-tabs{order:10;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{font-size:10px;padding:5px 12px;white-space:nowrap;flex-shrink:0;}
+  .hdr-right{gap:8px;}.name-input{width:90px;font-size:10px;}.hdr-badge{display:none;}
+  .page{padding:20px 14px 60px;}
+  .hero-title{font-size:clamp(22px,7vw,38px);}
+  .hero-sub{font-size:14px;margin-bottom:20px;}
+  .stats-row{gap:16px;margin-bottom:24px;}.stat-num{font-size:20px;}
+  .prog-card{flex-direction:column;align-items:stretch;gap:8px;padding:14px 16px;}
+  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin-bottom:20px;}
+  .filters::-webkit-scrollbar{display:none;}
+  .filter-btn{font-size:9px;padding:5px 11px;white-space:nowrap;flex-shrink:0;}
+  .mod-grid{grid-template-columns:1fr;gap:12px;}
+  .card-top{padding:14px 14px 12px;}.card-title{font-size:15px;}
+  .sec,.notes-sec{padding-left:14px;padding-right:14px;}
+  .act-row{padding-left:14px;padding-right:14px;}
+  .gls-grid{grid-template-columns:1fr;}
+  .top3{gap:8px;}.t3-card{padding:14px 8px;}.t3-av{width:38px;height:38px;font-size:14px;}
+  .t3-name{font-size:12px;}.t3-score{font-size:16px;}
+  .lb-table th:nth-child(4),.lb-table td:nth-child(4),.lb-table th:nth-child(5),.lb-table td:nth-child(5){display:none;}
+  .lb-role{display:none;}.lb-table td,.lb-table th{padding:10px;font-size:12px;}
+  .bm-list{grid-template-columns:1fr;}
+  .overlay{align-items:flex-end;}
+  .modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;padding:24px 18px;max-height:88vh;}
+  .q-text{font-size:13px;}.q-opt{font-size:12px;padding:9px 12px;}
+}
+@media(max-width:480px){
+  header{padding:6px 12px;}.page{padding:16px 12px 60px;}
+  .hero-title{font-size:clamp(20px,8vw,28px);}
+  .nav-tab{font-size:9px;padding:4px 10px;}
+  .act-row{flex-direction:column;}
+}
+@media(min-width:1400px){.page{max-width:1300px;}.mod-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span class="logo-text">OT/ICS Security</span></div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-page="modules">Modules</button>
+    <button class="nav-tab" data-page="glossary">Glossary</button>
+    <button class="nav-tab" data-page="leaderboard">Leaderboard</button>
+    <button class="nav-tab" data-page="bookmarks">Bookmarks</button>
+  </nav>
+  <div class="hdr-right">
+    <input class="name-input" type="text" id="analystName" placeholder="Your name..." />
+    <div class="hdr-badge">INTERNAL USE ONLY</div>
+  </div>
+</header>
+
+<div class="page active" id="page-modules">
+  <div class="hero-label">OT/ICS Security Curriculum &mdash; All Free Resources</div>
+  <h1 class="hero-title">OT and <span>ICS Security</span></h1>
+  <p class="hero-sub">9 structured modules covering operational technology and industrial control system security. From OT fundamentals to advanced threat hunting and incident response in critical infrastructure environments.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-num">48+</div><div class="stat-label">Hours</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free</div></div>
+    <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Resources</div></div>
+  </div>
+  <div class="prog-card">
+    <span class="prog-label">YOUR PROGRESS</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <span class="prog-count" id="progCount">0 / 9 complete</span>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Foundation">Foundation</button>
+    <button class="filter-btn" data-filter="Intermediate">Intermediate</button>
+    <button class="filter-btn" data-filter="Advanced">Advanced</button>
+    <button class="filter-btn" data-filter="bookmarked">Bookmarked</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+  </div>
+  <div class="mod-grid" id="modGrid"></div>
+</div>
+
+<div class="page" id="page-glossary">
+  <div class="sec-title">Glossary</div>
+  <div class="sec-sub">Core terms for OT and ICS security practitioners.</div>
+  <input class="gls-search" id="glsSearch" type="text" placeholder="Search terms..." />
+  <div class="gls-grid" id="glsGrid"></div>
+</div>
+
+<div class="page" id="page-leaderboard">
+  <div class="sec-title">Team Leaderboard</div>
+  <div class="sec-sub">Track your team's progress through the curriculum.</div>
+  <div class="lb-note">MOCK DATA &mdash; Connect a backend to enable live tracking.</div>
+  <div class="top3" id="top3"></div>
+  <div class="lb-wrap">
+    <div class="lb-hdr"><div class="lb-hdr-t">Full Rankings</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8FA3B8;">MOCK DATA</div></div>
+    <table class="lb-table"><thead><tr><th>Rank</th><th>Analyst</th><th>Modules</th><th>Progress</th><th>Quiz Avg</th><th>Badge</th></tr></thead><tbody id="lbBody"></tbody></table>
+  </div>
+</div>
+
+<div class="page" id="page-bookmarks">
+  <div class="sec-title">Bookmarked Modules</div>
+  <div class="sec-sub">Modules you have saved for quick access.</div>
+  <div id="bmContent"></div>
+</div>
+
+<div class="overlay" id="quizOverlay">
+  <div class="modal">
+    <button class="modal-x" id="quizClose">x</button>
+    <div class="modal-title" id="quizTitle"></div>
+    <div class="modal-sub" id="quizSub"></div>
+    <div class="q-pb"><div class="q-pb-fill" id="qPBFill"></div></div>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<div class="overlay" id="labOverlay">
+  <div class="modal">
+    <button class="modal-x" id="labClose">x</button>
+    <div class="modal-title" id="labTitle"></div>
+    <div class="modal-sub">Hands-On Lab Exercise</div>
+    <div id="labBody"></div>
+  </div>
+</div>
+
+<script>
+var MODS = [
+{num:1,title:"OT and ICS Fundamentals for Security Teams",dur:"4 hours",level:"Foundation",
+topics:["What is OT: operational technology vs information technology","ICS components: PLCs, RTUs, HMIs, engineering workstations, historians","Common OT protocols: Modbus, DNP3, Profibus, EtherNet/IP, OPC","The Purdue Model and ISA/IEC 62443 zones and conduits","OT vs IT security: availability first, patching challenges, legacy systems","Key sectors: energy, water, manufacturing, oil and gas, transportation"],
+videos:[
+{n:"SANS ICS: Introduction to Industrial Control System Security",d:"Free SANS ICS primer covering OT fundamentals and security challenges",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"b",t:"~2 hrs"},
+{n:"Idaho National Laboratory: ICS Security Fundamentals",d:"Free INL course on ICS architecture, components, and security principles",u:"https://www.inl.gov/initiatives/ics-cybersecurity/",l:"b",t:"~2 hrs"},
+{n:"CISA: ICS Security Overview Video Series",d:"Official CISA educational videos on ICS components and threat landscape",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"b",t:"~1 hr"}
+],
+reading:[
+{n:"NIST SP 800-82 Rev 3: Guide to OT Security (Free PDF)",d:"The definitive NIST guide to operational technology security - essential reference",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-82r3.pdf",l:"b",t:"PDF"},
+{n:"CISA: ICS-CERT Recommended Practices",d:"CISA's collection of ICS security recommended practice documents",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"b",t:"Reference"},
+{n:"ISA/IEC 62443 Overview (ISA Free Resources)",d:"Introduction to the ISA/IEC 62443 series - the primary OT security standard",u:"https://www.isa.org/standards-and-publications/isa-standards/isa-iec-62443-series-of-standards",l:"b",t:"Reference"},
+{n:"SANS: ICS 5 Critical Controls (Free PDF)",d:"SANS ICS whitepaper defining the 5 most impactful security controls for ICS environments - essential starting point for any OT security program",u:"https://www.sans.org/white-papers/36327/",l:"b",t:"PDF"},
+{n:"Dragos: Year in Review ICS/OT Cybersecurity Report (Free)",d:"Annual report on OT threat landscape from a leading ICS security firm",u:"https://www.dragos.com/year-in-review/",l:"b",t:"Report"}
+],
+practice:[
+{n:"CISA: ICS Cybersecurity Training (Free)",d:"Free self-paced ICS security courses from CISA covering fundamentals to advanced topics",u:"https://www.cisa.gov/ics-training",l:"b",t:"Multiple courses"},
+{n:"Idaho National Laboratory: ICS Cybersecurity Training Portal",d:"Free INL training resources for ICS security practitioners",u:"https://www.inl.gov/initiatives/ics-cybersecurity/",l:"b",t:"Courses"}
+],
+quiz:[
+{q:"What is the primary difference between OT and IT security priorities?",o:["IT prioritizes availability; OT prioritizes confidentiality","OT prioritizes availability and safety above all else; IT prioritizes confidentiality first","They have identical security priorities","OT has no security requirements"],a:1,e:"In OT environments, an unplanned outage of a power grid or water treatment plant can cause physical harm. Availability and safety are paramount. Confidentiality, while important, is secondary to keeping critical processes running safely."},
+{q:"What does a PLC do in an industrial control system?",o:["Provides the operator graphical interface","Stores historical process data","Executes control logic to monitor inputs and drive outputs, directly controlling physical processes","Connects OT networks to enterprise IT networks"],a:2,e:"Programmable Logic Controllers (PLCs) are the workhorses of OT. They read sensor inputs, execute ladder logic, and drive actuator outputs - directly controlling pumps, valves, motors, and other physical equipment."},
+{q:"The Purdue Model divides ICS environments into levels. Which level contains PLCs and RTUs?",o:["Level 4 - Enterprise zone","Level 3 - Site operations","Level 1 - Basic control","Level 0 - Physical process"],a:2,e:"Level 1 (Basic Control) contains PLCs, RTUs, and other field controllers that directly interface with Level 0 physical processes. Understanding the Purdue Model is essential for network segmentation and defense-in-depth."},
+{q:"Why is patching particularly challenging in OT environments compared to IT?",o:["OT systems never need patching","Patches can disrupt continuous industrial processes, require vendor testing, and systems may run for decades without maintenance windows","OT patches are always free","OT systems patch automatically"],a:1,e:"OT systems often run 24/7 with no maintenance windows, use legacy operating systems no longer supported, and patches must be tested by ICS vendors to avoid disrupting safety-critical processes - creating long patch cycles measured in months or years."},
+{q:"What is a historian in an ICS environment and what security risk does it present?",o:["A documentation system only","A server that stores long-term process data and often sits at the IT/OT boundary, making it a potential pivot point between networks","A protocol for OT communications","A type of firewall for ICS networks"],a:1,e:"Historians aggregate OT process data for analysis and often require connectivity to both OT and IT networks. This dual connectivity makes them a critical attack surface - a compromised historian can be used to pivot from the IT network into the OT environment."}
+],
+lab:{title:"Module 1 Lab: OT Architecture Review",scene:"Map the security zones of a water treatment facility's control system and identify boundary weaknesses.",data:"FACILITY: Municipal Water Treatment Plant\n\nNETWORK INVENTORY:\n  Corporate LAN (192.168.1.0/24)\n    - Business workstations, email, ERP system\n    - IT firewall connecting to internet\n\n  Control Center Network (10.10.1.0/24)\n    - 2x Engineering workstations (Windows 7)\n    - Historian server (Windows Server 2012 R2)\n    - HMI server\n    - Remote access VPN concentrator (vendor access)\n\n  Field Network (10.10.2.0/24)\n    - 12x PLCs (various ages, some from 1990s)\n    - 8x RTUs\n    - Chemical dosing controllers\n    - SCADA server\n\n  KNOWN ISSUES:\n    - Historian directly connected to both networks\n    - Vendor VPN bypasses firewall - direct to control network\n    - No network segmentation between control center and field\n    - Windows 7 workstations cannot be patched (vendor restriction)",tasks:["Map this architecture to Purdue Model levels. Identify which devices belong at each level.","Identify the top 3 network segmentation weaknesses and explain the risk each creates.","The vendor VPN connects directly to the control network. Describe a specific attack scenario this enables.","Recommend a network architecture redesign to reduce risk while maintaining operational requirements."]}
+},
+{num:2,title:"OT Threat Landscape and Threat Actors",dur:"5 hours",level:"Foundation",
+topics:["ICS-specific threat actors: nation-states, ransomware groups, hacktivists","Notable ICS attacks: Stuxnet, Ukraine power grid, Colonial Pipeline, Triton/TRISIS","MITRE ATT&CK for ICS: tactics and techniques specific to OT environments","ICS-specific malware: Industroyer, CRASHOVERRIDE, PIPEDREAM/INCONTROLLER","Threat actor targeting patterns by sector","IT ransomware impact on OT: how IT compromises reach OT environments"],
+videos:[
+{n:"SANS ICS: ICS Threat Actor Overview",d:"SANS analysis of nation-state and criminal threat actors targeting ICS environments",u:"https://www.youtube.com/watch?v=placeholder_sans_ics_threat",l:"b",t:"~1 hr"},
+{n:"Dragos: ICS Threat Groups - Annual Briefing",d:"Free annual briefing on active ICS threat groups from Dragos researchers",u:"https://www.dragos.com/resources/",l:"b",t:"~1 hr"},
+{n:"CISA: Known ICS Attack Campaigns Analysis",d:"CISA technical analysis of major ICS attack campaigns and their methods",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"b",t:"~45 min"}
+],
+reading:[
+{n:"MITRE ATT&CK for ICS (Full Matrix)",d:"Complete MITRE knowledge base of adversary tactics and techniques for ICS environments",u:"https://attack.mitre.org/matrices/ics/",l:"b",t:"Reference"},
+{n:"CISA: Analysis of PIPEDREAM Malware (Free PDF)",d:"CISA/NSA advisory on PIPEDREAM - the most capable ICS attack framework discovered",u:"https://www.cisa.gov/news-events/alerts/2022/04/13/apt-cyber-tools-targeting-ics-scada-devices",l:"b",t:"Advisory"},
+{n:"Dragos: CRASHOVERRIDE Analysis (Free)",d:"Technical analysis of the malware used in the 2016 Ukraine power grid attack",u:"https://www.dragos.com/resources/",l:"b",t:"Report"},
+{n:"SANS ICS: Analyzing Stuxnet (Free)",d:"SANS technical breakdown of Stuxnet - the first known ICS-targeting nation-state weapon",u:"https://www.sans.org/reading-room/",l:"b",t:"Paper"}
+],
+practice:[
+{n:"MITRE ATT&CK for ICS Navigator",d:"Use the ATT&CK Navigator to map ICS threat group techniques",u:"https://mitre-attack.github.io/attack-navigator/",l:"b",t:"Tool"},
+{n:"CISA: ICS Advisory Archive",d:"Free archive of all CISA ICS security advisories - practice analyzing real threat intelligence",u:"https://www.cisa.gov/news-events/ics-advisories",l:"b",t:"Reference"}
+],
+quiz:[
+{q:"What made Stuxnet significant as a cyber attack?",o:["It was the first ransomware","It was the first malware specifically designed to cause physical damage to industrial equipment - targeting Iranian nuclear centrifuges","It was the first attack on a power grid","It was the first use of phishing in an ICS attack"],a:1,e:"Stuxnet crossed the line from data theft or disruption to physical destruction - causing uranium centrifuges to spin at damaging speeds while showing normal readings to operators. It demonstrated that cyberattacks could cause real-world physical consequences."},
+{q:"What is TRITON/TRISIS and why is it considered especially dangerous?",o:["Ransomware targeting IT networks","Malware targeting Safety Instrumented Systems (SIS) - the last line of defense preventing industrial accidents - with the intent to disable safety systems and enable a physical disaster","A network scanning tool for ICS","Malware that steals process data"],a:1,e:"TRITON targeted Safety Instrumented Systems - the physical safeguards that prevent explosions, fires, and toxic releases. Disabling an SIS removes the last barrier to a catastrophic industrial accident. This represents an escalation to potential mass-casualty attacks."},
+{q:"How does IT ransomware most commonly impact OT operations?",o:["Ransomware directly targets PLCs","IT ransomware encrypts business systems causing operators to lose visibility into OT processes, forcing precautionary OT shutdowns (as in Colonial Pipeline)","Ransomware cannot affect OT environments","Ransomware only impacts HMI systems"],a:1,e:"Colonial Pipeline was shut down not because OT systems were encrypted, but because the IT billing and business systems were - removing the ability to account for fuel distribution. Loss of IT visibility often forces precautionary OT shutdowns with major operational consequences."},
+{q:"MITRE ATT&CK for ICS includes which tactic not found in the Enterprise matrix?",o:["Initial Access","Impair Process Control","Lateral Movement","Collection"],a:1,e:"ATT&CK for ICS includes OT-specific tactics like Impair Process Control and Inhibit Response Function - which describe actions that manipulate or disable industrial processes in ways that have no equivalent in IT environments."},
+{q:"What characterizes a nation-state ICS threat actor's operational approach compared to a ransomware group?",o:["Nation-states always move faster","Nation-states typically conduct long-term persistent access for intelligence or pre-positioning - potentially years before any disruptive action. Ransomware groups prioritize speed to monetization","They use identical techniques","Ransomware groups are more dangerous to ICS"],a:1,e:"Nation-state ICS actors (like those behind CRASHOVERRIDE or PIPEDREAM) invest in persistent, stealthy access and deep knowledge of target environments. They may remain dormant for years, only activating capabilities during geopolitical crises."}
+],
+lab:{title:"Module 2 Lab: ICS Threat Intelligence Analysis",scene:"Analyze a CISA advisory for an active ICS threat and map it to ATT&CK for ICS.",data:"ADVISORY SUMMARY (based on real CISA guidance):\n\nThreat: APT targeting energy sector ICS\nInitial access: Spearphishing employees with ICS vendor software lures\nLateral movement: Compromise of IT network, pivot to historian servers\nOT reconnaissance: Collected ICS project files, PLC configurations,\n                   network diagrams from engineering workstations\nCapability staging: Deployed custom tools on engineering workstations\n                    capable of sending unauthorized commands to PLCs\nExfiltration: Copied process data and control logic for offline analysis\nCurrent status: Pre-positioning assessed - no disruptive action taken yet\n\nAffected systems: Siemens S7 PLCs, Wonderware HMI, OSIsoft PI Historian\nSectors targeted: Electric utilities, natural gas pipelines",tasks:["Map each phase of this attack to MITRE ATT&CK for ICS tactics and techniques.","What is the adversary's likely strategic objective based on the behavior described?","What detection opportunities exist at each stage of the attack chain?","Write a threat intelligence brief for an energy sector operator based on this advisory."]}
+},
+{num:3,title:"ICS Network Security and Segmentation",dur:"5 hours",level:"Foundation",
+topics:["Defense-in-depth for OT: zones, conduits, and DMZs","Firewall placement and rules for OT/IT boundaries","Unidirectional security gateways: data diodes and their use cases","OT network monitoring: passive vs active approaches","Secure remote access for OT: vendor access, jump servers, privileged access","Wireless in OT environments: risks and mitigations"],
+videos:[
+{n:"SANS ICS: Network Architecture for ICS Security",d:"SANS guidance on designing secure ICS network architectures",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"b",t:"~1.5 hrs"},
+{n:"CISA: ICS Defense in Depth",d:"CISA guidance on layered security architecture for industrial control systems",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"b",t:"~1 hr"},
+{n:"Waterfall Security: Unidirectional Security Gateways Explained",d:"Technical explanation of data diodes and unidirectional gateways for OT protection",u:"https://waterfall-security.com/",l:"i",t:"~30 min"}
+],
+reading:[
+{n:"NIST SP 800-82 Rev 3: OT Network Security Controls",d:"NIST guidance specifically on network security controls for OT environments",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-82r3.pdf",l:"b",t:"PDF"},
+{n:"CISA: Improving ICS Cybersecurity with Defense-in-Depth",d:"CISA recommended practice paper on layered OT security architecture",u:"https://www.cisa.gov/sites/default/files/recommended_practices/NCCIC_ICS-CERT_Defense_in_Depth_2016_S508C.pdf",l:"b",t:"PDF"},
+{n:"ISA/IEC 62443-3-3: System Security Requirements and Security Levels",d:"Overview of ISA/IEC 62443 zone and conduit model for OT network segmentation",u:"https://www.isa.org/standards-and-publications/isa-standards/isa-iec-62443-series-of-standards",l:"i",t:"Standard"},
+{n:"SANS: Securing Remote Access to ICS",d:"SANS guidance on implementing secure vendor and remote access for OT systems",u:"https://www.sans.org/reading-room/",l:"i",t:"White Paper"}
+],
+practice:[
+{n:"CISA: ICS Network Segmentation Exercises",d:"Free CISA tabletop exercises focused on OT network segmentation decisions",u:"https://www.cisa.gov/ics-training",l:"b",t:"Exercises"},
+{n:"SecurityOnion: OT Network Monitoring Setup",d:"Deploy Security Onion free to practice passive OT network monitoring",u:"https://securityonionsolutions.com/",l:"i",t:"Platform"}
+],
+quiz:[
+{q:"What is a data diode and why is it used in critical OT environments?",o:["A type of fiber optic cable","A hardware device that enforces one-way data flow, allowing data to leave OT networks while making it physically impossible for data or commands to enter","A software firewall rule","A type of ICS protocol"],a:1,e:"Data diodes provide hardware-enforced unidirectional communication. Unlike firewalls (which can be misconfigured), a data diode's one-way nature is physically guaranteed - no amount of software exploitation can send data back through it."},
+{q:"Why is active network scanning generally avoided in OT environments?",o:["It is too slow","Active scanning can cause legacy PLCs and RTUs to crash, freeze, or behave unpredictably - potentially disrupting the physical process they control","Active scanning is always preferred","OT networks are too small to scan"],a:1,e:"Many ICS devices were built before cybersecurity was a consideration and cannot handle unexpected network traffic. A port scan that is harmless on an IT server can cause a PLC to fault or restart, potentially stopping a safety-critical industrial process."},
+{q:"What is the purpose of a DMZ between OT and IT networks?",o:["To speed up data transfer","To host shared services (historians, data exchange) that need to communicate with both networks while preventing direct connections between IT and OT zones","To replace firewalls","To store backup configurations"],a:1,e:"An OT/IT DMZ hosts bridging services in an isolated zone. Data flows from OT to DMZ and from DMZ to IT, but never directly from IT to OT. This breaks the attack chain while allowing necessary data sharing."},
+{q:"What is the primary risk of vendor remote access to OT systems?",o:["Vendors cannot be trusted at all","Vendor connections represent a trusted, high-privileged access path that bypasses normal security controls - a compromised vendor becomes a trusted attacker with direct OT access","Remote access is always safe with VPN","Vendors do not need OT access"],a:1,e:"Third-party vendor access is one of the most common initial access vectors in ICS incidents. Vendors typically receive highly privileged access and often connect from networks outside your security controls. The Colonial Pipeline and Oldsmar water plant attacks both involved remote access weaknesses."},
+{q:"Which network monitoring approach is safest for OT environments and why?",o:["Active scanning - more comprehensive","Passive monitoring - captures traffic without generating any packets that could disrupt sensitive ICS devices","No monitoring - OT networks are air-gapped","Vulnerability scanning on a fixed schedule"],a:1,e:"Passive monitoring captures and analyzes existing network traffic without injecting any packets. This provides full visibility into OT communications without any risk of disrupting sensitive legacy devices that may not handle unexpected traffic gracefully."}
+],
+lab:{title:"Module 3 Lab: OT Network Segmentation Design",scene:"Redesign the network architecture of a manufacturing facility to meet ICS security best practices.",data:"CURRENT STATE:\n  All systems on flat 10.0.0.0/8 network with no segmentation:\n    - Corporate ERP (SAP)\n    - Engineering workstations\n    - HMI servers (3x Windows XP - vendor lock-in)\n    - PLC network (50x PLCs, various vendors)\n    - Historian (OSIsoft PI)\n    - Safety PLC network (SIL-2 certified systems)\n    - Vendor remote access (direct RDP to engineering workstations)\n    - Wireless access points (production floor - WPA2)\n\n  REQUIREMENTS:\n    - Safety PLCs must be completely isolated\n    - Historian data must be accessible to corporate ERP\n    - Vendors must retain remote access capability\n    - Production data must reach business systems",tasks:["Design the segmented network architecture. Define zones, conduits, and data flows.","How should the historian be positioned? What controls govern data flow in each direction?","Design the vendor remote access architecture. What controls and monitoring would you implement?","The safety PLC network is SIL-2 certified. What level of network isolation does this require and how do you achieve it?"]}
+},
+{num:4,title:"OT Asset Management and Vulnerability Management",dur:"5 hours",level:"Intermediate",
+topics:["OT asset inventory: discovery challenges and passive approaches","Firmware versions, EOL systems, and unpatched vulnerabilities in OT","ICS-specific vulnerability databases: ICS-CERT advisories, Claroty, Dragos","Patch management in OT: risk-based approach and compensating controls","Configuration management: securing PLC programs and HMI configurations","Hardware supply chain security for ICS components"],
+videos:[
+{n:"SANS ICS: Asset Management and Vulnerability Management for OT",d:"SANS practical guidance on managing OT assets and vulnerabilities without disrupting operations",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"i",t:"~1.5 hrs"},
+{n:"Claroty: OT Asset Discovery and Inventory",d:"Technical overview of passive OT asset discovery approaches and their implementation",u:"https://claroty.com/resources/",l:"i",t:"~45 min"},
+{n:"CISA: ICS Patch Management Guidance",d:"CISA guidance on risk-based patch management for industrial control systems",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"i",t:"~45 min"}
+],
+reading:[
+{n:"CISA: ICS-CERT Advisories Archive (Free)",d:"Full archive of ICS vulnerability advisories - the primary source for OT vulnerability intelligence",u:"https://www.cisa.gov/news-events/ics-advisories",l:"b",t:"Reference"},
+{n:"NIST SP 800-82 Rev 3: OT Vulnerability Management",d:"NIST guidance on vulnerability identification and management in OT environments",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-82r3.pdf",l:"i",t:"PDF"},
+{n:"CISA: Securing Industrial Control Systems - A Unified Initiative",d:"CISA strategic guidance on ICS security including vulnerability and patch management",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"i",t:"Guide"},
+{n:"ICS Advisory Project: Free ICS CVE Database",d:"Community-maintained database of ICS-specific CVEs with affected vendor and product information",u:"https://www.icsadvisoryproject.com/",l:"b",t:"Database"}
+],
+practice:[
+{n:"CISA: ICS Advisory Database - Vulnerability Analysis Exercise",d:"Practice analyzing CISA ICS advisories and prioritizing vulnerabilities for OT environments",u:"https://www.cisa.gov/news-events/ics-advisories",l:"i",t:"Exercise"},
+{n:"Shodan: ICS Device Discovery (Free Account)",d:"Use Shodan to understand internet-exposed ICS devices - what attackers can see",u:"https://www.shodan.io/",l:"i",t:"Tool"}
+],
+quiz:[
+{q:"Why is passive asset discovery preferred over active scanning for OT inventory?",o:["Passive discovery is faster","Active scanning can crash legacy OT devices. Passive discovery builds inventory from observed network traffic without injecting packets that could disrupt operations","Active discovery is more accurate","Passive discovery costs less"],a:1,e:"OT asset discovery must be non-disruptive. Passive methods analyze existing traffic to identify devices, protocols, and communications without any risk of causing faults in legacy PLCs and controllers that cannot handle unexpected network traffic."},
+{q:"A SCADA server runs Windows Server 2008 R2 which is end-of-life. The ICS vendor will not support upgrading. What is the appropriate response?",o:["Continue operating without any action","Immediately shut down the SCADA system","Implement compensating controls: network isolation, application whitelisting, enhanced monitoring, and a documented exception with risk acceptance","Apply Windows patches anyway despite vendor restrictions"],a:2,e:"Compensating controls are the standard OT response to unpatched systems. When vendor restrictions or operational requirements prevent patching, layered technical controls reduce exploitability while documented risk acceptance ensures leadership awareness."},
+{q:"What makes OT vulnerability prioritization different from IT CVSS scoring?",o:["OT vulnerabilities are always more severe","OT prioritization must consider physical consequences, operational impact of exploits, availability of compensating controls, and whether the vulnerability is reachable from outside the OT network - factors not captured by CVSS alone","CVSS works identically for OT","OT vulnerabilities never have patches"],a:1,e:"A CVSS 9.8 vulnerability on an isolated PLC with no network reachability is lower priority than a CVSS 6.5 vulnerability on an internet-facing HMI. OT risk scoring must incorporate physical process impact and network reachability."},
+{q:"What is the primary security risk of PLC program configuration files?",o:["They contain no sensitive information","They contain complete details of industrial process logic, safety setpoints, and control parameters - giving an attacker a roadmap to manipulate physical processes without detection","They are always encrypted","They can only be accessed physically"],a:1,e:"PLC program files reveal exactly how the physical process is controlled and what values are normal. An attacker with this knowledge can modify setpoints subtly to cause physical damage while keeping values within ranges that avoid alarms."},
+{q:"How should an organization handle a critical ICS vulnerability when the vendor has not released a patch?",o:["Wait indefinitely for the vendor patch","Exploit the vulnerability yourself to demonstrate risk","Implement compensating controls, notify CISA, monitor for exploitation indicators, and formally accept residual risk with documented management approval","Disconnect all affected systems permanently"],a:2,e:"When patches are unavailable, the structured response is: implement technical compensating controls to reduce exploitability, notify CISA (they may have additional intelligence), monitor for exploitation, and formally document risk acceptance so leadership understands the exposure."}
+],
+lab:{title:"Module 4 Lab: OT Vulnerability Prioritization",scene:"You have completed a passive asset scan of a manufacturing facility. Prioritize the identified vulnerabilities for remediation.",data:"ASSET INVENTORY AND VULNERABILITY FINDINGS:\n\nAsset A: Siemens S7-300 PLC\n  CVE-2019-13945: Auth bypass, CVSS 9.8\n  Network position: Isolated field network, no external access\n  Process: Controls robot arm speed - safety shutdown available\n\nAsset B: Wonderware InTouch HMI Server\n  CVE-2021-27041: RCE, CVSS 8.8\n  Network position: Control center network, VPN accessible\n  Process: Operator visibility only - no direct PLC control\n\nAsset C: OSIsoft PI Historian\n  CVE-2020-10612: Privilege escalation, CVSS 7.2\n  Network position: IT/OT boundary - dual-homed\n  Process: Data collection only - no control capability\n\nAsset D: Vendor Remote Access Server\n  CVE-2022-29499: Unauthenticated RCE, CVSS 10.0\n  Network position: Internet-facing, connects to control network\n  Process: Used for emergency vendor support",tasks:["Rank these vulnerabilities by actual OT risk (not CVSS score). Justify your ranking.","For the highest-priority finding, design the immediate compensating controls you would implement today.","Asset D has a CVSS 10.0 but no patch is available. Write the risk acceptance memo for your CISO.","Design a 90-day remediation roadmap for all four findings."]}
+},
+{num:5,title:"OT Security Monitoring and Detection",dur:"6 hours",level:"Intermediate",
+topics:["What to monitor in OT: network traffic, process values, operator actions, authentication","OT-specific detection: protocol anomalies, unauthorized commands, set point changes","SIEM integration for OT: collecting and correlating OT logs without disrupting operations","OT-specific security tools: Dragos, Claroty, Nozomi, Tenable.ot (free tier options)","Indicators of compromise for ICS attacks: behavioral and network-based","Building detection use cases for ICS: ATT&CK for ICS as a detection guide"],
+videos:[
+{n:"SANS ICS: Monitoring and Detection for OT Environments",d:"SANS guidance on implementing effective monitoring in industrial environments",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"i",t:"~2 hrs"},
+{n:"Dragos: ICS Threat Detection Techniques",d:"Technical webinar on detecting advanced ICS threats using behavioral and protocol analysis",u:"https://www.dragos.com/resources/",l:"i",t:"~1 hr"},
+{n:"SecurityOnion: OT/ICS Detection with Zeek and Suricata",d:"Using open source tools for ICS network monitoring and anomaly detection",u:"https://www.youtube.com/watch?v=placeholder_securityonion_ics",l:"i",t:"~1 hr"}
+],
+reading:[
+{n:"MITRE ATT&CK for ICS: Detection Guidance",d:"ATT&CK for ICS technique pages include detection data sources and opportunities for each technique",u:"https://attack.mitre.org/matrices/ics/",l:"i",t:"Reference"},
+{n:"CISA: ICS Monitoring and Detection Recommended Practices",d:"CISA guidance on establishing effective monitoring programs for industrial control systems",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"i",t:"Guide"},
+{n:"Dragos: ICS Detection Signatures and Use Cases (Free)",d:"Community ICS detection resources from Dragos research team",u:"https://www.dragos.com/resources/",l:"i",t:"Reference"},
+{n:"SANS ICS: Building an ICS Security Operations Capability",d:"SANS white paper on establishing detection and response capability for OT environments",u:"https://www.sans.org/reading-room/",l:"a",t:"White Paper"}
+],
+practice:[
+{n:"SecurityOnion: Free ICS Network Monitoring Lab",d:"Deploy Security Onion to practice OT network monitoring with ICS protocol parsers",u:"https://securityonionsolutions.com/",l:"i",t:"Platform"},
+{n:"Wireshark: ICS Protocol Analysis (Free)",d:"Use Wireshark with ICS dissectors to analyze Modbus, DNP3, and EtherNet/IP traffic",u:"https://www.wireshark.org/",l:"b",t:"Tool + Labs"},
+{n:"PCAP Repository: ICS Traffic Samples",d:"Free collection of ICS protocol network captures for analysis practice",u:"https://github.com/automayt/ICS-pcap",l:"i",t:"Dataset"}
+],
+quiz:[
+{q:"What type of OT anomaly should immediately trigger a high-priority alert regardless of process impact?",o:["Any network connection","Unauthorized write commands to PLCs from sources other than the engineering workstation or HMI server","Normal operator login during business hours","Read-only polling from the historian"],a:1,e:"Unauthorized write commands to PLCs represent potential manipulation of physical processes. Only designated engineering workstations should send write commands. Any other source sending PLC writes is a critical indicator of either compromise or misuse."},
+{q:"Why is process value monitoring important in ICS security detection?",o:["It is not useful for security","Attackers may modify PLC setpoints to cause physical damage while keeping values within normal alert ranges - process value anomalies can reveal stealthy manipulation that network monitoring misses","Process values are only relevant for operations","It creates too many false positives"],a:1,e:"The Stuxnet attack manipulated centrifuge speeds while reporting normal values to operators. Monitoring actual process values against historical baselines can detect subtle manipulation that neither network nor host monitoring would reveal."},
+{q:"What makes ICS protocol anomaly detection effective for finding threats?",o:["ICS protocols change frequently","ICS protocols are highly structured and deterministic - legitimate traffic follows predictable patterns. Deviations (unknown function codes, unusual packet sizes, unexpected sources) stand out clearly","ICS protocols are always encrypted","All ICS traffic is identical"],a:1,e:"Modbus, DNP3, and other ICS protocols have well-defined, repetitive communication patterns. An engineering workstation that suddenly sends a Modbus write command it has never sent before, or at 2am, is a high-confidence indicator of compromise."},
+{q:"What challenge does OT environment logging present for SIEM integration?",o:["OT devices generate too many logs","Many legacy OT devices generate no logs, use proprietary formats, or cannot be queried without disrupting operations - requiring purpose-built OT monitoring tools to extract security-relevant data","OT logs are always in standard formats","SIEM cannot ingest OT data"],a:1,e:"Most PLCs and legacy OT devices were not designed to generate security logs. OT monitoring must rely heavily on network-based detection of protocol-level behavior rather than host-based logging, creating a different visibility model from IT security monitoring."},
+{q:"When building ICS detection use cases, which data source provides the highest-fidelity signal?",o:["Active vulnerability scanning results","Passive network monitoring capturing all OT protocol communications at Layer 7 - revealing actual process commands, values, and device interactions","Only IT-side firewall logs","Only authentication logs"],a:1,e:"Layer 7 OT protocol visibility (Modbus function codes, DNP3 commands, EtherNet/IP tags) provides direct insight into what commands are being sent to physical devices. This is the most specific and actionable OT security data source available."}
+],
+lab:{title:"Module 5 Lab: OT Anomaly Detection",scene:"Analyze a set of OT network observations and determine which represent security incidents.",data:"OT NETWORK OBSERVATIONS (from passive monitoring system):\n\nOBS-001: 02:14 - Engineering WS (10.10.1.50) sent Modbus Write\n         to PLC-07 (10.10.2.7) - Function Code 06 (Write Single Register)\n         Register 40001 changed: 850 -> 1200 (pump speed setpoint)\n         Context: No maintenance scheduled, operator not logged in\n\nOBS-002: 09:45 - Historian (10.10.1.100) polled all 12 PLCs\n         using Modbus Read - Function Code 03\n         Context: Normal scheduled polling, occurs every 60 seconds\n\nOBS-003: 14:22 - Unknown host (10.10.1.87) sent Modbus scan\n         to entire 10.10.2.0/24 subnet - Function Code 43 (Device ID)\n         Context: No device at 10.10.1.87 in asset inventory\n\nOBS-004: 23:55 - Vendor VPN IP connected to Engineering WS\n         Remote desktop session opened, HMI project file accessed\n         Context: No vendor maintenance scheduled\n\nOBS-005: 08:30 - DNP3 Unsolicited Response from RTU-03 (10.10.2.103)\n         Process value: Tank level = 0 (was 65% at 08:29)\n         Context: No drain operation authorized",tasks:["Triage each observation. For each: severity (Critical/High/Medium/Low), likely explanation (benign/suspicious/malicious), and required action.","OBS-001 and OBS-003 occur together. What attack scenario does this combined pattern suggest?","Write the incident notification for OBS-004. Who needs to be notified and what immediate actions do you take?","What detection rule would you write to prevent false negatives for OBS-001 type events in future?"]}
+},
+{num:6,title:"OT Incident Response",dur:"6 hours",level:"Intermediate",
+topics:["How OT incident response differs from IT: physical consequences, operational continuity","ICS incident classification: cyber incident vs equipment failure vs process upset","Containment in OT: when to isolate vs when to maintain operations","Evidence collection in OT environments: forensics without disrupting processes","Coordination: security team, operations, engineering, safety, and management","Recovery: restoring ICS from known-good backups and validating before restart"],
+videos:[
+{n:"SANS ICS: Incident Response in OT Environments",d:"SANS practical guidance on conducting IR in industrial environments",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"i",t:"~2 hrs"},
+{n:"CISA: ICS Incident Response Tabletop Exercises",d:"CISA tabletop exercise videos for ICS incident response team training",u:"https://www.cisa.gov/ics-training",l:"i",t:"~1.5 hrs"},
+{n:"Dragos: Responding to ICS Incidents - Lessons from the Field",d:"Real-world ICS incident response lessons from Dragos response teams",u:"https://www.dragos.com/resources/",l:"a",t:"~1 hr"}
+],
+reading:[
+{n:"CISA: ICS-CERT Incident Response Recommended Practices",d:"CISA guidance on incident response for industrial control system environments",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"i",t:"Guide"},
+{n:"NIST SP 800-82 Rev 3: OT Incident Response",d:"NIST guidance on incident detection, response, and recovery for OT systems",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-82r3.pdf",l:"i",t:"PDF"},
+{n:"E-ISAC: Cyber Incident Response for Electric Utilities (Free)",d:"Electricity ISAC guidance on ICS incident response for energy sector operators",u:"https://www.eisac.com/",l:"i",t:"Guide"},
+{n:"SANS ICS: ICS Incident Response Playbook Template",d:"Free SANS template for building ICS-specific incident response playbooks",u:"https://www.sans.org/reading-room/",l:"i",t:"Template"}
+],
+practice:[
+{n:"CISA: ICS Tabletop Exercise Package (Free)",d:"Free CISA tabletop exercise materials for practicing ICS incident response",u:"https://www.cisa.gov/ics-training",l:"i",t:"Exercise"},
+{n:"Idaho National Laboratory: ICS Cyber Response Planning",d:"Free INL resources for developing and practicing ICS cyber response plans",u:"https://www.inl.gov/initiatives/ics-cybersecurity/",l:"i",t:"Resources"}
+],
+quiz:[
+{q:"What is the most critical decision in OT incident response that has no direct equivalent in IT IR?",o:["Whether to notify law enforcement","Whether to isolate affected systems vs maintain operations to prevent physical harm from process disruption","Whether to preserve evidence","Whether to notify affected users"],a:1,e:"Isolating a compromised PLC that controls a chemical reactor or power substation could cause a more dangerous situation than leaving it running. OT IR requires operations and engineering to assess physical safety consequences of containment actions before isolating anything."},
+{q:"Why must OT forensics procedures differ from standard IT forensics?",o:["OT devices have no forensic value","Powering down OT devices for forensic imaging can stop safety-critical processes. OT forensics must prioritize live acquisition and network-based evidence to avoid disrupting ongoing operations","OT forensics is easier than IT forensics","Standard IT tools work on all OT devices"],a:1,e:"Standard IT forensics (shutdown, image, analyze) can cause more harm than the incident itself in OT. Live memory acquisition, network traffic capture, and log collection must be performed while systems remain operational wherever possible."},
+{q:"During an OT incident, who has final authority over containment decisions?",o:["The CISO","The security incident commander","The operations/engineering team, because they understand the physical safety implications - security provides recommendations but operations owns containment decisions in OT","The CEO"],a:2,e:"OT security incidents are ultimately operational safety events. Operations and engineering teams understand the physical consequences of security actions and must approve containment decisions. Security teams provide analysis and recommendations; operations teams decide what action to take."},
+{q:"What is the first step when recovering an OT system after a cyber incident?",o:["Reconnect to the network immediately","Restore from the most recent backup regardless of backup integrity","Validate that the backup is clean and pre-incident before restoring, then verify restored system integrity in an isolated environment before reconnecting to production","Apply all outstanding patches before recovery"],a:2,e:"Restoring from a compromised backup reintroduces the attacker. Backup integrity validation - confirming the backup predates the compromise and has not been tampered with - must happen before any restoration. Then restored systems must be verified clean before returning to production."},
+{q:"What reporting obligation typically applies when critical infrastructure OT systems are compromised?",o:["No mandatory reporting exists","Report only to internal management","Report to CISA within 72 hours under CIRCIA (for covered entities), plus sector-specific regulators (NERC CIP for electric, TSA for pipelines) and law enforcement as appropriate","Only report if production is disrupted"],a:2,e:"CIRCIA (Cyber Incident Reporting for Critical Infrastructure Act) requires covered critical infrastructure entities to report significant cyber incidents to CISA within 72 hours and ransom payments within 24 hours. Sector regulators like NERC CIP have additional reporting requirements."}
+],
+lab:{title:"Module 6 Lab: OT Incident Response Tabletop",scene:"Work through a simulated OT security incident at a water treatment facility.",data:"INCIDENT TIMELINE:\n\nDay 1, 06:00: Operator reports HMI displaying unusual values\n              Chlorine dosing pump running at 400% normal rate\n              Operator manually stopped pump via local controls\n\nDay 1, 07:30: IT security alerts on ransomware on corporate network\n              3 business servers encrypted overnight\n              Ransom note: 'Your ICS systems are next'\n\nDay 1, 08:00: Network monitoring shows unknown traffic from\n              engineering workstation to multiple PLCs at 03:45\n              Same workstation source as unusual HMI values\n\nDay 1, 08:30: Engineering team discovers PLC ladder logic\n              modified on 2 PLCs - setpoints altered\n              Original values unknown - no configuration backup exists\n\nFACILITY CONTEXT:\n  Serves 50,000 residents\n  Chemical dosing at 400% could cause health risk if not caught\n  PLCs control: chlorination, pH adjustment, filtration\n  No tested ICS incident response plan exists",tasks:["Walk through the immediate response actions for the first 4 hours. Who does what?","The PLC logic was modified and no backup exists. How do you safely restore safe operating parameters?","What regulatory notifications are required and within what timeframes?","Write the lessons-learned recommendations to prevent recurrence. Prioritize your top 5."]}
+},
+{num:7,title:"Secure OT Engineering and Design",dur:"5 hours",level:"Advanced",
+topics:["Security by design for ICS: integrating security into engineering processes","ISA/IEC 62443 security levels and target security levels","Secure PLC programming practices: input validation, watchdogs, safe states","Supply chain security for ICS hardware and software components","Change management and configuration control for OT systems","Security requirements in ICS procurement and vendor contracts"],
+videos:[
+{n:"ISA: Applying ISA/IEC 62443 in Practice",d:"ISA training on implementing IEC 62443 security levels in OT design",u:"https://www.isa.org/training-and-certifications/isa-training/instructor-led/",l:"a",t:"~2 hrs"},
+{n:"SANS ICS: Secure PLC Programming",d:"SANS advanced guidance on security-aware PLC development and configuration",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"a",t:"~1.5 hrs"},
+{n:"CISA: Secure by Design for ICS",d:"CISA guidance on integrating security into industrial control system design and procurement",u:"https://www.cisa.gov/resources-tools/resources/secure-by-design",l:"a",t:"~1 hr"}
+],
+reading:[
+{n:"ISA/IEC 62443-4-1: Secure Product Development Requirements",d:"Requirements for secure development lifecycle for ICS products and components",u:"https://www.isa.org/standards-and-publications/isa-standards/isa-iec-62443-series-of-standards",l:"a",t:"Standard"},
+{n:"CISA: ICS Supply Chain Risk Management",d:"CISA guidance on managing cybersecurity risk in the ICS hardware and software supply chain",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"a",t:"Guide"},
+{n:"NIST SP 800-161 Rev 1: Cybersecurity Supply Chain Risk Management",d:"NIST guidance on supply chain risk applicable to ICS component procurement",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-161r1.pdf",l:"a",t:"PDF"},
+{n:"SANS: ICS Security in the SDLC",d:"SANS guidance on integrating cybersecurity into ICS system development and modification",u:"https://www.sans.org/reading-room/",l:"a",t:"White Paper"}
+],
+practice:[
+{n:"ISA Global Cybersecurity Alliance: ICS Security Resources",d:"Free resources from the ISA Global Cybersecurity Alliance on secure ICS design",u:"https://isagca.org/",l:"a",t:"Reference"},
+{n:"CISA: ICS Security Architecture Review Exercise",d:"Free CISA exercise for practicing security architecture review of ICS designs",u:"https://www.cisa.gov/ics-training",l:"a",t:"Exercise"}
+],
+quiz:[
+{q:"What is a 'safe state' in ICS security design and why is it important?",o:["A state with no network connectivity","A defined, pre-engineered fail-safe condition the system enters automatically when it detects anomalies or loses communications - ensuring physical safety even if control is lost","A backup control system","A mode with all security controls active"],a:1,e:"Safe states are a fundamental OT safety and security design principle. If an attacker disrupts control communications or corrupts PLC logic, the process should automatically transition to a safe condition (e.g., close all valves, stop pumps) rather than continuing in an undefined state that could cause physical harm."},
+{q:"How does the ISA/IEC 62443 Security Level (SL) concept guide OT security design?",o:["It replaces the Purdue Model","SLs define target protection against specific attacker capability levels (SL1=casual, SL2=intentional simple, SL3=sophisticated, SL4=nation-state), enabling designers to specify and verify appropriate security countermeasures for each zone","SLs only apply to software","It is a vendor certification standard only"],a:1,e:"ISA/IEC 62443 Security Levels allow OT system designers to specify required protection capability for each zone based on threat assessment. A safety system in a nuclear facility targets SL4; a general manufacturing HMI may require only SL2. This enables proportionate, verifiable security design."},
+{q:"What input validation principle is most important in secure PLC programming?",o:["Validate only network inputs","Validate all external inputs including sensor readings, operator inputs, and network commands against expected ranges and rates of change - rejecting values that fall outside safe operating parameters","Validation is not needed for PLCs","Only validate outputs, not inputs"],a:1,e:"A compromised or manipulated sensor feeding a false value to a PLC could cause dangerous actuator behavior. PLCs should validate that all inputs are within physically plausible ranges and that rate-of-change values are realistic - rejecting and alarming on impossible values."},
+{q:"What is the primary security risk in ICS supply chain for hardware components?",o:["Hardware is always safe if from a known vendor","Counterfeit components or hardware implants can introduce backdoors or reliability failures that are difficult to detect through software means alone","All hardware is equally trusted","Supply chain risk only applies to software"],a:1,e:"Nation-state actors and criminal groups have targeted ICS hardware supply chains. Counterfeit PLCs, switches, or field devices may contain hardware implants that persist through software updates and could be triggered remotely. Component authentication and provenance verification are essential."},
+{q:"When writing security requirements for an ICS procurement contract, which requirement is most commonly omitted but critical?",o:["Price caps for security features","The right to audit vendor security practices, receive timely notification of vulnerabilities, and receive security patches for the contracted support period","Vendor employee background checks","Network connectivity specifications"],a:1,e:"Organizations frequently discover after deployment that vendors have no obligation to provide security patches or disclose vulnerabilities. Contractual security requirements - including patch delivery timelines, vulnerability notification obligations, and audit rights - must be negotiated before procurement."}
+],
+lab:{title:"Module 7 Lab: ICS Security Design Review",scene:"Review the security design of a new SCADA system before it goes into production at a natural gas compressor station.",data:"SCADA SYSTEM DESIGN (pending deployment):\n\n  Architecture:\n    - SCADA server: Windows Server 2019 (vendor-supported)\n    - HMI clients: Windows 10 (3x operator workstations)\n    - PLCs: 8x Siemens S7-1500 (latest firmware)\n    - Field instruments: Various 4-20mA analog sensors\n    - Communications: EtherNet/IP over dedicated OT LAN\n    - Remote access: TeamViewer installed on SCADA server\n\n  Security provisions in design:\n    - Antivirus on Windows systems\n    - Passwords changed from defaults\n    - SCADA server connected to corporate LAN for patch updates\n\n  Missing from design:\n    (Your task is to identify these)\n\n  Regulatory context:\n    - Natural gas pipeline: TSA cybersecurity directives apply\n    - Must meet TSA SD02C requirements",tasks:["Identify at least 8 security design gaps in this architecture. Prioritize them.","TeamViewer on the SCADA server - what is the risk and what is the acceptable alternative?","The SCADA server connects to the corporate LAN for patching. How do you enable patching while maintaining OT network segmentation?","Write the security requirements you would add to the vendor contract before accepting this system."]}
+},
+{num:8,title:"ICS Threat Hunting",dur:"6 hours",level:"Advanced",
+topics:["OT threat hunting vs IT threat hunting: unique challenges and data sources","Building hunt hypotheses from ICS threat intelligence and ATT&CK for ICS","Hunting for pre-positioning: unauthorized reconnaissance, PLC program reads","Detecting living-off-the-land in OT: legitimate tools used maliciously","Hunt data sources: OT network captures, historian anomalies, engineering workstation artifacts","Operationalizing hunt findings: from hunt to detection rule to defense improvement"],
+videos:[
+{n:"SANS ICS: Threat Hunting in Industrial Environments",d:"Advanced SANS guidance on conducting threat hunts specific to OT environments",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"a",t:"~2 hrs"},
+{n:"Dragos: Hunting for ICS Threats",d:"Technical guidance from Dragos on threat hunting methodologies for OT networks",u:"https://www.dragos.com/resources/",l:"a",t:"~1 hr"},
+{n:"MITRE ATT&CK for ICS: Threat Hunt Use Cases",d:"Applying ATT&CK for ICS techniques as hunt hypotheses",u:"https://attack.mitre.org/matrices/ics/",l:"a",t:"~45 min"}
+],
+reading:[
+{n:"Dragos: ICS Threat Hunt Methodology (Free)",d:"Free Dragos guidance on building and executing OT-specific threat hunt programs",u:"https://www.dragos.com/resources/",l:"a",t:"Guide"},
+{n:"MITRE ATT&CK for ICS: Full Technique Details",d:"Each technique page includes detection data sources applicable as hunt data",u:"https://attack.mitre.org/matrices/ics/",l:"a",t:"Reference"},
+{n:"SANS ICS: Threat Hunting Playbook for OT",d:"SANS template and playbook for structured OT threat hunting operations",u:"https://www.sans.org/reading-room/",l:"a",t:"Playbook"},
+{n:"Claroty: Hunting for ICS-Specific Malware Artifacts",d:"Technical guidance on identifying ICS malware indicators in OT environments",u:"https://claroty.com/resources/",l:"a",t:"Research"}
+],
+practice:[
+{n:"Wireshark: Hunting in ICS Protocol Captures",d:"Practice hunting for anomalies in ICS protocol traffic using free PCAP samples",u:"https://github.com/automayt/ICS-pcap",l:"a",t:"Dataset + Labs"},
+{n:"MITRE ATT&CK for ICS Navigator: Hunt Planning",d:"Use ATT&CK Navigator to plan coverage-based hunt campaigns against ICS technique gaps",u:"https://mitre-attack.github.io/attack-navigator/",l:"a",t:"Tool"}
+],
+quiz:[
+{q:"What is the most valuable hunt hypothesis source specific to ICS environments?",o:["Generic IT threat intelligence","ICS-specific threat intelligence from sources like CISA ICS-CERT advisories, Dragos Year in Review, and ATT&CK for ICS - combined with knowledge of your specific vendor equipment and protocols","Only internal incident history","Commercial threat feeds designed for IT"],a:1,e:"ICS threat hunting must be informed by OT-specific intelligence: known adversary techniques against your specific PLC vendors, sector-specific targeting patterns, and ATT&CK for ICS technique coverage gaps. Generic IT threat intelligence misses OT-specific behaviors."},
+{q:"What artifact on an engineering workstation most strongly indicates pre-positioning by an ICS threat actor?",o:["Installed antivirus software","ICS project files (PLC programs, network diagrams, HMI configurations) that have been recently accessed or copied - indicating reconnaissance of the process being targeted","Standard Windows logs","Email client installation"],a:1,e:"ICS threat actors consistently target engineering workstation project files during reconnaissance. Accessing PLC ladder logic, process diagrams, and network architecture files gives attackers the knowledge to manipulate processes precisely. Unexplained access to these files is a critical hunt finding."},
+{q:"What constitutes 'living off the land' in an ICS environment and why is it hard to detect?",o:["Using legitimate software licenses","Using native OT software tools (engineering software, vendor utilities) to perform malicious actions - these tools have legitimate uses so their execution does not trigger alerts","Only using open source tools","Running malware on the HMI"],a:1,e:"Attackers with access to engineering software can read and write PLC programs using the same tools as legitimate engineers. Since these tools are expected to run and communicate with PLCs, detection requires behavioral context: who ran it, when, from which workstation, against which PLCs, and what changes were made."},
+{q:"How does hunting for ICS network anomalies differ from IT network hunting?",o:["They are identical","ICS network traffic is highly repetitive and deterministic - making statistical outliers (new function codes, new source addresses, new timing patterns) extremely high-confidence indicators compared to the more variable IT network baseline","ICS networks are too small to hunt","OT protocols cannot be analyzed"],a:1,e:"The predictability of OT networks is a hunter's advantage. A PLC that has polled the same registers on the same schedule for 3 years suddenly receiving a write command from a new source is a near-certain indicator of compromise - the signal-to-noise ratio is far better than IT network hunting."},
+{q:"What should a threat hunter do when they find a suspicious artifact in an OT environment that has not caused observable harm?",o:["Delete it and close the hunt","Immediately shut down the affected OT system","Document findings, assess potential impact, escalate to operations and security leadership, and implement enhanced monitoring before any containment action that could disrupt operations","Ignore it until it causes an incident"],a:2,e:"In OT, pre-mature containment can cause more harm than the threat itself. The correct sequence is: document thoroughly, assess physical impact of response actions, brief operations and security leadership together, and agree on proportionate response. Monitoring enhancement provides time for deliberate decision-making."}
+],
+lab:{title:"Module 8 Lab: OT Threat Hunt",scene:"Conduct a hypothesis-driven threat hunt across OT environment data for signs of ICS threat actor pre-positioning.",data:"HUNT HYPOTHESIS:\nBased on a CISA advisory, an ICS threat group is known to:\n  1. Spearphish OT vendors to gain initial access\n  2. Access engineering workstations via stolen vendor credentials\n  3. Read PLC program files and network diagrams\n  4. Establish persistence on historian servers\n  5. Slowly modify PLC setpoints over weeks to avoid alarm\n\nAVAILABLE HUNT DATA:\n\nEngineering WS logs (90 days):\n  - 847 ICS project file opens (ENG-WS-01 and ENG-WS-02)\n  - 3 file opens from ENG-WS-03 (normally unused for engineering)\n  - 1 open of 'facility_network_diagram.pdf' from ENG-WS-03 at 03:22\n\nHistorian query logs:\n  - Normal polling: 400,000 reads over 90 days\n  - Bulk data export: 1 event - 90 days of all process data exported\n    Source: 10.10.1.87 (not in asset inventory)\n  - Timing: Saturday 02:44\n\nPLC setpoint history (from historian):\n  - Pump 7 max speed: 850 RPM (baseline) -> 920 RPM (current)\n    Change occurred gradually across 12 adjustments over 60 days\n  - All other setpoints: unchanged",tasks:["Evaluate each data element against the hunt hypothesis. Which findings are high confidence indicators?","The setpoint changes on Pump 7 occurred gradually. Why is this significant from a threat actor perspective?","Write the hunt findings report with severity ratings and evidence chain for each finding.","Based on your findings, write the detection rules that would catch this activity in the future."]}
+},
+{num:9,title:"OT Security Program Development",dur:"5 hours",level:"Advanced",
+topics:["Building an OT security program: people, process, and technology in industrial environments","NERC CIP compliance for electric utilities: key requirements overview","TSA cybersecurity directives for pipelines and surface transportation","ICS security assessments: methodologies and frameworks (CSET, ICS-CAP)","Developing OT security metrics and KPIs meaningful to operations leadership","Integrating OT security with enterprise security programs: bridging IT and OT teams"],
+videos:[
+{n:"SANS ICS: Building an ICS Security Program",d:"SANS guidance on developing a comprehensive OT security program from scratch",u:"https://www.sans.org/cyber-security-courses/ics-scada-cyber-security-essentials/",l:"a",t:"~2 hrs"},
+{n:"CISA: ICS Security Program Development",d:"CISA guidance on building organizational capability for ICS security",u:"https://www.cisa.gov/topics/industrial-control-systems",l:"a",t:"~1 hr"},
+{n:"E-ISAC: NERC CIP Overview for Security Teams",d:"Introduction to NERC CIP reliability standards for electric utility security teams",u:"https://www.eisac.com/",l:"a",t:"~1 hr"}
+],
+reading:[
+{n:"SANS: ICS 5 Critical Controls (Free PDF)",d:"The 5 most impactful OT security controls - widely used as a program baseline and prioritization guide",u:"https://www.sans.org/white-papers/36327/",l:"a",t:"PDF"},
+{n:"CISA CSET: Cyber Security Evaluation Tool (Free Download)",d:"Free CISA tool for self-assessing ICS security posture against multiple frameworks",u:"https://github.com/cisagov/cset",l:"a",t:"Tool"},
+{n:"NERC CIP Standards Overview (Free)",d:"Overview of NERC Critical Infrastructure Protection standards for electric utilities",u:"https://www.nerc.com/pa/Stand/Pages/CIPStandards.aspx",l:"a",t:"Reference"},
+{n:"NIST SP 800-82 Rev 3: OT Security Program",d:"NIST guidance on developing and maintaining an OT security program",u:"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-82r3.pdf",l:"a",t:"PDF"},
+{n:"Dragos: ICS Security Program Maturity Model",d:"Free Dragos maturity model for assessing and advancing OT security program capability",u:"https://www.dragos.com/resources/",l:"a",t:"Framework"}
+],
+practice:[
+{n:"CISA CSET: Self-Assessment Exercise (Free)",d:"Run CISA's free Cyber Security Evaluation Tool against a sample ICS environment",u:"https://github.com/cisagov/cset",l:"a",t:"Tool + Exercise"},
+{n:"ICS-ISAC: Community Resources and Training",d:"Free resources and community support from the ICS Information Sharing and Analysis Center",u:"https://www.ics-isac.org/",l:"a",t:"Community"}
+],
+quiz:[
+{q:"What is NERC CIP and who must comply with it?",o:["A voluntary ICS security framework for all industries","A set of mandatory reliability standards enforced by NERC for entities that own or operate facilities comprising the North American Bulk Electric System","A NIST publication about ICS security","A certification for ICS security professionals"],a:1,e:"NERC CIP (Critical Infrastructure Protection) standards are mandatory and enforceable for BES owners, operators, and users in North America. Non-compliance carries significant financial penalties. They cover electronic security perimeters, access management, incident reporting, and more."},
+{q:"What is CSET and how is it used in OT security programs?",o:["A PLC programming language","CISA's free Cyber Security Evaluation Tool - a self-assessment questionnaire that evaluates an organization's ICS security posture against frameworks like ICS-CERT, NIST, and NERC CIP","A network monitoring tool","A certification exam"],a:1,e:"CSET allows organizations to self-assess their OT security posture without external consultants. It produces a scored report against selected frameworks, identifies gaps, and prioritizes recommendations - making it an excellent starting point for OT security program development."},
+{q:"What is the most important cultural challenge when building an OT security program?",o:["Procuring the right tools","Bridging the gap between IT security teams and OT/engineering teams - who have different priorities, vocabulary, and risk tolerance, and have historically operated independently","Getting executive approval","Writing security policies"],a:1,e:"The IT/OT divide is the most persistent barrier to effective OT security. Engineers prioritize availability and process stability; security teams prioritize risk reduction. Effective OT security programs require joint IT/OT governance, shared training, and security practices adapted to operational constraints."},
+{q:"Which metric best demonstrates OT security program value to operations leadership?",o:["Number of security policies published","Number of CVEs identified","Mean time to detect anomalies in OT network combined with percentage of critical assets with implemented compensating controls","Number of security team headcount"],a:2,e:"Operations leaders care about operational resilience. Metrics that demonstrate faster detection (MTTD) and coverage of critical assets speak directly to their priority of keeping industrial processes running safely. Pure security metrics (CVE counts, policy counts) do not resonate with operations audiences."},
+{q:"How should an OT security program handle the gap between IT security team skills and OT environment knowledge?",o:["Hire entirely new staff with OT backgrounds","Require IT security team to learn all OT engineering disciplines","Develop a joint IT/OT security team model: IT security provides cybersecurity expertise while OT/engineering provides process knowledge - with cross-training for both groups","Keep IT and OT security entirely separate"],a:2,e:"Neither IT security teams nor OT engineers alone have the full skill set needed. Effective OT security programs pair IT security expertise (incident response, threat intelligence, monitoring) with OT engineering knowledge (process safety, vendor relationships, operational constraints) in integrated teams."}
+],
+lab:{title:"Module 9 Lab: OT Security Program Assessment",scene:"Assess the OT security program maturity of a regional electric utility and develop a roadmap.",data:"ORGANIZATION: Regional Electric Utility\n  Service area: 400,000 customers\n  Generation assets: 3 power plants\n  Transmission: 200 substations\n  Regulatory: NERC CIP applicable (Medium and High impact BES assets)\n\nCURRENT STATE:\n  People:\n    - 2 IT security staff with no OT background\n    - No dedicated OT security role\n    - Engineering team: 15 staff, no cybersecurity training\n\n  Process:\n    - No OT asset inventory (estimated 2,000+ OT devices)\n    - No OT-specific incident response plan\n    - Patch management: ad hoc, vendor-driven only\n    - Change management: engineering process, no security review\n    - NERC CIP compliance: partial - 3 open findings from last audit\n\n  Technology:\n    - No OT-specific monitoring tools\n    - IT firewall at OT/IT boundary (no ICS protocol inspection)\n    - No OT network segmentation documentation\n    - Remote access: multiple vendor VPNs, no centralized control",tasks:["Assess the current maturity level of this OT security program. Use a 1-5 scale and justify each domain rating.","The 3 open NERC CIP findings create immediate regulatory risk. What are your first 30-day actions?","Design the 12-month program roadmap. What gets done in each quarter?","Write the business case for hiring a dedicated OT security engineer. Include specific risk reduction outcomes to justify the cost."]}
+}
+];
+
+var GLOSSARY = [
+{t:"Operational Technology",a:"OT",d:"Hardware and software that monitors and controls physical devices, processes, and events in industrial environments - distinct from IT in that changes directly affect physical processes.",g:"Fundamentals"},
+{t:"Industrial Control System",a:"ICS",d:"Systems used to monitor and control industrial processes including SCADA, DCS, PLCs, RTUs, and safety systems.",g:"Fundamentals"},
+{t:"Programmable Logic Controller",a:"PLC",d:"A ruggedized industrial computer that executes control logic to monitor sensor inputs and drive actuator outputs, directly controlling physical processes.",g:"Components"},
+{t:"Remote Terminal Unit",a:"RTU",d:"A field device that interfaces with physical equipment at remote sites and communicates data back to a central SCADA system, often over long-distance communications.",g:"Components"},
+{t:"Human Machine Interface",a:"HMI",d:"The operator interface providing graphical visualization of industrial processes, allowing operators to monitor values and send commands to control systems.",g:"Components"},
+{t:"SCADA",a:"",d:"Supervisory Control and Data Acquisition. A system architecture that collects data from field devices and provides supervisory control across geographically distributed industrial facilities.",g:"Components"},
+{t:"Purdue Model",a:"",d:"A hierarchical reference model for ICS architecture with 5 levels from physical process (Level 0) to enterprise network (Level 4/5), used for network segmentation design.",g:"Architecture"},
+{t:"ISA/IEC 62443",a:"",d:"The primary international standard series for OT/ICS cybersecurity, covering security management systems, network architecture, system requirements, and component requirements.",g:"Standards"},
+{t:"Safety Instrumented System",a:"SIS",d:"An independent control system designed to bring an industrial process to a safe state when predetermined conditions are violated - the last line of defense before a physical accident.",g:"Safety"},
+{t:"Data Diode",a:"",d:"A hardware device that enforces one-way data flow at the physical layer, making it impossible for data to flow in the reverse direction regardless of software configuration.",g:"Controls"},
+{t:"Modbus",a:"",d:"A simple, widely used serial communication protocol for connecting PLCs and other ICS devices, originally developed in 1979. Lacks authentication or encryption by design.",g:"Protocols"},
+{t:"DNP3",a:"",d:"Distributed Network Protocol - used primarily in electric and water utilities for SCADA communications between master stations and RTUs over long distances.",g:"Protocols"},
+{t:"EtherNet/IP",a:"",d:"An industrial Ethernet protocol used in manufacturing automation. Runs over standard TCP/IP but carries industrial automation commands and process data.",g:"Protocols"},
+{t:"Historian",a:"",d:"A specialized server that collects and stores long-term time-series process data from OT environments. Often positioned at the IT/OT boundary, creating a potential attack pivot point.",g:"Components"},
+{t:"Engineering Workstation",a:"EWS",d:"A computer used to develop, configure, and maintain PLC programs and other OT device configurations. A primary target for ICS threat actors during reconnaissance.",g:"Components"},
+{t:"NERC CIP",a:"",d:"North American Electric Reliability Corporation Critical Infrastructure Protection standards - mandatory enforceable cybersecurity requirements for bulk electric system owners and operators.",g:"Regulation"},
+{t:"PIPEDREAM",a:"",d:"Also known as INCONTROLLER - the most capable and modular ICS-specific attack framework discovered, capable of targeting Schneider Electric and OMRON PLCs.",g:"Threats"},
+{t:"Triton/TRISIS",a:"",d:"Malware specifically designed to attack Safety Instrumented Systems - the first known malware targeting safety systems with the intent to disable them and enable a physical disaster.",g:"Threats"},
+{t:"CRASHOVERRIDE",a:"",d:"Also known as Industroyer - the malware used in the 2016 Ukraine power grid attack. The first malware specifically designed to attack electric grid infrastructure.",g:"Threats"},
+{t:"ATT&CK for ICS",a:"",d:"MITRE's knowledge base of adversary tactics and techniques specific to industrial control systems, including OT-specific tactics like Impair Process Control and Inhibit Response Function.",g:"Frameworks"},
+{t:"Defense in Depth",a:"",d:"A layered security strategy applying multiple independent security controls so that failure of a single control does not lead to complete system compromise.",g:"Principles"},
+{t:"Air Gap",a:"",d:"Physical isolation of OT networks from all external networks including IT and the internet. A common but increasingly impractical control as OT systems require remote access and data sharing.",g:"Controls"},
+{t:"Compensating Control",a:"",d:"A security measure implemented to reduce risk when the primary control (typically patching) cannot be applied due to operational or vendor constraints in OT environments.",g:"Controls"},
+{t:"Safe State",a:"",d:"A pre-engineered fail-safe condition an OT process transitions to automatically when it detects anomalies or loses control communications, ensuring physical safety even if control is compromised.",g:"Safety"},
+{t:"CSET",a:"",d:"CISA's free Cyber Security Evaluation Tool for self-assessing ICS security posture against frameworks including ICS-CERT, NIST SP 800-82, and NERC CIP.",g:"Tools"},
+{t:"Ladder Logic",a:"",d:"The most common programming language for PLCs, using a graphical format resembling electrical relay diagrams. Understanding it is essential for analyzing compromised PLC programs.",g:"Components"},
+{t:"Security Level",a:"SL",d:"ISA/IEC 62443 concept defining the target capability to resist attack from adversaries with specific capabilities - from SL1 (casual) to SL4 (state-sponsored).",g:"Standards"},
+{t:"CIRCIA",a:"",d:"Cyber Incident Reporting for Critical Infrastructure Act - requires covered critical infrastructure entities to report significant cyber incidents to CISA within 72 hours.",g:"Regulation"},
+{t:"Zone and Conduit",a:"",d:"ISA/IEC 62443 model dividing ICS systems into security zones (groups of assets with similar security requirements) connected by conduits (communication channels with defined security controls).",g:"Architecture"},
+{t:"OT/IT Convergence",a:"",d:"The increasing integration of operational technology and information technology networks, driven by Industry 4.0 and remote monitoring needs - expanding the OT attack surface.",g:"Trends"}
+];
+
+var LB = [
+{name:"Andersen",role:"OT Security Engineer",av:"A",color:"#E8741A",mods:9,quiz:94,bdg:"bdg-g",bdgt:"Top Analyst"},
+{name:"Kowalski",role:"ICS Security Analyst",av:"K",color:"#00C9E4",mods:8,quiz:90,bdg:"bdg-s",bdgt:"Expert"},
+{name:"Okafor",role:"SCADA Engineer",av:"O",color:"#2ECC71",mods:7,quiz:86,bdg:"bdg-b",bdgt:"Advanced"},
+{name:"Petrov",role:"Control Systems Engineer",av:"P",color:"#9B59B6",mods:6,quiz:82,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Singh",role:"OT Analyst",av:"S",color:"#3D8FD4",mods:5,quiz:77,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Leblanc",role:"Security Engineer",av:"L",color:"#F1C40F",mods:4,quiz:73,bdg:"bdg-a",bdgt:"Analyst"},
+{name:"Yoon",role:"Network Engineer",av:"Y",color:"#E74C3C",mods:3,quiz:68,bdg:"bdg-a",bdgt:"Analyst"}
+];
+
+var S = {
+  done: new Set(JSON.parse(localStorage.getItem('otIcsDone') || '[]')),
+  bm: new Set(JSON.parse(localStorage.getItem('otIcsBm') || '[]')),
+  notes: JSON.parse(localStorage.getItem('otIcsNotes') || '{}'),
+  scores: JSON.parse(localStorage.getItem('otIcsScores') || '{}'),
+  labs: new Set(JSON.parse(localStorage.getItem('otIcsLabs') || '[]'))
+};
+var labAnswers = {};
+var curFilter = 'all';
+var quizState = {};
+
+function saveState() {
+  localStorage.setItem('otIcsDone', JSON.stringify(Array.from(S.done)));
+  localStorage.setItem('otIcsBm', JSON.stringify(Array.from(S.bm)));
+  localStorage.setItem('otIcsNotes', JSON.stringify(S.notes));
+  localStorage.setItem('otIcsScores', JSON.stringify(S.scores));
+  localStorage.setItem('otIcsLabs', JSON.stringify(Array.from(S.labs)));
+}
+
+document.querySelectorAll('.nav-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+    if (btn.dataset.page === 'bookmarks') renderBookmarks();
+    if (btn.dataset.page === 'leaderboard') renderLeaderboard();
+    if (btn.dataset.page === 'glossary') renderGlossary('');
+  });
+});
+
+var nameEl = document.getElementById('analystName');
+nameEl.value = localStorage.getItem('otIcsName') || '';
+nameEl.addEventListener('change', function() { localStorage.setItem('otIcsName', nameEl.value); });
+
+function el(tag, cls, txt) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined) e.textContent = txt;
+  return e;
+}
+function alink(href, cls) {
+  var e = document.createElement('a');
+  e.href = href; e.target = '_blank'; e.rel = 'noopener noreferrer';
+  if (cls) e.className = cls;
+  e.addEventListener('click', function(ev) { ev.stopPropagation(); });
+  return e;
+}
+function btn(cls, txt, handler) {
+  var b = document.createElement('button');
+  b.className = cls; b.textContent = txt;
+  if (handler) b.addEventListener('click', handler);
+  return b;
+}
+function rlClass(l) { return l === 'b' ? 'rl rl-b' : l === 'i' ? 'rl rl-i' : 'rl rl-a'; }
+function rlLabel(l) { return l === 'b' ? 'Beginner' : l === 'i' ? 'Intermediate' : 'Advanced'; }
+function levelClass(level) {
+  if (level === 'Foundation') return 'lvl-Foundation';
+  if (level === 'Intermediate') return 'lvl-Intermediate';
+  return 'lvl-Advanced';
+}
+
+function buildResLink(r, iconCls, iconTxt) {
+  var link = alink(r.u, 'res-link');
+  var icon = el('div', 'res-icon ' + iconCls, iconTxt);
+  var info = el('div', 'res-info');
+  info.appendChild(el('div', 'res-name', r.n));
+  info.appendChild(el('div', 'res-desc', r.d));
+  var meta = el('div', 'res-meta');
+  meta.appendChild(el('span', rlClass(r.l), rlLabel(r.l)));
+  if (r.t) meta.appendChild(el('span', 'rt', r.t));
+  info.appendChild(meta);
+  link.appendChild(icon);
+  link.appendChild(info);
+  return link;
+}
+
+function buildSection(label, bodyEls) {
+  var wrap = el('div', 'sec');
+  var tog = el('button', 'sec-toggle');
+  var arr = el('span', 'arr', '>');
+  tog.appendChild(arr);
+  tog.appendChild(el('span', '', ' ' + label));
+  var body = el('div', 'sec-body');
+  bodyEls.forEach(function(c) { body.appendChild(c); });
+  tog.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    tog.classList.toggle('open');
+    body.classList.toggle('open');
+  });
+  wrap.appendChild(tog);
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function renderModules(filter) {
+  if (filter !== undefined) curFilter = filter;
+  var grid = document.getElementById('modGrid');
+  grid.innerHTML = '';
+  var shown = 0;
+  MODS.forEach(function(mod) {
+    var isDone = S.done.has(mod.num);
+    var isBm = S.bm.has(mod.num);
+    if (curFilter === 'completed' && !isDone) return;
+    if (curFilter === 'bookmarked' && !isBm) return;
+    if (curFilter !== 'all' && curFilter !== 'completed' && curFilter !== 'bookmarked' && mod.level !== curFilter) return;
+    shown++;
+    var card = el('div', 'mod-card' + (isDone ? ' completed' : '') + (isBm ? ' bookmarked' : ''));
+    card.style.animationDelay = (shown * 0.04) + 's';
+    var top = el('div', 'card-top');
+    var meta = el('div', 'card-meta');
+    meta.appendChild(el('span', 'card-num', 'MODULE ' + String(mod.num).padStart(2, '0')));
+    meta.appendChild(el('span', 'lvl-badge ' + levelClass(mod.level), mod.level));
+    top.appendChild(meta);
+    top.appendChild(el('div', 'card-title', mod.title));
+    var info = el('div', 'card-info');
+    info.appendChild(el('span', 'card-dur', mod.dur));
+    var acts = el('div', 'card-actions');
+    var bmBtn = el('button', 'bm-btn');
+    bmBtn.innerHTML = isBm ? '&#9733;' : '&#9734;';
+    bmBtn.title = 'Bookmark';
+    bmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.bm.has(mod.num)) { S.bm.delete(mod.num); card.classList.remove('bookmarked'); bmBtn.innerHTML = '&#9734;'; }
+      else { S.bm.add(mod.num); card.classList.add('bookmarked'); bmBtn.innerHTML = '&#9733;'; }
+      saveState();
+    });
+    var chk = el('div', 'chk');
+    chk.innerHTML = isDone ? '&#10003;' : '';
+    chk.title = 'Mark complete';
+    chk.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      if (S.done.has(mod.num)) {
+        S.done.delete(mod.num); card.classList.remove('completed'); chk.innerHTML = '';
+      } else {
+        S.done.add(mod.num); card.classList.add('completed'); chk.innerHTML = '&#10003;';
+      }
+      saveState();
+      var c = S.done.size;
+      var pct = Math.round(c / MODS.length * 100);
+      var fill = document.getElementById('progFill');
+      var count = document.getElementById('progCount');
+      if (fill) fill.style.width = pct + '%';
+      if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+    });
+    acts.appendChild(bmBtn);
+    acts.appendChild(chk);
+    info.appendChild(acts);
+    top.appendChild(info);
+    card.appendChild(top);
+    card.appendChild(buildSection('Topics Covered', mod.topics.map(function(t) { return el('div', 'topic-item', t); })));
+    card.appendChild(buildSection('Video and Course Training (' + mod.videos.length + ')', mod.videos.map(function(r) { return buildResLink(r, 'ri-v', 'VID'); })));
+    card.appendChild(buildSection('Papers, Whitepapers and Reading (' + mod.reading.length + ')', mod.reading.map(function(r) { return buildResLink(r, 'ri-r', 'DOC'); })));
+    card.appendChild(buildSection('Hands-On Practice and Labs (' + mod.practice.length + ')', mod.practice.map(function(r) { return buildResLink(r, 'ri-p', 'LAB'); })));
+    var actRow = el('div', 'act-row');
+    var score = S.scores[mod.num];
+    var qBtn = btn('act-btn quiz-act', score !== undefined ? 'Quiz - ' + score + '%' : 'Quiz');
+    qBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openQuiz(mod.num); });
+    var lBtn = btn('act-btn lab-act', S.labs.has(mod.num) ? 'Lab - Done' : 'Lab');
+    lBtn.addEventListener('click', function(ev) { ev.stopPropagation(); openLab(mod.num); });
+    actRow.appendChild(qBtn);
+    actRow.appendChild(lBtn);
+    card.appendChild(actRow);
+    var noteWrap = el('div', 'notes-sec');
+    var noteTog = el('button', 'notes-toggle');
+    var noteArr = el('span', 'arr', '>');
+    noteTog.appendChild(noteArr);
+    var savedNote = S.notes[mod.num] || '';
+    noteTog.appendChild(el('span', '', ' Analyst Notes' + (savedNote ? ' (saved)' : '')));
+    var noteBody = el('div', 'notes-body');
+    var ta = el('textarea', 'notes-ta');
+    ta.placeholder = 'Add your notes and key takeaways...';
+    ta.value = savedNote;
+    var saveBtn = btn('notes-save', 'Save Note');
+    saveBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      S.notes[mod.num] = ta.value;
+      saveState();
+      saveBtn.textContent = 'Saved!';
+      setTimeout(function() { saveBtn.textContent = 'Save Note'; }, 1500);
+    });
+    noteTog.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      noteTog.classList.toggle('open');
+      noteBody.classList.toggle('open');
+    });
+    noteBody.appendChild(ta);
+    noteBody.appendChild(saveBtn);
+    noteWrap.appendChild(noteTog);
+    noteWrap.appendChild(noteBody);
+    card.appendChild(noteWrap);
+    grid.appendChild(card);
+  });
+  if (shown === 0) {
+    var msg = el('div', '');
+    msg.style.cssText = 'grid-column:1/-1;text-align:center;padding:60px;color:#8FA3B8;font-size:14px;';
+    msg.textContent = 'No modules match this filter.';
+    grid.appendChild(msg);
+  }
+}
+
+function updateProgress() {
+  var c = S.done.size;
+  var pct = Math.round(c / MODS.length * 100);
+  var fill = document.getElementById('progFill');
+  var count = document.getElementById('progCount');
+  if (fill) fill.style.width = pct + '%';
+  if (count) count.textContent = c + ' / ' + MODS.length + ' complete';
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
+    b.classList.add('active');
+    renderModules(b.dataset.filter);
+  });
+});
+
+function openQuiz(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod) return;
+  quizState = { num: num, qs: mod.quiz, cur: 0, correct: 0 };
+  document.getElementById('quizTitle').textContent = mod.title;
+  document.getElementById('quizSub').textContent = 'MODULE ' + String(num).padStart(2,'0') + ' - ' + mod.quiz.length + ' QUESTIONS';
+  renderQuizQ();
+  document.getElementById('quizOverlay').classList.add('open');
+}
+
+function renderQuizQ() {
+  var qs = quizState.qs;
+  var cur = quizState.cur;
+  document.getElementById('qPBFill').style.width = Math.round(cur / qs.length * 100) + '%';
+  var body = document.getElementById('quizBody');
+  body.innerHTML = '';
+  if (cur >= qs.length) {
+    var sc = Math.round(quizState.correct / qs.length * 100);
+    S.scores[quizState.num] = sc;
+    saveState();
+    var msg = sc >= 80 ? 'Great work - ready to move on.' : sc >= 60 ? 'Good effort - review the explanations and retry.' : 'Review this module before retaking.';
+    var res = el('div', 'q-result');
+    res.appendChild(el('div', 'q-score', sc + '%'));
+    res.appendChild(el('div', 'q-score-lbl', quizState.correct + ' of ' + qs.length + ' correct'));
+    res.appendChild(el('div', 'q-msg', msg));
+    res.appendChild(btn('q-retry', 'Retake Quiz', function() { openQuiz(quizState.num); }));
+    body.appendChild(res);
+    renderModules();
+    return;
+  }
+  var q = qs[cur];
+  body.appendChild(el('div', 'q-text', 'Q' + (cur + 1) + '. ' + q.q));
+  var opts = el('div', 'q-opts');
+  q.o.forEach(function(opt, i) {
+    var ob = btn('q-opt', opt, function() {
+      if (document.querySelector('.q-opt.correct, .q-opt.wrong')) return;
+      document.querySelectorAll('.q-opt').forEach(function(x) { x.classList.add('locked'); });
+      if (i === q.a) { ob.classList.add('correct'); quizState.correct++; }
+      else { ob.classList.add('wrong'); document.querySelectorAll('.q-opt')[q.a].classList.add('reveal'); }
+      explain.style.display = 'block';
+      nextBtn.style.display = 'inline-block';
+    });
+    opts.appendChild(ob);
+  });
+  body.appendChild(opts);
+  var explain = el('div', 'q-explain', q.e);
+  body.appendChild(explain);
+  var nextRow = el('div', 'q-next');
+  var nextBtn = btn('q-next-btn', cur + 1 < qs.length ? 'Next ->' : 'See Results', function() {
+    quizState.cur++;
+    renderQuizQ();
+  });
+  nextRow.appendChild(nextBtn);
+  body.appendChild(nextRow);
+}
+
+document.getElementById('quizClose').addEventListener('click', function() { document.getElementById('quizOverlay').classList.remove('open'); });
+document.getElementById('quizOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function openLab(num) {
+  var mod = MODS.find(function(m) { return m.num === num; });
+  if (!mod || !mod.lab) return;
+  var lab = mod.lab;
+  var saved = labAnswers[num] || {};
+  document.getElementById('labTitle').textContent = lab.title;
+  var body = document.getElementById('labBody');
+  body.innerHTML = '';
+  var scene = el('div', 'lab-scene');
+  scene.innerHTML = '<strong>Scenario:</strong> ' + lab.scene;
+  body.appendChild(scene);
+  body.appendChild(el('div', 'lab-data', lab.data));
+  var textareas = [];
+  lab.tasks.forEach(function(task, i) {
+    body.appendChild(el('div', 'lab-tl', 'Task ' + (i + 1)));
+    body.appendChild(el('div', 'lab-tq', task));
+    var ta = el('textarea', 'lab-ta');
+    ta.placeholder = 'Your analysis...';
+    ta.rows = 4;
+    ta.value = saved[i] || '';
+    textareas.push(ta);
+    body.appendChild(ta);
+  });
+  body.appendChild(el('div', 'lab-hint', 'Tip: Labs assess analytical reasoning and use of evidence - there is no single correct answer.'));
+  var subBtn = btn('lab-submit', S.labs.has(num) ? 'Update Answers' : 'Mark Complete and Save', function() {
+    if (!labAnswers[num]) labAnswers[num] = {};
+    textareas.forEach(function(ta, i) { labAnswers[num][i] = ta.value; });
+    S.labs.add(num);
+    saveState();
+    document.getElementById('labOverlay').classList.remove('open');
+    renderModules();
+  });
+  body.appendChild(subBtn);
+  document.getElementById('labOverlay').classList.add('open');
+}
+
+document.getElementById('labClose').addEventListener('click', function() { document.getElementById('labOverlay').classList.remove('open'); });
+document.getElementById('labOverlay').addEventListener('click', function(ev) { if (ev.target === ev.currentTarget) ev.currentTarget.classList.remove('open'); });
+
+function renderGlossary(query) {
+  var grid = document.getElementById('glsGrid');
+  grid.innerHTML = '';
+  var q = (query || '').toLowerCase();
+  GLOSSARY.forEach(function(g) {
+    var match = !q || g.t.toLowerCase().includes(q) || (g.a||'').toLowerCase().includes(q) || g.d.toLowerCase().includes(q);
+    var card = el('div', 'gls-card' + (match ? '' : ' hidden'));
+    card.appendChild(el('div', 'gls-term', g.t));
+    if (g.a) card.appendChild(el('div', 'gls-abbr', g.a));
+    card.appendChild(el('div', 'gls-def', g.d));
+    if (g.g) card.appendChild(el('span', 'gls-tag', g.g));
+    grid.appendChild(card);
+  });
+}
+document.getElementById('glsSearch').addEventListener('input', function(ev) { renderGlossary(ev.target.value); });
+
+function renderLeaderboard() {
+  var sorted = LB.slice().sort(function(a, b) { return b.mods - a.mods || b.quiz - a.quiz; });
+  var crowns = ['#1', '#2', '#3'];
+  var rankCls = ['r1', 'r2', 'r3'];
+  var top3 = document.getElementById('top3');
+  top3.innerHTML = '';
+  sorted.slice(0, 3).forEach(function(p, i) {
+    var card = el('div', 't3-card' + (i === 0 ? ' first' : ''));
+    card.appendChild(el('div', 't3-crown', crowns[i]));
+    var av = el('div', 't3-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    card.appendChild(av);
+    card.appendChild(el('div', 't3-name', p.name));
+    card.appendChild(el('div', 't3-mods', p.mods + '/9 modules'));
+    card.appendChild(el('div', 't3-score', p.quiz + '%'));
+    top3.appendChild(card);
+  });
+  var tbody = document.getElementById('lbBody');
+  tbody.innerHTML = '';
+  sorted.forEach(function(p, i) {
+    var tr = document.createElement('tr');
+    var tdR = document.createElement('td');
+    tdR.appendChild(el('span', 'lb-rank ' + (rankCls[i] || 'rn'), String(i + 1)));
+    tr.appendChild(tdR);
+    var tdN = document.createElement('td');
+    var nc = el('div', 'lb-nc');
+    var av = el('div', 'lb-av', p.av);
+    av.style.background = p.color + '33'; av.style.color = p.color;
+    nc.appendChild(av);
+    var nd = el('div', '');
+    var nm = el('div', '', p.name); nm.style.fontWeight = '600';
+    nd.appendChild(nm);
+    nd.appendChild(el('div', 'lb-role', p.role));
+    nc.appendChild(nd); tdN.appendChild(nc); tr.appendChild(tdN);
+    var tdM = document.createElement('td');
+    tdM.style.cssText = "font-family:'JetBrains Mono',monospace;color:#00C9E4";
+    tdM.textContent = p.mods + '/9'; tr.appendChild(tdM);
+    var tdP = document.createElement('td');
+    var bw = el('div', 'lb-bar-w'); var bar = el('div', 'lb-bar');
+    bar.style.width = Math.round(p.mods / 9 * 100) + '%';
+    bw.appendChild(bar); tdP.appendChild(bw); tr.appendChild(tdP);
+    var tdQ = document.createElement('td');
+    tdQ.style.cssText = "font-family:'JetBrains Mono',monospace;font-weight:600;color:" + (p.quiz >= 90 ? '#2ECC71' : p.quiz >= 75 ? '#00C9E4' : '#8FA3B8');
+    tdQ.textContent = p.quiz + '%'; tr.appendChild(tdQ);
+    var tdB = document.createElement('td');
+    tdB.appendChild(el('span', 'lb-bdg ' + p.bdg, p.bdgt)); tr.appendChild(tdB);
+    tbody.appendChild(tr);
+  });
+}
+
+function renderBookmarks() {
+  var content = document.getElementById('bmContent');
+  content.innerHTML = '';
+  if (S.bm.size === 0) {
+    content.appendChild(el('div', 'bm-empty', 'No bookmarks yet. Click the star on any module to save it here.'));
+    return;
+  }
+  var list = el('div', 'bm-list');
+  Array.from(S.bm).forEach(function(num) {
+    var mod = MODS.find(function(m) { return m.num === num; });
+    if (!mod) return;
+    var item = el('div', 'bm-item');
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelector('[data-page="modules"]').classList.add('active');
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('page-modules').classList.add('active');
+      renderModules('all');
+    });
+    var pin = el('div', ''); pin.innerHTML = '&#9733;';
+    pin.style.cssText = 'font-size:20px;flex-shrink:0;color:#F1C40F;';
+    var info = el('div', 'bm-info');
+    info.appendChild(el('div', 'bm-title', mod.title));
+    info.appendChild(el('div', 'bm-meta', 'Module ' + String(num).padStart(2,'0') + ' - ' + mod.level + ' - ' + mod.dur));
+    var rmBtn = el('button', 'bm-rm'); rmBtn.innerHTML = '&#215;';
+    rmBtn.addEventListener('click', function(ev) {
+      ev.stopPropagation(); S.bm.delete(num); saveState(); renderBookmarks();
+    });
+    item.appendChild(pin); item.appendChild(info); item.appendChild(rmBtn);
+    list.appendChild(item);
+  });
+  content.appendChild(list);
+}
+
+renderModules('all');
+updateProgress();
+renderGlossary('');
+renderLeaderboard();
+</script>
+
+</body>
+</html>
